@@ -1,0 +1,9 @@
+{
+    "name": "@app/polkadot",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@polkadot/api": "^6.7.1"
+    },
+    "devDependencies": {}
+}

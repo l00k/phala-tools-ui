@@ -1,0 +1,13 @@
+{
+    "name": "@app/phala-stats-analyze",
+    "private": true,
+    "version": "0.0.1",
+    "license": "MIT",
+    "dependencies": {
+        "clipboard": "^2.0.8",
+        "color": "^3.2.1",
+        "vis-data": "^7.1.2",
+        "vis-network": "^9.1.0",
+        "vue-context": "^6.0.0"
+    }
+}
