@@ -18,7 +18,7 @@ import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
         MainMenuView
     }
 })
-export default class AppComponent
+export default class App
     extends BaseComponent
 {
 }

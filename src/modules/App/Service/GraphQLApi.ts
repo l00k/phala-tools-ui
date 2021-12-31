@@ -7,7 +7,7 @@ type Variables = {
     [variable: string]: any
 };
 
-export default class MainApi
+export default class GraphQLApi
 {
 
     @Inject({ name: 'apollo' })

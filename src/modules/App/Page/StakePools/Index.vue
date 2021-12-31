@@ -18,11 +18,8 @@
 <script lang="ts">
 import { Component, Route } from '@/intiv/core/Vue/Annotations';
 import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
-import { namespace } from 'vuex-class';
-import ListView from '#/StakePools/Component/ListView.vue';
+import ListView from '#/App/Component/StakePools/ListView.vue';
 
-
-const Storage = namespace('StakePools/Storage');
 
 @Route('/stakepools', 'stakepools')
 @Component({
@@ -30,16 +27,15 @@ const Storage = namespace('StakePools/Storage');
         ListView,
     }
 })
-export default class IndexPage
+export default class StakePoolsIndexPage
     extends BaseComponent
 {
 
     public isReady : boolean = false;
 
-
     public async mounted ()
     {
-        await this.$store.dispatch('StakePools/Storage/init');
+        await this.$store.dispatch('StakePools/RuntimeStorage/init');
         this.isReady = true;
     }
 
