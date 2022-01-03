@@ -35,11 +35,11 @@
 </template>
 
 <script lang="ts">
-import { SelectOptionMode } from '#/Core/Component/UI/FilterField/FilterSelect.vue';
-import { FilterType } from '#/Core/Domain/Model/Filter';
-import { Pagination } from '@inti5/app-frontend/GraphQL/Struct';
+import { SelectOptionMode } from '@inti5/app-frontend/Component/UI/FilterField/FilterSelect.vue';
+import { FilterType } from '@inti5/app-frontend/Domain/Model/Filter';
+import Pagination from '@inti5/app-frontend/Domain/Model/Pagination';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
-import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
+import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Inject } from '@inti5/object-manager';
 import isEmpty from 'lodash/isEmpty';
 import { Watch } from 'vue-property-decorator';

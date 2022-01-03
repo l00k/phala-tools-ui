@@ -1,38 +1,20 @@
-import Account, { Fragments as AccountFramgents } from '#/App/Domain/Model/Account';
-import { Model, AbstractModel, Property } from '@inti5/app-frontend/Domain/Model';
+import Account from '#/App/Domain/Model/Account';
+import * as API from '@inti5/api';
 import { StorageModel } from '@inti5/app-frontend/Store';
-import gql from 'graphql-tag';
 
-
-export const Fragments = {
-    DefaultData: gql`
-${AccountFramgents.MainData}
-
-fragment StakePoolDefaultData on StakePool {
-    id
-    owner {
-        ...AccountMainData
-    }
-    balance
-    share
-}
-`
-};
 
 @StorageModel('PhalaStats/StakePool')
-@Model()
+@API.Resource()
 export default class StakePools
-    extends AbstractModel<StakePools>
 {
-
-    @Property()
+    
+    @API.Property()
     public id : number;
-
-    @Property()
+    
+    @API.Property()
     public onChainId : number;
-
-    @Property()
+    
+    @API.Property()
     public owner : Account;
-
-
+    
 }

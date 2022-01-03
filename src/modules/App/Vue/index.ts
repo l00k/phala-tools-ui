@@ -1,13 +1,12 @@
-import Decimal from 'decimal.js';
 import numbro from 'numbro';
 
 
 export default {
     filters: {
         
-        formatCoin (value : Decimal)
+        formatCoin (value : number)
         {
-            return numbro(value.toNumber()).format('0.000 a');
+            return numbro(value).format('0.000 a');
         },
         
         formatAddress (value)

@@ -1,5 +1,5 @@
 {
-    "name": "analyze",
+    "name": "app",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -8,6 +8,7 @@
         "build": "NODE_ENV=production vue-cli-service build"
     },
     "workspaces": [
+        "src/core/inti5",
         "src/core/inti5/*",
         "src/core/app-frontend",
         "src/modules/*"

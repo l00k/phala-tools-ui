@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
-import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
+import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import ListView from '#/App/Component/StakePools/ListView.vue';
 
 

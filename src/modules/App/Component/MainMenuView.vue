@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
-import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
+import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 
 
 @Component()

@@ -1,52 +1,26 @@
 import Tag from '#/App/Domain/Model/Tag';
-import { AbstractModel, Model, Property } from '@inti5/app-frontend/Domain/Model';
+import * as API from '@inti5/api';
 import { StorageModel } from '@inti5/app-frontend/Store';
-import gql from 'graphql-tag';
 
-
-export const Fragments = {
-    DefaultData: gql`
-fragment AccountDefaultData on Account {
-    id
-    address
-    identity
-    alias
-    tags { id }
-    balanceTotal
-    balanceTransferable
-    balanceStaked
-}
-`,
-    MainData: gql`
-fragment AccountMainData on Account {
-    id
-    address
-    identity
-    alias
-    tags { id }
-}
-`
-};
 
 @StorageModel('PhalaStats/Account')
-@Model()
+@API.Resource()
 export default class Account
-    extends AbstractModel<Account>
 {
     
-    @Property()
+    @API.Property()
     public id : number;
     
-    @Property()
+    @API.Property()
     public address : string;
     
-    @Property()
+    @API.Property()
     public identity : string = '';
     
-    @Property()
+    @API.Property()
     public alias : string = '';
     
-    @Property({ arrayOf: Tag })
+    @API.Property(() => Tag)
     public tags : Tag[] = [];
     
     
