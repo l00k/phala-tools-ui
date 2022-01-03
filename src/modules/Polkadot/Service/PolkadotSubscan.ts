@@ -1,6 +1,6 @@
-import { InitializeSymbol, Inject, Singleton } from '@/intiv/utils/ObjectManager';
-import { Config } from '@/intiv/utils/Configuration';
-import { Logger } from '@/intiv/utils/Utility';
+import { InitializeSymbol, Inject, Singleton } from '@inti5/object-manager';
+import { Config } from '@inti5/configuration';
+import Logger from '@inti5/utils/Logger';
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { zipObject } from 'lodash';
 

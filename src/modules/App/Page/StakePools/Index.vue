@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Route } from '@/intiv/core/Vue/Annotations';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
+import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
 import ListView from '#/App/Component/StakePools/ListView.vue';
 
 

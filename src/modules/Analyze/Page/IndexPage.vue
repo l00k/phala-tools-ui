@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import { Route, Component } from '@/intiv/core/Vue/Annotations';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
+import { Route, Component } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
 import NetworkMapView from '#/Analyze/Component/NetworkMapView.vue';
 import { namespace } from 'vuex-class';
 

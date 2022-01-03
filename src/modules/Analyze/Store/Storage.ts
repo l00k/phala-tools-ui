@@ -1,6 +1,6 @@
-import App from '@/intiv/core/App';
-import { StoreManager } from '@/intiv/core/Store';
-import { ObjectManager } from '@/intiv/utils/ObjectManager';
+import App from '@inti5/app-frontend/App';
+import { StoreManager } from '@inti5/app-frontend/Store';
+import { ObjectManager } from '@inti5/object-manager';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 import { Account, StakePool, Transfer } from '#/Analyze/Domain/Definition';
 

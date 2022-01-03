@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import MainMenuView from '#/App/Component/MainMenuView.vue';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
+import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 
 @Component({
     components: {

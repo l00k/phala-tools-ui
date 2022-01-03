@@ -1,9 +1,9 @@
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
-import { ObjectManager } from '@/intiv/utils/ObjectManager';
-import App from '@/intiv/core/App';
+import { ObjectManager } from '@inti5/object-manager';
+import App from '@inti5/app-frontend/App';
 import Tag from '#/App/Domain/Model/Tag';
 import TagService from '#/App/Domain/Service/TagService';
-import AutoRetry from '@/intiv/utils/Utility/AutoRetry';
+import autoRetry from '@inti5/utils/autoRetry';
 
 
 @Module({
@@ -35,7 +35,7 @@ export default class RuntimeStorage
             this.context.state.#initPromise = new Promise(async(resolve, reject) => {
                 try {
                     const tagService = ObjectManager.getSingleton().getInstance(TagService);
-                    this.context.state.#tags = await AutoRetry.retry(() => tagService.find());
+                    this.context.state.#tags = await autoRetry(() => tagService.find());
                     
                     resolve(true);
                 }

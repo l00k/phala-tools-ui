@@ -46,8 +46,8 @@
 </template>
 
 <script lang="ts">
-import { Component } from '@/intiv/core/Vue/Annotations';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
+import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
 import * as vis from 'vis-network';
 import Utility from '#/App/Utility/Utility';
 import VueContext from 'vue-context';

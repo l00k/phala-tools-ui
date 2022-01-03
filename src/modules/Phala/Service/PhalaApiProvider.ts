@@ -1,9 +1,9 @@
 import PolkadotApiProvider from '#/Polkadot/Service/PolkadotApiProvider';
 import { ApiPromise } from '@polkadot/api';
 import { khala as Khala } from '@phala/typedefs';
-import { Config } from '@/intiv/utils/Configuration';
-import { Inject, Singleton } from '@/intiv/utils/ObjectManager';
-import { Logger } from '@/intiv/utils/Utility';
+import { Config } from '@inti5/configuration';
+import { Inject, Singleton } from '@inti5/object-manager';
+import Logger from '@inti5/utils/Logger';
 
 
 

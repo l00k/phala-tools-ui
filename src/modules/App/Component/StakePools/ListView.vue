@@ -37,10 +37,10 @@
 <script lang="ts">
 import { SelectOptionMode } from '#/Core/Component/UI/FilterField/FilterSelect.vue';
 import { FilterType } from '#/Core/Domain/Model/Filter';
-import { Pagination } from '@/intiv/core/GraphQL/Struct';
-import { Component } from '@/intiv/core/Vue/Annotations';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
-import { Inject } from '@/intiv/utils/ObjectManager';
+import { Pagination } from '@inti5/app-frontend/GraphQL/Struct';
+import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
+import { Inject } from '@inti5/object-manager';
 import isEmpty from 'lodash/isEmpty';
 import { Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';

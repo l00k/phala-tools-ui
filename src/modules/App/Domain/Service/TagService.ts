@@ -1,6 +1,6 @@
 import Tag, { Fragments as TagFragments } from '#/App/Domain/Model/Tag';
-import { FilterQuery, Pagination } from '@/intiv/core/GraphQL/Struct';
-import { Inject } from '@/intiv/utils/ObjectManager';
+import { FilterQuery, Pagination } from '@inti5/app-frontend/GraphQL/Struct';
+import { Inject } from '@inti5/object-manager';
 import gql from 'graphql-tag';
 import GraphQLApi from '#/App/Service/GraphQLApi';
 

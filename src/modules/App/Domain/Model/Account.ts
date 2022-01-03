@@ -1,6 +1,6 @@
 import Tag from '#/App/Domain/Model/Tag';
-import { AbstractModel, Model, Property } from '@/intiv/core/Domain/Model';
-import { StorageModel } from '@/intiv/core/Store';
+import { AbstractModel, Model, Property } from '@inti5/app-frontend/Domain/Model';
+import { StorageModel } from '@inti5/app-frontend/Store';
 import gql from 'graphql-tag';
 
 

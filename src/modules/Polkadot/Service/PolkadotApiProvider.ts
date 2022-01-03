@@ -1,7 +1,7 @@
-import { InitializeSymbol, Inject, ReleaseSymbol, Singleton } from '@/intiv/utils/ObjectManager';
+import { InitializeSymbol, Inject, ReleaseSymbol, Singleton } from '@inti5/object-manager';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Config } from '@/intiv/utils/Configuration';
-import { Logger } from '@/intiv/utils/Utility';
+import { Config } from '@inti5/configuration';
+import Logger from '@inti5/utils/Logger';
 
 
 @Singleton()

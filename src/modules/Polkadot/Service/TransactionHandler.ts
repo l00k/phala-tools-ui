@@ -1,8 +1,8 @@
 import { SignerOptions } from '@polkadot/api/submittable/types';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { KeyringPair } from '@polkadot/keyring/types';
-import { Logger } from '@/intiv/utils/Utility';
-import { Inject } from '@/intiv/utils/ObjectManager';
+import Logger from '@inti5/utils/Logger';
+import { Inject } from '@inti5/object-manager';
 import colors from 'colors';
 
 

@@ -1,6 +1,6 @@
-import { Inject, Singleton } from '@/intiv/utils/ObjectManager';
-import { Config } from '@/intiv/utils/Configuration';
-import { Logger } from '@/intiv/utils/Utility';
+import { Inject, Singleton } from '@inti5/object-manager';
+import { Config } from '@inti5/configuration';
+import Logger from '@inti5/utils/Logger';
 import PolkadotSubscan from '#/Polkadot/Service/PolkadotSubscan';
 
 

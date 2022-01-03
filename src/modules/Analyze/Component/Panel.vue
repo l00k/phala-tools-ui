@@ -39,9 +39,9 @@
 </template>
 
 <script lang="ts">
-import { Component } from '@/intiv/core/Vue/Annotations';
-import BaseComponent from '@/intiv/core/Vue/BaseComponent.vue';
-import { Debounce } from '@/intiv/utils/Utility/Annotations';
+import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '@inti5/app-frontend/Vue/BaseComponent.vue';
+import Debounce from '@inti5/utils/Debounce';
 import { Prop } from 'vue-property-decorator';
 import { Account, StakePool } from '#/Analyze/Domain/Definition';
 

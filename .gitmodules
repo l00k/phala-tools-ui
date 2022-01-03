@@ -1,10 +1,7 @@
-[submodule "src/modules/Core"]
-	path = src/modules/Core
-	url = git@github.com:l00k/intiv-vue-mod-core.git
-[submodule "src/intiv/utils"]
-	path = src/intiv/utils
-	url = git@github.com:l00k/intiv-utils.git
-[submodule "src/intiv/core"]
-	path = src/intiv/core
-	url = git@github.com:l00k/intiv-vue-core.git
+[submodule "src/core/inti5"]
+	path = src/core/inti5
+	url = git@github.com:inti5/inti5.git
+[submodule "src/core/app-frontend"]
+	path = src/core/app-frontend
+	url = git@github.com:inti5/app-frontend.git
 
