@@ -1,11 +1,11 @@
 import Tag from '#/App/Domain/Model/Tag';
-import * as API from '@inti5/api';
+import { Annotation as API } from '@inti5/api-frontend';
 import { StorageModel } from '@inti5/app-frontend/Store';
 
 
 @StorageModel('PhalaStats/Account')
 @API.Resource()
-export default class Account
+export class Account
 {
     
     @API.Property()

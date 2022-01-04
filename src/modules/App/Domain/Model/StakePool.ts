@@ -1,11 +1,11 @@
-import Account from '#/App/Domain/Model/Account';
-import * as API from '@inti5/api';
+import { Account } from '#/App/Domain/Model/Account';
+import { Annotation as API } from '@inti5/api-frontend';
 import { StorageModel } from '@inti5/app-frontend/Store';
 
 
 @StorageModel('PhalaStats/StakePool')
 @API.Resource()
-export default class StakePools
+export class StakePools
 {
     
     @API.Property()

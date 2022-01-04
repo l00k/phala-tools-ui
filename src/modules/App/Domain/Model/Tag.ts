@@ -1,10 +1,10 @@
-import * as API from '@/core/inti5/api';
+import { Annotation as API } from '@inti5/api-frontend';
 import { StorageModel } from '@inti5/app-frontend/Store';
 
 
 @StorageModel('PhalaStats/Tag')
 @API.Resource()
-export default class Tag
+export class Tag
 {
     
     @API.Property()
