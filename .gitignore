@@ -1,3 +1,5 @@
+/src/etc/local
+
 node_modules
 
 .env

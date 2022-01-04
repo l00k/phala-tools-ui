@@ -25,16 +25,13 @@ export default class RuntimeStorage
     @Action
     public async init () : Promise<boolean>
     {
-        console.log(this.context);
         if (!this.context.state.initPromise) {
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {
                     const tagService = ObjectManager.getSingleton().getInstance(TagService);
                     
-                    const collection = await autoRetry(() => {
-                        return tagService.getCollection({
-                            pagination: { page: 1, itemsPerPage: 1000 }
-                        });
+                    const collection = await tagService.getCollection({
+                        pagination: { page: 1, itemsPerPage: 1000 }
                     });
                     this.context.state.tags = collection.records;
                     resolve(true);
