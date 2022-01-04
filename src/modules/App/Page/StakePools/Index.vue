@@ -16,6 +16,8 @@
 </template>
 
 <script lang="ts">
+import { TagService } from '#/App/Domain/Service/TagService';
+import { Inject } from '@inti5/object-manager';
 import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import ListView from '#/App/Component/StakePools/ListView.vue';

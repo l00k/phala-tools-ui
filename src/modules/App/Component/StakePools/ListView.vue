@@ -36,8 +36,7 @@
 
 <script lang="ts">
 import { SelectOptionMode } from '@inti5/app-frontend/Component/UI/FilterField/FilterSelect.vue';
-import { FilterType } from '@inti5/app-frontend/Domain/Model/Filter';
-import Pagination from '@inti5/app-frontend/Domain/Model/Pagination';
+import { FilterType } from '@inti5/app-frontend/Domain/Filter';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Inject } from '@inti5/object-manager';

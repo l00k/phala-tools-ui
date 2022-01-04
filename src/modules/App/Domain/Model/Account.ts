@@ -1,4 +1,4 @@
-import Tag from '#/App/Domain/Model/Tag';
+import { Tag } from '#/App/Domain/Model/Tag';
 import { Annotation as API } from '@inti5/api-frontend';
 import { StorageModel } from '@inti5/app-frontend/Store';
 
