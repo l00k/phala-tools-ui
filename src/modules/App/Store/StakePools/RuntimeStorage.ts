@@ -33,7 +33,7 @@ export class RuntimeStorage
                     const collection = await tagService.getCollection({
                         pagination: { page: 1, itemsPerPage: 1000 }
                     });
-                    this.context.state.tags = collection.records;
+                    this.context.state.tags = collection.items;
                     resolve(true);
                 }
                 catch (e) {
