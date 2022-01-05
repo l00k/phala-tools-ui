@@ -1,6 +1,6 @@
 import { InitializeSymbol, Inject, Singleton } from '@inti5/object-manager';
 import { Config } from '@inti5/configuration';
-import Logger from '@inti5/utils/Logger';
+import { Logger } from '@inti5/utils/Logger';
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { zipObject } from 'lodash';
 
@@ -82,7 +82,7 @@ const sleep = (ms : number) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 @Singleton()
-export default class PolkadotSubscan
+export class PolkadotSubscan
 {
     
     protected static readonly SERVICE_NAME : string = 'PolkadotSubscan';
@@ -114,23 +114,30 @@ export default class PolkadotSubscan
         return <any> this.axios.post(url, data, config);
     }
     
-    public async getExtrinsics(filters : ExtrinsicFilter): Promise<Extrinsic[]>
+    public async *getExtrinsics(filters : ExtrinsicFilter, ascendingOrder : boolean = true): AsyncGenerator<Extrinsic[], void, void>
     {
-        const ret : Extrinsic[] = [];
+        filters = {
+            module: '',
+            call: '',
+            page: 0,
+            row: 100,
+            ...filters
+        };
         
-        filters.page = 0;
-        filters.row = 100;
+        // first execution to get count
+        const { status, data } = await this.post('scan/extrinsics', filters);
+        const pagesNum = Math.ceil(data.data.count / filters.row);
+        
+        if (ascendingOrder) {
+            filters.page = pagesNum - 1;
+        }
         
         let result : SubscanResponse;
         while (true) {
             result = null;
         
             try {
-                const { status, data } = await this.post(
-                    'scan/extrinsics',
-                    filters
-                );
-                
+                const { status, data } = await this.post('scan/extrinsics', filters);
                 if (status === 200) {
                     result = data;
                 }
@@ -145,52 +152,64 @@ export default class PolkadotSubscan
                 break;
             }
             
-            const extrinsics = result.data.extrinsics.map(extrinsic => {
-                const paramsRaw = extrinsic.params
-                    ? JSON.parse(extrinsic.params)
-                    : [];
-                extrinsic.params = zipObject(
-                    paramsRaw.map(param => param.name),
-                    paramsRaw.map(param => param.value),
-                );
-                
-                return extrinsic;
-            });
+            const extrinsics = result.data.extrinsics
+                .map(extrinsic => {
+                    const paramsRaw = extrinsic.params
+                        ? JSON.parse(extrinsic.params)
+                        : [];
+                    extrinsic.params = zipObject(
+                        paramsRaw.map(param => param.name),
+                        paramsRaw.map(param => param.value),
+                    );
+                    
+                    return extrinsic;
+                })
+                .sort((e1, e2) => e1.extrinsic_index <= e2.extrinsic_index ? -1 : 1);
             
-            ret.push(...extrinsics);
+            yield extrinsics;
             
-            ++filters.page;
+            if (ascendingOrder) {
+                --filters.page;
+            }
+            else {
+                ++filters.page;
+            }
             
-            const percent = (ret.length / result.data.count) * 100;
-            this.logger.log('Requesting next page', `${percent.toFixed(1)}%`);
+            const percent = (1 - filters.page / pagesNum) * 100;
+            this.logger.log('Requesting next page. Progres: ', `${percent.toFixed(1)}%`);
         }
-    
-        return ret.sort((e1, e2) => e1.extrinsic_index <= e2.extrinsic_index ? -1 : 1);
     }
     
-    public async getEvents(filters : EventFilter): Promise<Event[]>
+    public async *getEvents(filters : EventFilter, ascendingOrder : boolean = true): AsyncGenerator<Event[], void, void>
     {
-        const ret : Event[] = [];
+        filters = {
+            module: '',
+            call: '',
+            page: 0,
+            row: 100,
+            ...filters
+        };
         
-        filters.page = 0;
-        filters.row = 100;
+        // first execution to get count
+        const { status, data } = await this.post('scan/events', filters);
+        const pagesNum = Math.ceil(data.data.count / filters.row);
+        
+        if (ascendingOrder) {
+            filters.page = pagesNum - 1;
+        }
         
         let result : SubscanResponse;
         while (true) {
             result = null;
         
             try {
-                const { status, data } = await this.post(
-                    'scan/events',
-                    filters
-                );
-                
+                const { status, data } = await this.post('scan/events', filters);
                 if (status === 200) {
                     result = data;
                 }
             }
             catch (e) {
-                this.logger.debug('Request failed. Retrying in 1s');
+                this.logger.log('Request failed. Retrying in 1s');
                 await sleep(1000);
                 continue;
             }
@@ -199,28 +218,33 @@ export default class PolkadotSubscan
                 break;
             }
             
-            const events = result.data.events.map(event => {
-                const paramsRaw = event.params
-                    ? JSON.parse(event.params)
-                    : [];
-                event.params = paramsRaw.map(p => p.value);
-                
-                return event;
-            });
+            const events = result.data.events
+                .map(event => {
+                    const paramsRaw = event.params
+                        ? JSON.parse(event.params)
+                        : [];
+                    event.params = paramsRaw.map(p => p.value);
+                    
+                    return event;
+                })
+                .sort((e1, e2) => {
+                    return e1.extrinsic_idx <= e2.extrinsic_idx
+                        ? (e1.event_idx <= e2.event_idx ? -1 : 1)
+                        : 1;
+                })
             
-            ret.push(...events);
+            yield events;
             
-            ++filters.page;
+            if (ascendingOrder) {
+                --filters.page;
+            }
+            else {
+                ++filters.page;
+            }
             
-            const percent = (ret.length / result.data.count) * 100;
-            this.logger.debug('Requesting next page', `${percent.toFixed(1)}%`);
+            const percent = (1 - filters.page / pagesNum) * 100;
+            this.logger.log('Requesting next page. Progres: ', `${percent.toFixed(1)}%`);
         }
-    
-        return ret.sort((e1, e2) => {
-            return e1.extrinsic_idx <= e2.extrinsic_idx
-                ? (e1.event_idx <= e2.event_idx ? -1 : 1)
-                : 1;
-        });
     }
     
 }

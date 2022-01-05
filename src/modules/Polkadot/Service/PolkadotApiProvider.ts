@@ -1,11 +1,11 @@
 import { InitializeSymbol, Inject, ReleaseSymbol, Singleton } from '@inti5/object-manager';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Config } from '@inti5/configuration';
-import Logger from '@inti5/utils/Logger';
+import { Logger } from '@inti5/utils/Logger';
 
 
 @Singleton()
-export default class PolkadotApiProvider
+export class PolkadotApiProvider
 {
     
     protected static readonly SERVICE_NAME : string = 'PolkadotApiProvider';

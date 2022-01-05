@@ -1,12 +1,12 @@
 import { SignerOptions } from '@polkadot/api/submittable/types';
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { KeyringPair } from '@polkadot/keyring/types';
-import Logger from '@inti5/utils/Logger';
-import { Inject } from '@inti5/object-manager';
 import colors from 'colors';
+import { Inject } from '@inti5/object-manager';
+import { Logger } from '@inti5/utils/Logger';
 
 
-export default class TransactionHandler
+export class TransactionHandler
 {
     
     @Inject({ ctorArgs: [ 'PolkadotTransactionHandler' ] })
@@ -44,6 +44,10 @@ export default class TransactionHandler
                     else if (status.isInBlock) {
                         this.logger.log(transactionId + ': ' + colors.green('in block'));
                         resolve();
+                    }
+                    else if (status.isUsurped) {
+                        this.logger.log(transactionId + ': ' + colors.green('is usurped'));
+                        reject();
                     }
                     
                     if (status.isFinalized || status.isFinalityTimeout) {

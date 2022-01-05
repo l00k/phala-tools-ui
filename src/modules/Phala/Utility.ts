@@ -1,4 +1,4 @@
-export default class Utility
+export class Utility
 {
     
     protected static readonly V_FACTOR = Math.pow(2, -64);

@@ -1,4 +1,4 @@
-export default class Utility
+export class Utility
 {
     
     protected static readonly PERCENT_DECIMALS = Math.pow(10, -6);
