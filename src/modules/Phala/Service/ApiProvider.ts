@@ -1,4 +1,4 @@
-import { PolkadotApiProvider } from '#/Polkadot/Service/PolkadotApiProvider';
+import * as Polkadot from '#/Polkadot';
 import { Config } from '@inti5/configuration';
 import { Inject, Singleton } from '@inti5/object-manager';
 import { Logger } from '@inti5/utils/Logger';
@@ -8,19 +8,19 @@ import { ApiPromise } from '@polkadot/api';
 
 
 @Singleton()
-export class PhalaApiProvider
-    extends PolkadotApiProvider
+export class ApiProvider
+    extends Polkadot.ApiProvider
 {
     
     protected static readonly SERVICE_NAME : string = 'PhalaApiProvider';
     
     
     @Config('module.phala.api.wsUrl')
-    protected apiWsUrl : string;
+    protected apiWsUrl : string = null;
     
     
-    @Inject({ ctorArgs: [ PhalaApiProvider.SERVICE_NAME ] })
-    protected logger : Logger;
+    @Inject({ ctorArgs: [ ApiProvider.SERVICE_NAME ] })
+    protected logger : Logger = null;
     
     
     protected createApi () : Promise<ApiPromise>

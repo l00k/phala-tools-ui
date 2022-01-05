@@ -1,3 +1,3 @@
-export * from './PolkadotSubscan';
+export * from './Subscan';
 export * from './TransactionHandler';
-export * from './PolkadotApiProvider';
+export * from './ApiProvider';

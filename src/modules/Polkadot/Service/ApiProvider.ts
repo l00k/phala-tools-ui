@@ -5,7 +5,7 @@ import { Logger } from '@inti5/utils/Logger';
 
 
 @Singleton()
-export class PolkadotApiProvider
+export class ApiProvider
 {
     
     protected static readonly SERVICE_NAME : string = 'PolkadotApiProvider';
@@ -15,7 +15,7 @@ export class PolkadotApiProvider
     protected apiWsUrl : string;
     
     
-    @Inject({ ctorArgs: [PolkadotApiProvider.SERVICE_NAME] })
+    @Inject({ ctorArgs: [ApiProvider.SERVICE_NAME] })
     protected logger : Logger;
     
     protected wsProvider : WsProvider;

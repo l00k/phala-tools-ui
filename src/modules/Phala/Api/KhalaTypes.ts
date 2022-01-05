@@ -1,4 +1,4 @@
-const ChainTypes : {
+const KhalaTypes : {
     Address: string;
     LookupSource: string;
     Keys: string;
@@ -237,7 +237,7 @@ const ChainTypes : {
     };
 } = null;
 
-export { ChainTypes }
+export { KhalaTypes }
 
 
 export enum LockReason {

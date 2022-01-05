@@ -1,2 +1,2 @@
-export * from './PhalaSubscan';
-export * from './PhalaApiProvider';
+export * from './Subscan';
+export * from './ApiProvider';

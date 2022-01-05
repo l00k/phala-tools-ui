@@ -82,7 +82,7 @@ const sleep = (ms : number) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 @Singleton()
-export class PolkadotSubscan
+export class Subscan
 {
     
     protected static readonly SERVICE_NAME : string = 'PolkadotSubscan';
@@ -91,7 +91,7 @@ export class PolkadotSubscan
     @Config('module.polkadot.subscan.baseUrl')
     protected subscanBaseUrl : string;
     
-    @Inject({ ctorArgs: [PolkadotSubscan.SERVICE_NAME] })
+    @Inject({ ctorArgs: [Subscan.SERVICE_NAME] })
     protected logger : Logger;
     
     protected axios : AxiosInstance;
