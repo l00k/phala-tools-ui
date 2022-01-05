@@ -1,4 +1,4 @@
-import App from '@inti5/app-frontend/App';
+import { App } from '@inti5/app-frontend/App';
 import { StoreManager } from '@inti5/app-frontend/Store';
 import { ObjectManager } from '@inti5/object-manager';
 import { Module, VuexModule } from 'vuex-module-decorators';
@@ -13,7 +13,7 @@ import { Account, StakePool, Transfer } from '#/Analyze/Domain/Definition';
     namespaced: true,
     name: 'Analyze/UserConfig',
 })
-export default class UserConfig
+export class UserConfig
     extends VuexModule<UserConfig>
 {
     

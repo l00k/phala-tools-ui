@@ -1,4 +1,4 @@
-import App from '@inti5/app-frontend/App';
+import { App } from '@inti5/app-frontend/App';
 import { ObjectManager } from '@inti5/object-manager';
 import Buefy from 'buefy';
 import Vue from 'vue';

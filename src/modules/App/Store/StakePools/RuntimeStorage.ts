@@ -1,9 +1,9 @@
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 import { ObjectManager } from '@inti5/object-manager';
-import App from '@inti5/app-frontend/App';
+import { App } from '@inti5/app-frontend/App';
 import { Tag } from '#/App/Domain/Model/Tag';
 import { TagService } from '#/App/Domain/Service/TagService';
-import autoRetry from '@inti5/utils/autoRetry';
+import { autoRetry } from '@inti5/utils/autoRetry';
 
 
 @Module({
@@ -13,7 +13,7 @@ import autoRetry from '@inti5/utils/autoRetry';
     namespaced: true,
     name: 'StakePools/RuntimeStorage',
 })
-export default class RuntimeStorage
+export class RuntimeStorage
     extends VuexModule<RuntimeStorage>
 {
     

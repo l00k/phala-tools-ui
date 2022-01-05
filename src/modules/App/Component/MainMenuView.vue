@@ -39,7 +39,6 @@
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 
-
 @Component()
 export default class MainMenuView
     extends BaseComponent

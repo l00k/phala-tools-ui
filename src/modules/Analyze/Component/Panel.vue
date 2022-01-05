@@ -41,7 +41,7 @@
 <script lang="ts">
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
-import Debounce from '@inti5/utils/Debounce';
+import { Debounce } from '@inti5/utils/Debounce';
 import { Prop } from 'vue-property-decorator';
 import { Account, StakePool } from '#/Analyze/Domain/Definition';
 

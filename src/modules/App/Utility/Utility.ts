@@ -1,9 +1,9 @@
 import numbro from 'numbro';
 import moment from 'moment';
-import PhalaUtility from '#/Phala/Utility/Utility';
+import * as Phala from '#/Phala';
 
 
-export default class Utility
+export class Utility
 {
     
     public static readonly TOKEN_TICKER = 'PHA';
@@ -22,7 +22,7 @@ export default class Utility
     public static formatCoin (amount : number, ticker : boolean = false, isInRawFormat : boolean = false) : string
     {
         if (isInRawFormat) {
-            amount = PhalaUtility.parseRawAmount(amount);
+            amount = Phala.Utility.parseRawAmount(amount);
         }
     
         const parts = this.formatNumber(amount).split(' ');

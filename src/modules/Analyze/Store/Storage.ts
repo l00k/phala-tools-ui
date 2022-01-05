@@ -1,4 +1,4 @@
-import App from '@inti5/app-frontend/App';
+import { App } from '@inti5/app-frontend/App';
 import { StoreManager } from '@inti5/app-frontend/Store';
 import { ObjectManager } from '@inti5/object-manager';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
@@ -21,7 +21,7 @@ type DataAsset = {
     namespaced: true,
     name: 'Analyze/Storage',
 })
-export default class Storage
+export class Storage
     extends VuexModule<Storage>
 {
 
