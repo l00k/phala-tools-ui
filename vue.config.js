@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const moment = require('moment');
 
+
 class IntiPathResolverPlugin
 {
     static MODULES_PATH = __dirname + '/src/modules/';
@@ -22,17 +23,18 @@ class IntiPathResolverPlugin
                 callback();
             });
     }
-
 }
+
 
 function generateUniqueBuildInfo () {
     const date = new Date();
-    const random = 10000 + Math.round(Math.random() * 89999);
+    const random = 100 + Math.round(Math.random() * 899);
     return 'v' + moment().format('YYYY.MM.DD.HHmmss') + '-' + random;
 }
 
 const env = process.env.NODE_ENV || 'production';
 const isDev = env !== 'production';
+
 
 module.exports = {
     runtimeCompiler: true,
@@ -62,20 +64,15 @@ module.exports = {
 
         config.optimization.minimize = false;
         config.devServer = {
-            port: 4001
+            port: 4001,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            },
         };
         config.resolve.plugins = [new IntiPathResolverPlugin()];
 
         const buildVersion = generateUniqueBuildInfo();
-
-        const usePublicApi = process.env.USE_PUBLIC_API || !isDev;
-        const apiUrl = usePublicApi
-            ? 'https://phala-stats.100k.dev:8085/graphql'
-            : 'http://localhost:8085/graphql';
-        const appData = JSON.stringify({
-            apiUrl,
-            buildVersion,
-        });
+        const appData = JSON.stringify({ buildVersion });
 
         config.plugins.push(
             new webpack.DefinePlugin({
