@@ -8,6 +8,6 @@ export class TagService
 {
     
     protected static readonly RESOURCE = Tag;
-    protected static readonly DEFAULT_PAGINATION : Pagination = new Pagination([ 25, 50, 100 ], 25);
+    protected static readonly DEFAULT_PAGINATION : Pagination = new Pagination([ 1000 ], 1000);
 
 }

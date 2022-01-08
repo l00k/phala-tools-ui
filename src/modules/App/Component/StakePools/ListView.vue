@@ -17,7 +17,7 @@
                 :pagination.sync="pagination"
                 ref="list"
             >
-                <template slot-scope="{ row: holding }">
+                <template slot-scope="{ row: stakePool }">
                     <ui-table-column
                         label="ID"
                         :numeric="true"
@@ -25,7 +25,7 @@
                         :filter.sync="filters.onChainId"
                         :dom-style="{ width: '120px' }"
                     >
-                        #{{ holding.onChainId }}
+                        #{{ stakePool.onChainId }}
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -35,34 +35,41 @@
 </template>
 
 <script lang="ts">
-import SelectOptionMode from '@inti5/app-frontend/Component/UI/FilterField/FilterSelect.vue';
-import { FilterType } from '@inti5/app-frontend/Domain/Filter';
-import { Component } from '@inti5/app-frontend/Vue/Annotations';
-import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
+import { StakePool } from '#/Analyze/Domain/Definition';
 import { Inject } from '@inti5/object-manager';
-import isEmpty from 'lodash/isEmpty';
-import { Watch } from 'vue-property-decorator';
+import { FilterType } from '@inti5/app-frontend/Domain';
+import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
+import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { namespace } from 'vuex-class';
 
 
-declare const window;
-
 const RuntimeStorage = namespace('StakePools/RuntimeStorage');
 
+
 @Component({
-    components: {
-    }
+    components: {}
 })
 export default class ListView
     extends BaseComponent
 {
 
+    @Inject()
+    protected
 
+    protected FilterType = FilterType;
+
+    protected isLoading : boolean = false;
+    protected stakePools : StakePool[] = [];
+
+
+    public mounted()
+    {
+        this.stakePools =
+    }
 
 }
 </script>
 
 <style lang="scss">
 @import "@/assets/scss/theme/_variables";
-
 </style>

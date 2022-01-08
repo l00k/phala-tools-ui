@@ -1,3 +1,4 @@
+import { asyncGeneratorToArray } from '@/core/inti5/utils/asyncGeneratorToArray';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 import { ObjectManager } from '@inti5/object-manager';
 import { App } from '@inti5/app-frontend/App';
@@ -30,10 +31,11 @@ export class RuntimeStorage
                 try {
                     const tagService = ObjectManager.getSingleton().getInstance(TagService);
                     
-                    const collection = await tagService.getCollection({
-                        pagination: { page: 1, itemsPerPage: 1000 }
-                    });
-                    this.context.state.tags = collection.items;
+                    this.context.state.tags = await asyncGeneratorToArray(
+                        tagService.getCollectionGenerator(),
+                        chunk => chunk
+                    );
+                    
                     resolve(true);
                 }
                 catch (e) {
