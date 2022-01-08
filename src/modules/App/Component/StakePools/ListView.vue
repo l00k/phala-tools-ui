@@ -10,22 +10,22 @@
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
-                :detailed="true"
-                detail-key="id"
                 :debounce-search="1000"
+                :backend-pagination="true"
                 :pagination.sync="collectionRequest.pagination"
                 ref="list"
             >
-                <template slot-scope="{ row: stakePool }">
-                    <ui-table-column
+                <template slot="default">
+                    <b-table-column
+                        v-slot="{ row: stakePool }"
                         label="ID"
                         :numeric="true"
                         :filter-type="FilterType.Range"
                         :filter.sync="collectionRequest.filters.onChainId"
                         :dom-style="{ width: '120px' }"
                     >
-                        #{{ stakePool | stringify }}
-                    </ui-table-column>
+                        #{{ stakePool.onChainId }}
+                    </b-table-column>
                 </template>
             </ui-table>
 
@@ -41,6 +41,7 @@ import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { FilterType } from '@inti5/app-frontend/Domain';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
+import { Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
 
@@ -62,7 +63,8 @@ export default class ListView
     protected collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
         filters: {
             onChainId: {}
-        }
+        },
+        pagination: StakePoolService.getDefaultPagination()
     });
 
     protected isLoading : boolean = false;
@@ -74,6 +76,7 @@ export default class ListView
         this.loadStakePools();
     }
 
+    @Watch('collectionRequest', { deep: true })
     protected async loadStakePools ()
     {
         this.isLoading = true;
@@ -81,10 +84,11 @@ export default class ListView
         const collection = await this.stakePoolService.getCollection(this.collectionRequest);
 
         this.stakePools = collection.items;
-        this.collectionRequest.pagination.total = collection.total
+        this.collectionRequest.pagination.total = collection.total;
 
         this.isLoading = false;
     }
+
 
 }
 </script>

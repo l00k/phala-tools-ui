@@ -7,7 +7,11 @@ export class TagService
     extends Api.ApiConsumer<Tag>
 {
     
-    protected static readonly RESOURCE = Tag;
-    protected static readonly DEFAULT_PAGINATION : Pagination = new Pagination([ 1000 ], 1000);
-
+    public static readonly RESOURCE = Tag;
+    
+    public static getDefaultPagination () : Pagination
+    {
+        return new Pagination([ 1000 ], 1000);
+    }
+    
 }

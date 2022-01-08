@@ -7,7 +7,11 @@ export class StakePoolService
     extends Api.ApiConsumer<StakePool>
 {
     
-    protected static readonly RESOURCE = StakePool;
-    protected static readonly DEFAULT_PAGINATION : Pagination = new Pagination([ 25, 50, 100 ], 25);
+    public static readonly RESOURCE = StakePool;
+    
+    public static getDefaultPagination () : Pagination
+    {
+        return new Pagination([ 25, 50, 100 ], 25);
+    }
     
 }
