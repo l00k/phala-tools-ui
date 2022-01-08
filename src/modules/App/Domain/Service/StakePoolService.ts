@@ -9,5 +9,5 @@ export class StakePoolService
     
     protected static readonly RESOURCE = StakePool;
     protected static readonly DEFAULT_PAGINATION : Pagination = new Pagination([ 25, 50, 100 ], 25);
-
+    
 }

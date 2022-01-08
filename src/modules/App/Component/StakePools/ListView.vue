@@ -7,14 +7,13 @@
             </div>
         </header>
         <div class="card-content">
-
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
                 :detailed="true"
                 detail-key="id"
                 :debounce-search="1000"
-                :pagination.sync="pagination"
+                :pagination.sync="collectionRequest.pagination"
                 ref="list"
             >
                 <template slot-scope="{ row: stakePool }">
@@ -22,10 +21,10 @@
                         label="ID"
                         :numeric="true"
                         :filter-type="FilterType.Range"
-                        :filter.sync="filters.onChainId"
+                        :filter.sync="collectionRequest.filters.onChainId"
                         :dom-style="{ width: '120px' }"
                     >
-                        #{{ stakePool.onChainId }}
+                        #{{ stakePool | stringify }}
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -35,11 +34,13 @@
 </template>
 
 <script lang="ts">
-import { StakePool } from '#/Analyze/Domain/Definition';
-import { Inject } from '@inti5/object-manager';
-import { FilterType } from '@inti5/app-frontend/Domain';
+import { StakePool } from '#/App/Domain/Model/StakePool';
+import { StakePoolService } from '#/App/Domain/Service/StakePoolService';
+import * as Api from '@inti5/api-frontend';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
+import { FilterType } from '@inti5/app-frontend/Domain';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import { Inject } from '@inti5/object-manager';
 import { namespace } from 'vuex-class';
 
 
@@ -54,17 +55,35 @@ export default class ListView
 {
 
     @Inject()
-    protected
+    protected stakePoolService : StakePoolService;
 
     protected FilterType = FilterType;
+
+    protected collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
+        filters: {
+            onChainId: {}
+        }
+    });
 
     protected isLoading : boolean = false;
     protected stakePools : StakePool[] = [];
 
 
-    public mounted()
+    public mounted ()
     {
-        this.stakePools =
+        this.loadStakePools();
+    }
+
+    protected async loadStakePools ()
+    {
+        this.isLoading = true;
+
+        const collection = await this.stakePoolService.getCollection(this.collectionRequest);
+
+        this.stakePools = collection.items;
+        this.collectionRequest.pagination.total = collection.total
+
+        this.isLoading = false;
     }
 
 }

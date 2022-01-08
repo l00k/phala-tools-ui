@@ -20,5 +20,4 @@ Vue.use(VTooltip);
     const objectManager = ObjectManager.getSingleton();
     const app = objectManager.getInstance(App);
     await app.run();
-    objectManager.releaseAll();
 })();
