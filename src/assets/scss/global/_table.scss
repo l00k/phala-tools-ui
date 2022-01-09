@@ -4,6 +4,11 @@
     }
 
     .table {
+        .th-wrap {
+            width: 100%;
+            flex-grow: 1;
+        }
+    
         tr.detail {
             background: none;
             box-shadow: none;
@@ -18,7 +23,7 @@
     }
 
     td {
-        vertical-align: middle;
+        vertical-align: top;
     }
 
     .button {

@@ -9,9 +9,13 @@ export default {
             return `https://khala.subscan.io/account/${account?.address}`;
         },
         
-        formatCoin (value : number)
+        formatCoin (value : number, format : numbro.Format = {})
         {
-            return numbro(value).format('0.000 a');
+            return numbro(value).format({
+                thousandSeparated: true,
+                mantissa: 2,
+                ...format
+            });
         },
         
         formatAddress (value)

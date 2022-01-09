@@ -10,9 +10,8 @@
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
-                :debounce-search="1000"
-                :backend-pagination="true"
-                :pagination.sync="collectionRequest.pagination"
+                :backend="true"
+                :collection-request="collectionRequest"
                 ref="list"
             >
                 <template #default="{ row: stakePool }">
@@ -20,16 +19,13 @@
                         label="ID"
                         :numeric="true"
                         :filter-type="FilterType.Range"
-                        :filter-root="collectionRequest.filters"
                         :filter-paths="[ 'onChainId' ]"
-                        class="is-valign-top"
-                        :dom-style="{ width: '120px' }"
                     >
                         #{{ stakePool.onChainId }}
                     </ui-table-column>
+
                     <ui-table-column
                         label="Owner"
-                        :filter-root="collectionRequest.filters"
                         :filter-paths="[ '$or.0.owner.address', '$or.1.owner.identity', '$or.2.owner.alias' ]"
                     >
                         <div class="has-font-size-sm">
@@ -39,7 +35,7 @@
                                 target="_blank"
                             >{{ stakePool.owner.address | formatAddress }}</a>
                         </div>
-                        <div :class="{ 'has-color-green': stakePool.owner.identityVerified }">
+                        <div :class="{ 'has-color-primary': stakePool.owner.identityVerified }">
                             <b-icon
                                 v-if="stakePool.owner.identityVerified"
                                 pack="fas"
@@ -49,6 +45,27 @@
                                 v-tooltip="'Identity judgement'"
                             />
                             {{ stakePool.owner.friendlyName }}
+                        </div>
+                    </ui-table-column>
+
+                    <ui-table-column
+                        label="APR"
+                        :numeric="true"
+                    >
+                        <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatNumber('0.0%') }}</div>
+                        <div class="has-font-size-sm has-color-gray">
+                            Current: {{ stakePool.lastHistoryEntry.currentApr | formatNumber('0.0%') }}
+                        </div>
+                    </ui-table-column>
+
+                    <ui-table-column
+                        label="Stake"
+                        :numeric="true"
+                    >
+                        <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }}</div>
+                        <div class="has-font-size-sm has-color-gray">
+                            Free: {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }}<br/>
+                            Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }}<br/>
                         </div>
                     </ui-table-column>
                 </template>
