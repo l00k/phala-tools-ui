@@ -1,9 +1,5 @@
 @import "./variables";
 
-.is-vcentered {
-    vertical-align: middle
-}
-
 .card {
     overflow: unset;
 }
@@ -22,27 +18,28 @@
         .select select {
             padding-left: 2.5em;
         }
+        
         .icon {
             margin: 0 4px;
         }
     }
-
-
+    
+    
 }
 
 .b-table {
     thead tr:first-child th {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-
+        position:   sticky;
+        top:        0;
+        z-index:    10;
+        
         background: $card-background-color;
     }
-
+    
     .checkbox-cell {
         .b-checkbox.checkbox {
             margin: 0;
-
+            
             .control-label {
                 display: none;
             }

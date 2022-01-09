@@ -13,26 +13,21 @@ export class Account
     public address : string;
     
     @API.Property()
-    public identity : string = '';
+    public alias : string;
     
     @API.Property()
-    public alias : string = '';
+    public identity : string;
+    
+    @API.Property()
+    public identityVerified : boolean;
     
     @API.Property(() => Tag)
     public tags : Tag[] = [];
     
     
-    public get displayName () : string
+    public get friendlyName () : string
     {
-        if (this.alias) {
-            return this.alias + (this.identity ? ` (${this.identity})` : '');
-        }
-        else if (this.identity) {
-            return this.identity;
-        }
-        else {
-            return this.address;
-        }
+        return this.alias ?? this.identity;
     }
     
 }
