@@ -53,4 +53,29 @@ export class HistoryEntry
     @API.Property()
     public avgApr : number;
     
+    
+    public get stakeFreePercent () : number
+    {
+        return this.stakeTotal > 0
+            ? this.stakeFree / this.stakeTotal
+            : 0;
+    }
+    
+    public get stakeFreeIssue () : boolean
+    {
+        return this.stakeFreePercent > 0.25;
+    }
+    
+    public get stakeReleasingPercent () : number
+    {
+        return this.stakeTotal > 0
+            ? this.stakeReleasing / this.stakeTotal
+            : 0;
+    }
+    
+    public get stakeReleasingIssue () : boolean
+    {
+        return this.stakeReleasingPercent > 0.25;
+    }
+    
 }

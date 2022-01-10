@@ -1,62 +1,62 @@
+import { Account } from '#/App/Domain/Model/Account';
 import numbro from 'numbro';
-import moment from 'moment';
-import * as Phala from '#/Phala';
 
 
-export class Utility
+export function getSubscanAccountUrl (account : Account) : string
 {
-    
-    public static readonly TOKEN_TICKER = 'PHA';
-    
-    
-    public static formatNumber (amount : number) : string
-    {
-        return numbro(amount).format('0.000 a');
+    return `https://khala.subscan.io/account/${account?.address}`;
+}
+
+export function formatNumber (amount : number) : string
+{
+    return numbro(amount).format('0.000 a');
+}
+
+export function formatPercent (percent : number) : string
+{
+    return numbro(percent).format('0.0%');
+}
+
+export function formatCoin (value : number, format : string | numbro.Format = {})
+{
+    if (format instanceof Object) {
+        format = {
+            thousandSeparated: true,
+            average: true,
+            mantissa: 2,
+            ...format
+        };
     }
     
-    public static formatPercent (percent : number) : string
-    {
-        return numbro(percent).format('0.00%');
+    return numbro(value).format(format);
+}
+
+export function unformatCoin (amountRaw : any, format : string | numbro.Format = {}) : number
+{
+    if (format instanceof Object) {
+        format = {
+            thousandSeparated: true,
+            average: true,
+            mantissa: 2,
+            ...format
+        };
     }
     
-    public static formatCoin (amount : number, ticker : boolean = false, isInRawFormat : boolean = false) : string
-    {
-        if (isInRawFormat) {
-            amount = Phala.Utility.parseRawAmount(amount);
-        }
-    
-        const parts = this.formatNumber(amount).split(' ');
-        if (parts.length == 1) {
-            parts[1] = ' ';
-        }
-        
-        return parts.join(' ') + (ticker ? Utility.TOKEN_TICKER : '');
+    return numbro.unformat(amountRaw, format);
+}
+
+export function formatAddress (address : string) : string
+{
+    if (!address) {
+        return '';
     }
-    
-    public static unformatCoin (amountRaw : any) : number
-    {
-        return numbro.unformat(amountRaw, '0.000a');
+    return address.substr(0, 8) + '...' + address.substr(-8);
+}
+
+export function formatPublicKey (publicKey : string) : string
+{
+    if (!publicKey) {
+        return '';
     }
-    
-    public static formatDate (date : Date) : string
-    {
-        return moment(date).format('YYYY-MM-DD HH:mm:ss');
-    }
-    
-    public static formatAddress (address : string) : string
-    {
-        if (!address) {
-            return '';
-        }
-        return address.substr(0, 8) + '...' + address.substr(-8);
-    }
-    
-    public static formatPublicKey (address : string) : string
-    {
-        if (!address) {
-            return '';
-        }
-        return address.substr(0, 8) + '...' + address.substr(-6);
-    }
-    
+    return publicKey.substr(0, 10) + '...' + publicKey.substr(-8);
 }

@@ -11,22 +11,20 @@
                 :data="stakePools"
                 :loading="isLoading"
                 :backend="true"
-                :collection-request="collectionRequest"
                 ref="list"
             >
                 <template #default="{ row: stakePool }">
                     <ui-table-column
                         label="ID"
                         :numeric="true"
-                        :filter-type="FilterType.Range"
-                        :filter-paths="[ 'onChainId' ]"
+                        :filter="collectionRequest.filters.onChainId"
                     >
                         #{{ stakePool.onChainId }}
                     </ui-table-column>
 
                     <ui-table-column
                         label="Owner"
-                        :filter-paths="[ '$or.0.owner.address', '$or.1.owner.identity', '$or.2.owner.alias' ]"
+                        :filter="collectionRequest.filters._owner"
                     >
                         <div class="has-font-size-sm">
                             <a
@@ -51,22 +49,53 @@
                     <ui-table-column
                         label="APR"
                         :numeric="true"
+                        :filter="collectionRequest.filters.lastHistoryEntry.avgApr"
                     >
-                        <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatNumber('0.0%') }}</div>
+                        <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
                         <div class="has-font-size-sm has-color-gray">
-                            Current: {{ stakePool.lastHistoryEntry.currentApr | formatNumber('0.0%') }}
+                            Current: {{ stakePool.lastHistoryEntry.currentApr | formatPercent }}
                         </div>
                     </ui-table-column>
 
                     <ui-table-column
                         label="Stake"
                         :numeric="true"
+                        :filter="collectionRequest.filters.lastHistoryEntry.stakeTotal"
                     >
-                        <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }}</div>
+                        <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin('0,0') }}</div>
                         <div class="has-font-size-sm has-color-gray">
-                            Free: {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }}<br/>
-                            Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }}<br/>
+                            <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }">
+                                Free:
+                                {{ stakePool.lastHistoryEntry.stakeFree | formatCoin('0,0') }}
+                                ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
+                                <b-icon
+                                    v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
+                                    pack="fas"
+                                    icon="exclamation-triangle"
+                                    size="is-small"
+                                    class="is-valign-middle"
+                                    v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
+                                />
+                            </div>
+                            <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeReleasingIssue }">
+                                Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin('0,0') }}
+                                ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
+                                <b-icon
+                                    v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
+                                    pack="fas"
+                                    icon="exclamation-triangle"
+                                    size="is-small"
+                                    class="is-valign-middle"
+                                    v-tooltip="'Large amount of releasing stake MAY implie stake some pool issue or abandon pool'"
+                                />
+                            </div>
                         </div>
+                    </ui-table-column>
+
+                    <ui-table-column
+                        label="Issues"
+                    >
+                        <b-tag type="is-primary">Ok</b-tag>
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -92,7 +121,7 @@ const RuntimeStorage = namespace('StakePools/RuntimeStorage');
 
 
 @Component({
-    components: {}
+
 })
 export default class ListView
     extends BaseComponent
@@ -106,11 +135,11 @@ export default class ListView
     protected collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
         filters: {
             onChainId: {},
-            $or: [
-                { owner: { address: {} } },
-                { owner: { identity: {} } },
-                { owner: { alias: {} } },
-            ],
+            _owner: {},
+            lastHistoryEntry: {
+                avgApr: {},
+                stakeTotal: {},
+            }
         },
         pagination: StakePoolService.getDefaultPagination()
     });

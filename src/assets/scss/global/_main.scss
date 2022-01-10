@@ -26,8 +26,9 @@ body, button, input, select, textarea {
 .is-valign-middle { vertical-align: middle !important; }
 
 .has-color-primary { color: $primary; }
+.has-color-red { color: red; }
 .has-color-gray { color: $grey; }
-.has-color-green { color: $green; }
+.has-color-green { color: green; }
 
 .has-font-size-xs { font-size: 0.65em; }
 .has-font-size-sm { font-size: 0.85em; }
