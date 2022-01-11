@@ -10,13 +10,19 @@
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
+                :sorting.sync="collectionRequest.sorting"
+                :sort-multiple="true"
+                :default-sort="[ 'lastHistoryEntry.avgApr', 'desc' ]"
                 :backend="true"
+                :pagination="collectionRequest.pagination"
                 ref="list"
             >
                 <template #default="{ row: stakePool }">
                     <ui-table-column
                         label="ID"
+                        field="onChainId"
                         :numeric="true"
+                        :sortable="true"
                         :filter="collectionRequest.filters.onChainId"
                     >
                         #{{ stakePool.onChainId }}
@@ -24,6 +30,8 @@
 
                     <ui-table-column
                         label="Owner"
+                        field="owner.identityVerified"
+                        :sortable="true"
                         :filter="collectionRequest.filters._owner"
                     >
                         <div class="has-font-size-sm">
@@ -48,47 +56,61 @@
 
                     <ui-table-column
                         label="APR"
+                        field="lastHistoryEntry.avgApr"
                         :numeric="true"
+                        :sortable="true"
                         :filter="collectionRequest.filters.lastHistoryEntry.avgApr"
                     >
-                        <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
-                        <div class="has-font-size-sm has-color-gray">
-                            Current: {{ stakePool.lastHistoryEntry.currentApr | formatPercent }}
+                        <div v-if="stakePool.lastHistoryEntry">
+                            <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
+                            <div class="has-font-size-sm has-color-gray">
+                                Current: {{ stakePool.lastHistoryEntry.currentApr | formatPercent }}
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="has-color-gray">Not calculated yet</div>
                         </div>
                     </ui-table-column>
 
                     <ui-table-column
                         label="Stake"
+                        field="lastHistoryEntry.stakeTotal"
                         :numeric="true"
+                        :sortable="true"
                         :filter="collectionRequest.filters.lastHistoryEntry.stakeTotal"
                     >
-                        <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin('0,0') }}</div>
-                        <div class="has-font-size-sm has-color-gray">
-                            <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }">
-                                Free:
-                                {{ stakePool.lastHistoryEntry.stakeFree | formatCoin('0,0') }}
-                                ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
-                                <b-icon
-                                    v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
-                                    pack="fas"
-                                    icon="exclamation-triangle"
-                                    size="is-small"
-                                    class="is-valign-middle"
-                                    v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
-                                />
+                        <div v-if="stakePool.lastHistoryEntry">
+                            <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin('0,0') }}</div>
+                            <div class="has-font-size-sm has-color-gray">
+                                <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }">
+                                    Free:
+                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin('0,0') }}
+                                    ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
+                                    <b-icon
+                                        v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
+                                    />
+                                </div>
+                                <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeReleasingIssue }">
+                                    Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin('0,0') }}
+                                    ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
+                                    <b-icon
+                                        v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'Large amount of releasing stake MAY implie stake some pool issue or abandon pool'"
+                                    />
+                                </div>
                             </div>
-                            <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeReleasingIssue }">
-                                Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin('0,0') }}
-                                ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
-                                <b-icon
-                                    v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
-                                    pack="fas"
-                                    icon="exclamation-triangle"
-                                    size="is-small"
-                                    class="is-valign-middle"
-                                    v-tooltip="'Large amount of releasing stake MAY implie stake some pool issue or abandon pool'"
-                                />
-                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="has-color-gray">Not calculated yet</div>
                         </div>
                     </ui-table-column>
 
@@ -162,6 +184,8 @@ export default class ListView
 
         this.stakePools = collection.items;
         this.collectionRequest.pagination.total = collection.total;
+
+        console.log(this.collectionRequest.pagination.total);
 
         this.isLoading = false;
     }
