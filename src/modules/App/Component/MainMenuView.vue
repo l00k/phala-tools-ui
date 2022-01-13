@@ -17,20 +17,20 @@
                     </a>
                 </li>
             </router-link>
-            <router-link
-                to="/network-map"
-                custom v-slot="{ navigate, isActive }"
-            >
-                <li
-                    :class="{ 'is-active': isActive }"
-                    @click="navigate"
-                >
-                    <a>
-                        <span class="icon is-small"><i class="fas fa-project-diagram" aria-hidden="true"></i></span>
-                        <span>Network map</span>
-                    </a>
-                </li>
-            </router-link>
+<!--            <router-link-->
+<!--                to="/network-map"-->
+<!--                custom v-slot="{ navigate, isActive }"-->
+<!--            >-->
+<!--                <li-->
+<!--                    :class="{ 'is-active': isActive }"-->
+<!--                    @click="navigate"-->
+<!--                >-->
+<!--                    <a>-->
+<!--                        <span class="icon is-small"><i class="fas fa-project-diagram" aria-hidden="true"></i></span>-->
+<!--                        <span>Network map</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </router-link>-->
         </ul>
     </div>
 </template>

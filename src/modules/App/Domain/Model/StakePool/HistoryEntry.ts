@@ -33,6 +33,9 @@ export class HistoryEntry
     public stakeReleasing : number;
     
     @API.Property()
+    public stakeRemaining : number;
+    
+    @API.Property()
     public vTotal : number;
     
     @API.Property()

@@ -17,6 +17,14 @@
                 :pagination="collectionRequest.pagination"
                 ref="list"
             >
+                <template #actions>
+                    <b-button
+                        type="is-info"
+                    >
+                        Details
+                    </b-button>
+                </template>
+
                 <template #default="{ row: stakePool }">
                     <ui-table-column
                         label="ID"
@@ -60,7 +68,19 @@
                         :numeric="true"
                         :sortable="true"
                         :filter="collectionRequest.filters.lastHistoryEntry.avgApr"
+                        :filter-config="aprFilterConfig"
                     >
+                        <template #header>
+                            APR
+                            <b-icon
+                                pack="fas"
+                                icon="question-circle"
+                                size="is-small"
+                                type="is-info"
+                                class="is-valign-middle"
+                                v-tooltip="'This column show final APR for staker (after all commissions, treasury tax etc)'"
+                            />
+                        </template>
                         <div v-if="stakePool.lastHistoryEntry">
                             <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
                             <div class="has-font-size-sm has-color-gray">
@@ -80,11 +100,11 @@
                         :filter="collectionRequest.filters.lastHistoryEntry.stakeTotal"
                     >
                         <div v-if="stakePool.lastHistoryEntry">
-                            <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin('0,0') }}</div>
+                            <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</div>
                             <div class="has-font-size-sm has-color-gray">
                                 <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }">
                                     Free:
-                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin('0,0') }}
+                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
                                     ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
                                     <b-icon
                                         v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
@@ -95,8 +115,8 @@
                                         v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
                                     />
                                 </div>
-                                <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeReleasingIssue }">
-                                    Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin('0,0') }}
+                                <div :class="{ 'has-color-orange': stakePool.lastHistoryEntry.stakeReleasingIssue }">
+                                    Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
                                     ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
                                     <b-icon
                                         v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
@@ -104,7 +124,7 @@
                                         icon="exclamation-triangle"
                                         size="is-small"
                                         class="is-valign-middle"
-                                        v-tooltip="'Large amount of releasing stake MAY implie stake some pool issue or abandon pool'"
+                                        v-tooltip="'Large amount of releasing stake MAY (but don`t have to) implie stake pool issue or abandon pool'"
                                     />
                                 </div>
                             </div>
@@ -115,9 +135,55 @@
                     </ui-table-column>
 
                     <ui-table-column
-                        label="Issues"
+                        label="Remaining stake"
+                        field="lastHistoryEntry.stakeRemaining"
+                        :numeric="true"
+                        :sortable="true"
+                        :filter="collectionRequest.filters.lastHistoryEntry.stakeRemaining"
                     >
-                        <b-tag type="is-primary">Ok</b-tag>
+                        <template #header>
+                            Remaining stake
+                            <b-icon
+                                pack="fas"
+                                icon="question-circle"
+                                size="is-small"
+                                type="is-info"
+                                class="is-valign-middle"
+                                v-tooltip="'This value includes also pending withdrawals - it is total value you can stake into pool'"
+                            />
+                        </template>
+                        <div v-if="stakePool.lastHistoryEntry">
+                            <div v-if="stakePool.lastHistoryEntry.stakeRemaining != -1">
+                                {{ stakePool.lastHistoryEntry.stakeRemaining | formatCoin({ mantissa: 0 }) }} PHA
+                            </div>
+                            <div
+                                v-else
+                                class="has-color-red"
+                            >
+                                Unlimited
+                                <b-icon
+                                    pack="fas"
+                                    icon="exclamation-triangle"
+                                    size="is-small"
+                                    class="is-valign-middle"
+                                    v-tooltip="'May favor rewards leaching'"
+                                />
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="has-color-gray">Not calculated yet</div>
+                        </div>
+                    </ui-table-column>
+
+                    <ui-table-column
+                        label="Issues"
+                        :sortable="false"
+                        :searchable="false"
+                    >
+<!--                        <b-tag-->
+<!--                            size="is-small"-->
+<!--                            type="is-primary"-->
+<!--                        >Ok</b-tag>-->
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -129,6 +195,7 @@
 <script lang="ts">
 import { StakePool } from '#/App/Domain/Model/StakePool';
 import { StakePoolService } from '#/App/Domain/Service/StakePoolService';
+import { FilterConfig } from '@/core/app-frontend/Component/UI/FilterField/FilterBase.vue';
 import * as Api from '@inti5/api-frontend';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { FilterType } from '@inti5/app-frontend/Domain';
@@ -142,9 +209,7 @@ import { namespace } from 'vuex-class';
 const RuntimeStorage = namespace('StakePools/RuntimeStorage');
 
 
-@Component({
-
-})
+@Component()
 export default class ListView
     extends BaseComponent
 {
@@ -161,10 +226,16 @@ export default class ListView
             lastHistoryEntry: {
                 avgApr: {},
                 stakeTotal: {},
+                stakeRemaining: {},
             }
         },
         pagination: StakePoolService.getDefaultPagination()
     });
+
+    protected aprFilterConfig : FilterConfig = {
+        serialize: (raw) => raw / 100,
+        unserialize: (formated) => formated * 100,
+    };
 
     protected isLoading : boolean = false;
     protected stakePools : StakePool[] = [];
@@ -184,8 +255,6 @@ export default class ListView
 
         this.stakePools = collection.items;
         this.collectionRequest.pagination.total = collection.total;
-
-        console.log(this.collectionRequest.pagination.total);
 
         this.isLoading = false;
     }

@@ -22,7 +22,6 @@ export function formatCoin (value : number, format : string | numbro.Format = {}
     if (format instanceof Object) {
         format = {
             thousandSeparated: true,
-            average: true,
             mantissa: 2,
             ...format
         };
@@ -36,7 +35,6 @@ export function unformatCoin (amountRaw : any, format : string | numbro.Format =
     if (format instanceof Object) {
         format = {
             thousandSeparated: true,
-            average: true,
             mantissa: 2,
             ...format
         };
