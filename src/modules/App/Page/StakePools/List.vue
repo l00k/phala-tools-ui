@@ -21,13 +21,13 @@ import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
 
 
-@Route('/stakepools', 'stakepools')
+@Route('/stakepools', 'stakepools_list')
 @Component({
     components: {
         ListView,
     }
 })
-export default class StakePoolsIndexPage
+export default class StakePoolsListPage
     extends BaseComponent
 {
 

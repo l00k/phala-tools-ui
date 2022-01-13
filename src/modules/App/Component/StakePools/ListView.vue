@@ -15,15 +15,11 @@
                 :default-sort="[ 'lastHistoryEntry.avgApr', 'desc' ]"
                 :backend="true"
                 :pagination="collectionRequest.pagination"
+                :hoverable="true"
                 ref="list"
+                @click="onRowClick"
             >
-                <template #actions>
-                    <b-button
-                        type="is-info"
-                    >
-                        Details
-                    </b-button>
-                </template>
+                <template #actions>&nbsp;</template>
 
                 <template #default="{ row: stakePool }">
                     <ui-table-column
@@ -257,6 +253,11 @@ export default class ListView
         this.collectionRequest.pagination.total = collection.total;
 
         this.isLoading = false;
+    }
+
+    public onRowClick(stakePool : StakePool)
+    {
+        this.$router.replace(`stakepools/${stakePool.id}`);
     }
 
 

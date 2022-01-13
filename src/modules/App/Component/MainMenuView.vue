@@ -5,7 +5,8 @@
         <ul>
             <router-link
                 to="/stakepools"
-                custom v-slot="{ navigate, isActive }"
+                exact custom
+                v-slot="{ navigate, isActive }"
             >
                 <li
                     :class="{ 'is-active': isActive }"
