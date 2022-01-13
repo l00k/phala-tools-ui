@@ -39,3 +39,15 @@ body, button, input, select, textarea {
 .button {
     text-transform: capitalize;
 }
+
+.m-loading {
+    z-index: 10;
+}
+
+.js-clipboard {
+    cursor: pointer;
+}
+
+.tooltip {
+    filter: drop-shadow(0 0 5px rgba(0,0,0, 0.8));
+}

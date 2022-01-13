@@ -1,18 +1,18 @@
 <template>
-    <div class="card mb-4 holdings-view">
-        <header class="card-header">
-            <div class="card-header-title is-justify-content-space-between">
+    <div class="panel is-primary mb-4">
+        <header class="panel-heading">
+            <div class="panel-heading-title is-justify-content-space-between">
                 <span>Stake pools</span>
                 <span></span>
             </div>
         </header>
-        <div class="card-content">
+        <div class="panel-block">
+
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
                 :sorting.sync="collectionRequest.sorting"
                 :sort-multiple="true"
-                :default-sort="[ 'lastHistoryEntry.avgApr', 'desc' ]"
                 :backend="true"
                 :pagination="collectionRequest.pagination"
                 :hoverable="true"
@@ -224,6 +224,9 @@ export default class ListView
                 stakeTotal: {},
                 stakeRemaining: {},
             }
+        },
+        sorting: {
+            lastHistoryEntry: { avgApr: 'DESC' }
         },
         pagination: StakePoolService.getDefaultPagination()
     });

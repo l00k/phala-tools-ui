@@ -10,7 +10,90 @@
             v-if="isReady"
             class="g-container g-container--default"
         >
-            <h1>ok</h1>
+            <div class="panel is-primary">
+                <header class="panel-heading">
+                    <div class="panel-heading-title is-justify-content-space-between">
+                        <span>Stake pool #{{ stakePool.onChainId }}</span>
+                    </div>
+                </header>
+                <div class="panel-block">
+
+                    <div class="columns">
+                        <div class="column is-4">
+
+                            <!-- OWNER DETAILS -->
+                            <div class="card">
+                                <header class="card-header">
+                                    <div class="card-header-title is-justify-content-space-between">
+                                        <span>Owner</span>
+                                    </div>
+                                </header>
+                                <div class="card-content">
+
+                                    <div class="is-flex is-justify-content-start is-align-items-center">
+                                        <Identicon
+                                            :size="32"
+                                            :value="stakePool.owner.address"
+                                            class="js-clipboard account-icon"
+                                            :data-clipboard-text="stakePool.owner.address"
+                                        ></Identicon>
+                                        <div class="ml-4">
+                                            <div>
+                                                <a
+                                                    :href="stakePool.owner | getSubscanAccountUrl"
+                                                    class="account_address"
+                                                    target="_blank"
+                                                >{{stakePool.owner.address}}</a>
+                                            </div>
+                                            <div>
+                                                <b-icon
+                                                    v-if="stakePool.owner.identityVerified"
+                                                    pack="fas"
+                                                    icon="check-square"
+                                                    size="is-small"
+                                                    type="is-primary"
+                                                    class="is-valign-middle mr-2"
+                                                    v-tooltip="'Identity judgement'"
+                                                />
+                                                <span class="account_displayName">{{stakePool.owner.identity}}</span>
+                                                <span class="account_displayName--alias">{{stakePool.owner.alias}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="column is-4">
+
+                            <!-- BASIC POOL STATS -->
+                            <div class="card is-light">
+                                <header class="card-header">
+                                    <div class="card-header-title is-justify-content-space-between">
+                                        <span>Basic informations</span>
+                                    </div>
+                                </header>
+                                <div class="card-content">
+
+                                    <div class="stats">
+                                        <span class="stats_label">Avg. APR</span>
+                                        <span class="stats_value">{{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -56,7 +139,40 @@ export default class StakePoolsDetailsPage
 </script>
 
 <style lang="scss">
-.m-loading {
-    z-index: 10;
+.account {
+    &_address {
+        font-family: monospace;
+        font-variant: normal;
+        font-size: 0.85em;
+    }
+
+    &_displayName {
+        font-weight: bold;
+
+        span {
+            &--alias {
+                &:before {
+                    content: '(';
+                }
+                &:after {
+                    content: ')';
+                }
+            }
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+}
+
+.stats {
+    &_label {
+        display: inline-block;
+        min-width: 30%;
+    }
+    &_value {
+        min-width: 30%;
+    }
 }
 </style>

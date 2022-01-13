@@ -42,8 +42,6 @@ $link-active: $primary-light;
 $link-hover-border: $grey-dark;
 $link-active-border: $grey;
 
-$control-height: 2.0em;
-
 $button-color: $text;
 $button-background-color: #111;
 $button-border-color: $grey-darker;
@@ -87,8 +85,15 @@ $tabs-boxed-link-active-background-color: $body-background-color;
 
 $card-background-color: $grey-darker;
 $card-header-padding: 0.5rem 1rem;
+$card-content-background-color: $grey-dark;
 $card-content-padding: 1rem;
 
+$panel-radius: 0.25rem;
+$panel-heading-size: unset;
+$panel-heading-padding: 0.5rem 1rem;
+$panel-content-padding: 1rem;
+
+$control-height: 2.0em;
 $control-border-width: 1px;
 $control-padding-vertical: calc(0.3em - #{$control-border-width});
 $control-padding-horizontal: calc(0.5em - #{$control-border-width});

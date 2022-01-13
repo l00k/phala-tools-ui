@@ -4,6 +4,16 @@
     overflow: unset;
 }
 
+.panel {
+    box-shadow: none;
+    
+    .panel-block {
+        display: block;
+        padding: $panel-content-padding;
+        background: $grey-darker;
+    }
+}
+
 .select {
     select {
         option {
@@ -27,13 +37,17 @@
     
 }
 
+.table {
+    background: none;
+}
+
 .b-table {
     thead tr:first-child th {
         position:   sticky;
         top:        0;
         z-index:    10;
         
-        background: $card-background-color;
+        background: $grey-darker;
     }
     
     .checkbox-cell {
