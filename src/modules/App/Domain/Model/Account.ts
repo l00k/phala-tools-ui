@@ -6,7 +6,7 @@ import { Annotation as API } from '@inti5/api-frontend';
 export class Account
 {
     
-    @API.Property()
+    @API.Id()
     public id : number;
     
     @API.Property()

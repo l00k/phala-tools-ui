@@ -2,14 +2,17 @@ import { Annotation as API } from '@inti5/api-frontend';
 
 
 @API.Resource()
-export class Tag
+export class Issue
 {
     
     @API.Id()
-    public id : number;
+    public id : number = null;
     
     @API.Property()
     public name : string = '';
+    
+    @API.Property()
+    public description : string = '';
     
     @API.Property()
     public color : string = '';

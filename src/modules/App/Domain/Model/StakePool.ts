@@ -1,5 +1,6 @@
 import { Account } from '#/App/Domain/Model/Account';
 import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
+import { Issue } from '#/App/Domain/Model/StakePool/Issue';
 import { Annotation as API } from '@inti5/api-frontend';
 
 
@@ -7,7 +8,7 @@ import { Annotation as API } from '@inti5/api-frontend';
 export class StakePool
 {
     
-    @API.Property()
+    @API.Id()
     public id : number;
     
     @API.Property()
@@ -18,5 +19,8 @@ export class StakePool
     
     @API.Property(() => HistoryEntry)
     public lastHistoryEntry : HistoryEntry;
+    
+    @API.Property(() => Issue)
+    public issues : Issue[];
     
 }

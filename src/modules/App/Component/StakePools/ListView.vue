@@ -176,10 +176,12 @@
                         :sortable="false"
                         :searchable="false"
                     >
-<!--                        <b-tag-->
-<!--                            size="is-small"-->
-<!--                            type="is-primary"-->
-<!--                        >Ok</b-tag>-->
+                        <b-tag
+                            v-for="issue in stakePool.issues"
+                            size="is-small"
+                            :style="{ backgroundColor: issue.color }"
+                            v-tooltip="issue.description"
+                        >{{ issue.name }}</b-tag>
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -222,7 +224,9 @@ export default class ListView
             lastHistoryEntry: {
                 avgApr: {},
                 stakeTotal: {},
-                stakeRemaining: {},
+                stakeRemaining: {
+                    $gte: 100
+                },
             }
         },
         sorting: {
