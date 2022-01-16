@@ -16,14 +16,12 @@ export enum EventType
 
 
 
-abstract class AbstractEventData
-{
-}
-
-export class Transfer
-    extends AbstractEventData
-{
-}
+abstract class AbstractEventData {}
+export class Transfer extends AbstractEventData {}
+export class Contribution extends AbstractEventData {}
+export class Withdrawal extends AbstractEventData {}
+export class Slash extends AbstractEventData {}
+export class Halving extends AbstractEventData {}
 
 export class CommissionChange
     extends AbstractEventData
@@ -32,24 +30,15 @@ export class CommissionChange
     public delta : number;
 }
 
-export class Contribution
-    extends AbstractEventData
+class EventAdditionalData
 {
-}
 
-export class Withdrawal
-    extends AbstractEventData
-{
-}
+    @API.Trans.Expose()
+    public commission : number
+    
+    @API.Trans.Expose()
+    public delta : number;
 
-export class Slash
-    extends AbstractEventData
-{
-}
-
-export class Halving
-    extends AbstractEventData
-{
 }
 
 
@@ -73,7 +62,7 @@ export class Event<T extends AbstractEventData>
     @API.Property()
     public amount : number = 0;
     
-    @API.Property()
+    @API.Property(() => EventAdditionalData)
     public additionalData : T = <any>{};
     
 }

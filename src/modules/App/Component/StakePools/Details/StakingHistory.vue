@@ -194,11 +194,13 @@ export default class AprHistory
             color: this.colors.stakeTotal,
             lineStyle: LightweightCharts.LineStyle.Dashed,
             lineWidth: 1,
+            priceLineVisible: false,
         });
         this.specialFreeSeries = this.chart.addLineSeries({
             color: this.colors.stakeFree,
             lineStyle: LightweightCharts.LineStyle.Dashed,
             lineWidth: 1,
+            priceLineVisible: false,
         });
 
         // refresh chart

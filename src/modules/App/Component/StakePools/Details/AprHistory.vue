@@ -246,6 +246,8 @@ export default class AprHistory
         }
 
         // get events
+        const markers : LightweightCharts.SeriesMarker<LightweightCharts.Time>[]= [];
+
         for (const event of this.events) {
             let timestamp = moment(event.blockDate)
                 .minute(0)
@@ -253,19 +255,41 @@ export default class AprHistory
             timestamp = timestamp.hour(Math.floor(timestamp.hour()));
 
             if (event.type == EventType.CommissionChange) {
-                this.requestedSeries.setMarkers([
-                    {
-                        time: <any> timestamp.unix(),
-                        size: 2,
-                        position: 'aboveBar',
-                        shape: event.additionalData.delta > 0 ? 'arrowDown' : 'arrowUp',
-                        color: event.additionalData.delta > 0 ? 'green' : 'red',
-                        text: 'Commission ' + Utility.formatPercent(event.additionalData.delta)
-                    }
-                ]);
+                const text = 'Commission: '
+                    + Utility.formatPercent(event.additionalData.commission, { output: 'percent', mantissa: 0 }) + ' ('
+                    + Utility.formatPercent(event.additionalData.delta, { output: 'percent', mantissa: 0, forceSign: true }) + ')';
+                markers.push({
+                    time: <any>timestamp.unix(),
+                    size: 2,
+                    position: 'aboveBar',
+                    shape: event.additionalData.delta > 0 ? 'arrowUp' : 'arrowDown',
+                    color: event.additionalData.delta > 0 ? 'red' : 'green',
+                    text
+                });
+            }
+            else if (event.type == EventType.Halving) {
+                markers.push({
+                    time: <any>timestamp.unix(),
+                    size: 2,
+                    position: 'belowBar',
+                    shape: 'square',
+                    color: '#5492B0',
+                    text: 'Halving'
+                });
+            }
+            else if (event.type == EventType.BadBehavior) {
+                markers.push({
+                    time: <any>timestamp.unix(),
+                    size: 2,
+                    position: 'belowBar',
+                    shape: 'circle',
+                    color: '#ff0000',
+                    text: 'Bad behavior'
+                });
             }
         }
 
+        this.requestedSeries.setMarkers(markers);
     }
 
 }

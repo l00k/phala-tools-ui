@@ -12,9 +12,9 @@ export function formatNumber (amount : number) : string
     return numbro(amount).format('0.000 a');
 }
 
-export function formatPercent (percent : number) : string
+export function formatPercent (percent : number, format : string | numbro.Format = '0.0%') : string
 {
-    return numbro(percent).format('0.0%');
+    return numbro(percent).format(format);
 }
 
 export function formatCoin (value : number, format : string | numbro.Format = {})
