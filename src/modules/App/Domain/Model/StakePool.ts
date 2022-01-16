@@ -7,12 +7,19 @@ import { Annotation as API } from '@inti5/api-frontend';
 @API.Resource()
 export class StakePool
 {
+
+    public static readonly SPECIAL_NETWORK_AVG_ID = 1;
+    public static readonly SPECIAL_TOP100_AVG_ID = 2;
+    
     
     @API.Id()
     public id : number;
     
     @API.Property()
     public onChainId : number;
+    
+    @API.Property()
+    public special : string;
     
     @API.Property(() => Account)
     public owner : Account;

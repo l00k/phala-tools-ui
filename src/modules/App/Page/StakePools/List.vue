@@ -41,9 +41,3 @@ export default class StakePoolsListPage
 
 }
 </script>
-
-<style lang="scss">
-.m-loading {
-    z-index: 10;
-}
-</style>

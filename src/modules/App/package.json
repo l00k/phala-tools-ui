@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "license": "MIT",
     "dependencies": {
-        "@polkadot/vue-identicon": "^0.89.1"
+        "@polkadot/vue-identicon": "^0.89.1",
+        "lightweight-charts": "^3.7.0"
     }
 }
