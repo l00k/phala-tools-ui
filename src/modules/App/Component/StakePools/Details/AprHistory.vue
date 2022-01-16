@@ -18,13 +18,13 @@
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-light">Entire network avg APR</b-tag>
+                        <b-tag type="is-light">All active pools avg APR</b-tag>
                         <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-light">TOP100 avg APR</b-tag>
-                        <b-tag :style="{ background: colors.specialTop100 }">{{ specialTop100LastHistoryEntry?.avgApr | formatPercent }}</b-tag>
+                        <b-tag type="is-light">TOP active pools avg APR</b-tag>
+                        <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
                 </div>
             </div>
@@ -38,15 +38,18 @@
 </template>
 
 <script lang="ts">
+import { Event, EventType } from '#/App/Domain/Model/Event';
 import { StakePool } from '#/App/Domain/Model/StakePool';
 import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
+import { EventService } from '#/App/Domain/Service/EventService';
 import { HistoryEntryService } from '#/App/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
-import { Pagination } from '@inti5/api-frontend/Domain';
+import { Filters } from '@inti5/api-frontend/Domain';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import * as LightweightCharts from 'lightweight-charts';
+import moment from 'moment';
 import { Prop, Ref, Watch } from 'vue-property-decorator';
 
 
@@ -57,6 +60,9 @@ export default class AprHistory
 
     @Inject()
     protected historyEntryService : HistoryEntryService;
+
+    @Inject()
+    protected eventService : EventService;
 
     @Prop()
     protected stakePool : StakePool;
@@ -69,22 +75,22 @@ export default class AprHistory
 
     protected chart : LightweightCharts.IChartApi;
 
-    protected historyEntriesPagination : Pagination = HistoryEntryService.getDefaultPagination();
-    protected fullyLoaded : boolean = false;
-
     protected requestedHistoryEntries : HistoryEntry[] = [];
     protected requestedSeries : LightweightCharts.ISeriesApi<any>;
 
     protected specialAllHistoryEntries : HistoryEntry[] = [];
     protected specialAllSeries : LightweightCharts.ISeriesApi<any>;
 
-    protected specialTop100HistoryEntries : HistoryEntry[] = [];
-    protected specialTop100Series : LightweightCharts.ISeriesApi<any>;
+    protected specialTopHistoryEntries : HistoryEntry[] = [];
+    protected specialTopSeries : LightweightCharts.ISeriesApi<any>;
+
+    protected events : Event<any>[] = [];
+    protected eventsSeries : any;
 
     protected colors = {
         requestAvgApr: '#33d778',
         specialAll: '#2ca4df',
-        specialTop100: '#447ec6',
+        specialTop: '#447ec6',
     };
 
 
@@ -102,27 +108,25 @@ export default class AprHistory
             : null;
     }
 
-    public get specialTop100LastHistoryEntry () : HistoryEntry
+    public get specialTopLastHistoryEntry () : HistoryEntry
     {
-        return this.specialTop100HistoryEntries.length
-            ? this.specialTop100HistoryEntries[this.specialTop100HistoryEntries.length - 1]
+        return this.specialTopHistoryEntries.length
+            ? this.specialTopHistoryEntries[this.specialTopHistoryEntries.length - 1]
             : null;
     }
 
 
-    public mounted()
+    public mounted ()
     {
-        this.refreshChart();
+        this.reinit();
     }
 
     @Watch('stakePool')
-    protected async restartChart ()
+    protected async reinit ()
     {
         if (!this.stakePool) {
             return;
         }
-
-        this.isReady = false;
 
         // clean up
         if (this.chart) {
@@ -130,66 +134,51 @@ export default class AprHistory
             delete this.chart;
         }
 
-        this.historyEntriesPagination = HistoryEntryService.getDefaultPagination();
-        this.fullyLoaded = false;
-
-        this.requestedHistoryEntries = [];
-        this.specialAllHistoryEntries = [];
-        this.specialTop100HistoryEntries = [];
-
         // load history
-        await this.loadMoreHistory();
+        await this.loadHistory();
 
-        this.isReady = true;
-
-        this.$nextTick(() => this.mountChart())
+        this.$nextTick(() => this.mountChart());
     }
 
-    protected async loadMoreHistory ()
+    protected async loadHistory ()
     {
-        if (this.fullyLoaded) {
-            return;
-        }
+
+        this.isReady = false;
 
         // requested stake pool
-        const collection = await this.historyEntryService.getStakePoolHistoryCollection(
-            this.stakePool.id,
-            this.historyEntriesPagination
-        );
-        if (collection.items) {
-            this.requestedHistoryEntries.unshift(...collection.items.reverse());
-        }
-
-        if (collection.total == this.requestedHistoryEntries.length) {
-            this.fullyLoaded = true;
+        this.requestedHistoryEntries = [];
+        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+            this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
         // avg entire network history
-        {
-            const collection = await this.historyEntryService.getStakePoolHistoryCollection(
-                StakePool.SPECIAL_NETWORK_AVG_ID,
-                this.historyEntriesPagination
-            );
-            if (collection.items) {
-                this.specialAllHistoryEntries.unshift(...collection.items.reverse());
-            }
+        this.specialAllHistoryEntries = [];
+        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_NETWORK_AVG_ID)) {
+            this.specialAllHistoryEntries.unshift(...items.reverse());
         }
 
-        // avg top100 history
-        {
-            const collection = await this.historyEntryService.getStakePoolHistoryCollection(
-                StakePool.SPECIAL_TOP100_AVG_ID,
-                this.historyEntriesPagination
-            );
-            if (collection.items) {
-                this.specialTop100HistoryEntries.unshift(...collection.items.reverse());
-            }
+        // avg top history
+        this.specialTopHistoryEntries = [];
+        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
+            this.specialTopHistoryEntries.unshift(...items.reverse());
         }
 
-        ++this.historyEntriesPagination.page;
+        // events
+        const filters : Filters<Event<any>> = {
+            type: {
+                $in: [ EventType.CommissionChange, EventType.Halving, EventType.BadBehavior ]
+            }
+        };
+
+        this.events = [];
+        for await (const items of this.eventService.getStakePoolEventsFetcher(this.stakePool.id, filters)) {
+            this.events.push(...items);
+        }
+
+        this.isReady = true;
     }
 
-    protected mountChart()
+    protected mountChart ()
     {
         // mount chart
         this.chart = LightweightCharts.createChart(this.$chartDiv, {
@@ -213,75 +202,70 @@ export default class AprHistory
             }
         });
 
+        this.specialAllSeries = this.chart.addLineSeries({
+            color: this.colors.specialAll,
+        });
+        this.specialTopSeries = this.chart.addLineSeries({
+            color: this.colors.specialTop,
+        });
         this.requestedSeries = this.chart.addAreaSeries({
             lineColor: this.colors.requestAvgApr
-        });
-        this.specialAllSeries = this.chart.addLineSeries({
-            color: this.colors.specialAll
-        });
-        this.specialTop100Series = this.chart.addLineSeries({
-            color: this.colors.specialTop100
         });
 
         // refresh chart
         this.refreshChart();
-
-        // auto loading
-        const timeScale = this.chart.timeScale();
-
-        let timer = null;
-        timeScale.subscribeVisibleLogicalRangeChange(() => {
-            if (timer !== null) {
-                return;
-            }
-            timer = setTimeout(async() => {
-                let logicalRange = timeScale.getVisibleLogicalRange();
-                if (logicalRange !== null) {
-                    var barsInfo = this.requestedSeries.barsInLogicalRange(logicalRange);
-                    if (barsInfo !== null && barsInfo.barsBefore < 10) {
-                        await this.loadMoreHistory();
-                        await this.refreshChart();
-                    }
-                }
-                timer = null;
-            }, 50);
-        });
     }
 
     protected refreshChart ()
     {
         {
             const data = this.requestedHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.avgApr
-                    };
-                });
+                .map(historyEntry => ({
+                    time: historyEntry.entryDate.getTime() / 1000,
+                    value: historyEntry.avgApr
+                }));
             this.requestedSeries.setData(data);
         }
 
         {
             const data = this.specialAllHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.avgApr
-                    };
-                });
+                .map(historyEntry => ({
+                    time: historyEntry.entryDate.getTime() / 1000,
+                    value: historyEntry.avgApr
+                }));
             this.specialAllSeries.setData(data);
         }
 
         {
-            const data = this.specialTop100HistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.avgApr
-                    };
-                });
-            this.specialTop100Series.setData(data);
+            const data = this.specialTopHistoryEntries
+                .map(historyEntry => ({
+                    time: historyEntry.entryDate.getTime() / 1000,
+                    value: historyEntry.avgApr
+                }));
+            this.specialTopSeries.setData(data);
         }
+
+        // get events
+        for (const event of this.events) {
+            let timestamp = moment(event.blockDate)
+                .minute(0)
+                .second(0);
+            timestamp = timestamp.hour(Math.floor(timestamp.hour()));
+
+            if (event.type == EventType.CommissionChange) {
+                this.requestedSeries.setMarkers([
+                    {
+                        time: <any> timestamp.unix(),
+                        size: 2,
+                        position: 'aboveBar',
+                        shape: event.additionalData.delta > 0 ? 'arrowDown' : 'arrowUp',
+                        color: event.additionalData.delta > 0 ? 'green' : 'red',
+                        text: 'Commission ' + Utility.formatPercent(event.additionalData.delta)
+                    }
+                ]);
+            }
+        }
+
     }
 
 }

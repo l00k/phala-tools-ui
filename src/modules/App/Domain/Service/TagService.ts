@@ -1,5 +1,5 @@
 import { Tag } from '#/App/Domain/Model/Tag';
-import { Pagination } from '@/core/inti5/api-frontend/Domain';
+import { Pagination } from '@inti5/api-frontend/Domain';
 import * as Api from '@inti5/api-frontend';
 
 

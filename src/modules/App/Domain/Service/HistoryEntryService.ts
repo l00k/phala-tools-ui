@@ -1,5 +1,5 @@
 import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
-import { CollectionRequest, Pagination } from '@/core/inti5/api-frontend/Domain';
+import { CollectionRequest, Pagination } from '@inti5/api-frontend/Domain';
 import * as Api from '@inti5/api-frontend';
 import { Collection } from '@inti5/api-frontend';
 
@@ -12,19 +12,16 @@ export class HistoryEntryService
     
     public static getDefaultPagination () : Pagination
     {
-        return new Pagination([ 360 ]);
+        return new Pagination([ 200 ]);
     }
     
-    public async getStakePoolHistoryCollection (
-        stakePoolId : number,
-        pagination? : Partial<Pagination>
-    ) : Promise<Collection<HistoryEntry>>
+    public getStakePoolHistoryFetcher (
+        stakePoolId : number
+    ) : AsyncGenerator<HistoryEntry[], void, void>
     {
-        const collectionRequest = new CollectionRequest<HistoryEntry>({ pagination });
-        
         const path = `stake_pool/${stakePoolId}/history`;
-        return super.getCollection(
-            collectionRequest,
+        return super.getFetcher(
+            null,
             path
         );
     }

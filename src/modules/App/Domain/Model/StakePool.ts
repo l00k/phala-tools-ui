@@ -9,7 +9,7 @@ export class StakePool
 {
 
     public static readonly SPECIAL_NETWORK_AVG_ID = 1;
-    public static readonly SPECIAL_TOP100_AVG_ID = 2;
+    public static readonly SPECIAL_TOP_AVG_ID = 2;
     
     
     @API.Id()

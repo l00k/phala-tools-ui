@@ -27,11 +27,11 @@
                 </div>
                 <div class="is-flex is-justify-content-start is-align-items-start">
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-dark">TOP100 avg total stake</b-tag>
+                        <b-tag type="is-dark">TOP avg total stake</b-tag>
                         <b-tag :style="{ background: colors.stakeTotal }">{{ specialLastHistoryEntry?.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-dark">TOP100 avg free stake</b-tag>
+                        <b-tag type="is-dark">TOP avg free stake</b-tag>
                         <b-tag :style="{ background: colors.stakeFree }">{{ specialLastHistoryEntry?.stakeFree | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
                 </div>
@@ -50,14 +50,12 @@ import { StakePool } from '#/App/Domain/Model/StakePool';
 import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
 import { HistoryEntryService } from '#/App/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
-import { Pagination } from '@inti5/api-frontend/Domain';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
-import { LineStyle, PriceScaleMode } from 'lightweight-charts';
+import Color from 'color';
 import * as LightweightCharts from 'lightweight-charts';
 import { Prop, Ref, Watch } from 'vue-property-decorator';
-import Color from 'color';
 
 
 @Component()
@@ -79,9 +77,6 @@ export default class AprHistory
 
     protected chart : LightweightCharts.IChartApi;
 
-    protected historyEntriesPagination : Pagination = HistoryEntryService.getDefaultPagination();
-    protected fullyLoaded : boolean = false;
-
     protected requestedHistoryEntries : HistoryEntry[] = [];
     protected requestedTotalSeries : LightweightCharts.ISeriesApi<any>;
     protected requestedFreeSeries : LightweightCharts.ISeriesApi<any>;
@@ -94,7 +89,7 @@ export default class AprHistory
     protected colors = {
         stakeTotal: '#2ca4df',
         stakeFree: '#aa0000',
-        stakeReleasing: '#7456FE',
+        stakeReleasing: '#7456fe',
     };
 
 
@@ -113,7 +108,7 @@ export default class AprHistory
     }
 
 
-    public mounted()
+    public mounted ()
     {
         this.reinit();
     }
@@ -125,62 +120,38 @@ export default class AprHistory
             return;
         }
 
-        this.isReady = false;
-
         // clean up
         if (this.chart) {
             this.chart.remove();
             delete this.chart;
         }
 
-        this.historyEntriesPagination = HistoryEntryService.getDefaultPagination();
-        this.fullyLoaded = false;
-
-        this.requestedHistoryEntries = [];
-        this.specialHistoryEntries = [];
-
         // load history
-        await this.loadMoreHistory();
+        await this.loadHistory();
 
-        this.isReady = true;
-
-        this.$nextTick(() => this.mountChart())
+        this.$nextTick(() => this.mountChart());
     }
 
-    protected async loadMoreHistory ()
+    protected async loadHistory ()
     {
-        if (this.fullyLoaded) {
-            return;
-        }
+        this.isReady = false;
 
         // requested stake pool
-        const collection = await this.historyEntryService.getStakePoolHistoryCollection(
-            this.stakePool.id,
-            this.historyEntriesPagination
-        );
-        if (collection.items) {
-            this.requestedHistoryEntries.unshift(...collection.items.reverse());
+        this.requestedHistoryEntries = [];
+        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+            this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
-        if (collection.total == this.requestedHistoryEntries.length) {
-            this.fullyLoaded = true;
+        // avg top history
+        this.specialHistoryEntries = [];
+        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
+            this.specialHistoryEntries.unshift(...items.reverse());
         }
 
-        // avg top100 history
-        {
-            const collection = await this.historyEntryService.getStakePoolHistoryCollection(
-                StakePool.SPECIAL_TOP100_AVG_ID,
-                this.historyEntriesPagination
-            );
-            if (collection.items) {
-                this.specialHistoryEntries.unshift(...collection.items.reverse());
-            }
-        }
-
-        ++this.historyEntriesPagination.page;
+        this.isReady = true;
     }
 
-    protected mountChart()
+    protected mountChart ()
     {
         // mount chart
         this.chart = LightweightCharts.createChart(this.$chartDiv, {
@@ -232,80 +203,49 @@ export default class AprHistory
 
         // refresh chart
         this.refreshChart();
-
-        // auto loading
-        const timeScale = this.chart.timeScale();
-
-        let timer = null;
-        timeScale.subscribeVisibleLogicalRangeChange(() => {
-            if (timer !== null) {
-                return;
-            }
-            timer = setTimeout(async() => {
-                let logicalRange = timeScale.getVisibleLogicalRange();
-                if (logicalRange !== null) {
-                    var barsInfo = this.requestedTotalSeries.barsInLogicalRange(logicalRange);
-                    if (barsInfo !== null && barsInfo.barsBefore < 10) {
-                        await this.loadMoreHistory();
-                        await this.refreshChart();
-                    }
-                }
-                timer = null;
-            }, 50);
-        });
     }
 
     protected refreshChart ()
     {
         {
             const data = this.requestedHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.stakeTotal
-                    };
-                });
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeTotal
+                }));
             this.requestedTotalSeries.setData(data);
         }
         {
             const data = this.requestedHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.stakeFree
-                    };
-                });
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeFree
+                }));
             this.requestedFreeSeries.setData(data);
         }
         {
             const data = this.requestedHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.stakeReleasing
-                    };
-                });
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeReleasing
+                }));
             this.requestedReleasingSeries.setData(data);
         }
 
         {
             const data = this.specialHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.stakeTotal
-                    };
-                });
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeTotal
+                }));
             this.specialTotalSeries.setData(data);
         }
         {
             const data = this.specialHistoryEntries
-                .map(historyEntry => {
-                    return {
-                        time: historyEntry.entryDate.getTime() / 1000,
-                        value: historyEntry.stakeFree
-                    };
-                });
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeFree
+                }));
             this.specialFreeSeries.setData(data);
         }
     }

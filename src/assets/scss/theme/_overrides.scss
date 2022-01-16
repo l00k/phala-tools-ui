@@ -10,7 +10,7 @@
     .panel-block {
         display: block;
         padding: $panel-content-padding;
-        background: hsl(0, 0%, 24%)
+        background: $grey-dark2;
     }
 }
 
@@ -44,10 +44,10 @@
 .b-table {
     thead tr:first-child th {
         position:   sticky;
-        top:        0;
+        top:        -1px;
         z-index:    10;
         
-        background: $grey-darker;
+        background: $grey-dark2;
     }
     
     .checkbox-cell {
