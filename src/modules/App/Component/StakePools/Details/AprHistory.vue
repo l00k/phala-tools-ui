@@ -7,7 +7,7 @@
         </header>
         <div class="panel-block">
             <div v-if="!isReady">
-                <b-skeleton height="400px" :animated="true" />
+                <b-skeleton height="500px" :animated="true" />
             </div>
 
             <div v-else>
@@ -183,7 +183,7 @@ export default class AprHistory
         // mount chart
         this.chart = LightweightCharts.createChart(this.$chartDiv, {
             width: this.$chartDiv.getBoundingClientRect().width,
-            height: 400,
+            height: 500,
             layout: {
                 backgroundColor: '#161616',
                 textColor: '#d1d4dc',
