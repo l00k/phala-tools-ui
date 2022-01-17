@@ -13,6 +13,17 @@
             <div v-else>
                 <div class="is-flex is-justify-content-start is-align-items-start">
                     <b-taglist attached class="mr-2">
+                        <b-tag type="is-light">Capacity</b-tag>
+                        <b-tag
+                            v-if="stakePool.lastHistoryEntry.cap"
+                            :style="{ background: colors.cap }"
+                        >{{ requestedLastHistoryEntry?.cap | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
+                        <b-tag
+                            v-else
+                            :style="{ background: colors.cap }"
+                        >Unlimited</b-tag>
+                    </b-taglist>
+                    <b-taglist attached class="mr-2">
                         <b-tag type="is-light">Total stake</b-tag>
                         <b-tag :style="{ background: colors.stakeTotal }">{{ requestedLastHistoryEntry?.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
@@ -24,15 +35,9 @@
                         <b-tag type="is-light">Releasing stake</b-tag>
                         <b-tag :style="{ background: colors.stakeReleasing }">{{ requestedLastHistoryEntry?.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
-                </div>
-                <div class="is-flex is-justify-content-start is-align-items-start">
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-dark">TOP avg total stake</b-tag>
-                        <b-tag :style="{ background: colors.stakeTotal }">{{ specialLastHistoryEntry?.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
-                    </b-taglist>
-                    <b-taglist attached class="mr-2">
-                        <b-tag type="is-dark">TOP avg free stake</b-tag>
-                        <b-tag :style="{ background: colors.stakeFree }">{{ specialLastHistoryEntry?.stakeFree | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
+                        <b-tag type="is-light">Pending withdrawals</b-tag>
+                        <b-tag :style="{ background: colors.withdrawals }">{{ requestedLastHistoryEntry?.withdrawals | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
                 </div>
             </div>
@@ -81,15 +86,15 @@ export default class AprHistory
     protected requestedTotalSeries : LightweightCharts.ISeriesApi<any>;
     protected requestedFreeSeries : LightweightCharts.ISeriesApi<any>;
     protected requestedReleasingSeries : LightweightCharts.ISeriesApi<any>;
-
-    protected specialHistoryEntries : HistoryEntry[] = [];
-    protected specialTotalSeries : LightweightCharts.ISeriesApi<any>;
-    protected specialFreeSeries : LightweightCharts.ISeriesApi<any>;
+    protected requestedCapSeries : LightweightCharts.ISeriesApi<any>;
+    protected requestedWithdrawalsSeries : LightweightCharts.ISeriesApi<any>;
 
     protected colors = {
+        cap: '#33d778',
         stakeTotal: '#2ca4df',
-        stakeFree: '#aa0000',
+        stakeFree: '#FF6C37',
         stakeReleasing: '#7456fe',
+        withdrawals: '#aa0000',
     };
 
 
@@ -97,13 +102,6 @@ export default class AprHistory
     {
         return this.requestedHistoryEntries.length
             ? this.requestedHistoryEntries[this.requestedHistoryEntries.length - 1]
-            : null;
-    }
-
-    public get specialLastHistoryEntry () : HistoryEntry
-    {
-        return this.specialHistoryEntries.length
-            ? this.specialHistoryEntries[this.specialHistoryEntries.length - 1]
             : null;
     }
 
@@ -142,12 +140,6 @@ export default class AprHistory
             this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
-        // avg top history
-        this.specialHistoryEntries = [];
-        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
-            this.specialHistoryEntries.unshift(...items.reverse());
-        }
-
         this.isReady = true;
     }
 
@@ -174,6 +166,11 @@ export default class AprHistory
             }
         });
 
+        this.requestedCapSeries = this.chart.addAreaSeries({
+            lineColor: this.colors.cap,
+            topColor: Color(this.colors.cap).alpha(0.2).toString(),
+            bottomColor: Color(this.colors.cap).alpha(0).toString(),
+        });
         this.requestedTotalSeries = this.chart.addAreaSeries({
             lineColor: this.colors.stakeTotal,
             topColor: Color(this.colors.stakeTotal).alpha(0.6).toString(),
@@ -189,18 +186,10 @@ export default class AprHistory
             topColor: Color(this.colors.stakeReleasing).alpha(0.6).toString(),
             bottomColor: Color(this.colors.stakeReleasing).alpha(0).toString(),
         });
-
-        this.specialTotalSeries = this.chart.addLineSeries({
-            color: this.colors.stakeTotal,
-            lineStyle: LightweightCharts.LineStyle.Dashed,
-            lineWidth: 1,
-            priceLineVisible: false,
-        });
-        this.specialFreeSeries = this.chart.addLineSeries({
-            color: this.colors.stakeFree,
-            lineStyle: LightweightCharts.LineStyle.Dashed,
-            lineWidth: 1,
-            priceLineVisible: false,
+        this.requestedWithdrawalsSeries = this.chart.addAreaSeries({
+            lineColor: this.colors.withdrawals,
+            topColor: Color(this.colors.withdrawals).alpha(0.6).toString(),
+            bottomColor: Color(this.colors.withdrawals).alpha(0).toString(),
         });
 
         // refresh chart
@@ -209,6 +198,14 @@ export default class AprHistory
 
     protected refreshChart ()
     {
+        {
+            const data = this.requestedHistoryEntries
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.cap
+                }));
+            this.requestedCapSeries.setData(data);
+        }
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
@@ -233,22 +230,13 @@ export default class AprHistory
                 }));
             this.requestedReleasingSeries.setData(data);
         }
-
         {
-            const data = this.specialHistoryEntries
+            const data = this.requestedHistoryEntries
                 .map(entry => ({
                     time: entry.entryDate.getTime() / 1000,
-                    value: entry.stakeTotal
+                    value: entry.withdrawals
                 }));
-            this.specialTotalSeries.setData(data);
-        }
-        {
-            const data = this.specialHistoryEntries
-                .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
-                    value: entry.stakeFree
-                }));
-            this.specialFreeSeries.setData(data);
+            this.requestedWithdrawalsSeries.setData(data);
         }
     }
 

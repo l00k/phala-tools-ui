@@ -62,7 +62,7 @@
             <!-- INFO CONTENT -->
             <div
                 v-else
-                class="columns"
+                class="columns is-multiline"
             >
                 <!-- SPECIAL ENTRY -->
                 <div
@@ -133,6 +133,107 @@
                     </div>
                 </div>
 
+                <!-- STAKE IMFO -->
+                <div
+                    v-if="stakePool.lastHistoryEntry"
+                    class="column is-4"
+                >
+                    <div class="card is-light">
+                        <header class="card-header">
+                            <div class="card-header-title">
+                                <span>Stake info</span>
+                            </div>
+                        </header>
+                        <div class="card-content">
+
+                            <div
+                                class="stats"
+                                :class="{ 'has-color-red': !stakePool.lastHistoryEntry.cap }"
+                            >
+                                <span class="stats__label">Capacity</span>
+                                <span
+                                    v-if="stakePool.lastHistoryEntry.cap"
+                                    class="stats__value"
+                                >{{ stakePool.lastHistoryEntry.cap | formatCoin({ mantissa: 0 }) }} PHA</span>
+                                <span
+                                    v-else
+                                    class="stats__value"
+                                >
+                                    Unlimited
+                                    <b-icon
+                                        v-if="!stakePool.lastHistoryEntry.cap"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'May favor rewards leeching'"
+                                    />
+                                </span>
+                            </div>
+                            <div class="stats">
+                                <span class="stats__label">Total stake</span>
+                                <span class="stats__value">{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</span>
+                            </div>
+                            <div
+                                class="stats"
+                                :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }"
+                            >
+                                <span class="stats__label">Free stake</span>
+                                <span class="stats__value">
+                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
+                                    <b-icon
+                                        v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
+                                    />
+                                </span>
+                            </div>
+                            <div
+                                class="stats"
+                                :class="{ 'has-color-orange': stakePool.lastHistoryEntry.stakeReleasingIssue }"
+                            >
+                                <span class="stats__label">Releasing stake</span>
+                                <span class="stats__value">
+                                    {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
+                                    <b-icon
+                                        v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'Large amount of releasing stake MAY (but don`t have to) implie stake pool issue or abandon pool'"
+                                    />
+                                </span>
+                            </div>
+                            <div
+                                class="stats"
+                                :class="{ 'has-color-orange': stakePool.lastHistoryEntry.widthdrawalsIssue }"
+                            >
+                                <span class="stats__label">Pending withdrawals</span>
+                                <span class="stats__value">
+                                    {{ stakePool.lastHistoryEntry.withdrawals | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePool.lastHistoryEntry.withdrawalsPercent | formatPercent }})
+                                    <b-icon
+                                        v-if="stakePool.lastHistoryEntry.widthdrawalsIssue"
+                                        pack="fas"
+                                        icon="exclamation-triangle"
+                                        size="is-small"
+                                        class="is-valign-middle"
+                                        v-tooltip="'Large percent of withdrawals MAY (but don`t have to) implie stake pool issue or abandon pool'"
+                                    />
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
                 <!-- BASIC POOL STATS -->
                 <div
                     v-if="stakePool.lastHistoryEntry"
@@ -141,7 +242,7 @@
                     <div class="card is-light">
                         <header class="card-header">
                             <div class="card-header-title">
-                                <span>Basic informations</span>
+                                <span>Performance</span>
                             </div>
                         </header>
                         <div class="card-content">

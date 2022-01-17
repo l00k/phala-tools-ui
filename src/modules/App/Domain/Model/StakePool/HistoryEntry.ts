@@ -24,6 +24,9 @@ export class HistoryEntry
     public workersActiveNum : number;
     
     @API.Property()
+    public cap : number;
+    
+    @API.Property()
     public stakeTotal : number;
     
     @API.Property()
@@ -34,6 +37,9 @@ export class HistoryEntry
     
     @API.Property()
     public stakeRemaining : number;
+    
+    @API.Property()
+    public withdrawals : number;
     
     @API.Property()
     public vTotal : number;
@@ -79,6 +85,18 @@ export class HistoryEntry
     public get stakeReleasingIssue () : boolean
     {
         return this.stakeReleasingPercent > 0.25;
+    }
+    
+    public get withdrawalsPercent () : number
+    {
+        return this.stakeTotal > 0
+            ? this.withdrawals / this.stakeTotal
+            : 0;
+    }
+    
+    public get widthdrawalsIssue () : boolean
+    {
+        return this.stakeReleasingPercent > 0.5;
     }
     
 }

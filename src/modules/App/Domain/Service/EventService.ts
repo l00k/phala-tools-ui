@@ -1,4 +1,5 @@
 import { Event } from '#/App/Domain/Model/Event';
+import { Cache } from '@inti5/cache';
 import * as Api from '@inti5/api-frontend';
 import { CollectionRequest, Filters, Pagination } from '@inti5/api-frontend/Domain';
 

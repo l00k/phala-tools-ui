@@ -79,7 +79,14 @@
                         </template>
                         <div v-if="stakePool.lastHistoryEntry">
                             <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
-                            <div class="has-font-size-sm has-color-gray">
+                            <div
+                                class="has-font-size-sm"
+                                :class="{
+                                    'has-color-red': stakePool.lastHistoryEntry.currentApr == 0,
+                                    'has-color-orange': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) >= 2,
+                                    'has-color-gray': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) < 2,
+                                }"
+                            >
                                 Current: {{ stakePool.lastHistoryEntry.currentApr | formatPercent }}
                             </div>
                         </div>
@@ -149,20 +156,20 @@
                             />
                         </template>
                         <div v-if="stakePool.lastHistoryEntry">
-                            <div v-if="stakePool.lastHistoryEntry.stakeRemaining != -1">
+                            <div v-if="stakePool.lastHistoryEntry.cap">
                                 {{ stakePool.lastHistoryEntry.stakeRemaining | formatCoin({ mantissa: 0 }) }} PHA
                             </div>
                             <div
                                 v-else
                                 class="has-color-red"
                             >
-                                Unlimited
+                                Unlimited cap
                                 <b-icon
                                     pack="fas"
                                     icon="exclamation-triangle"
                                     size="is-small"
                                     class="is-valign-middle"
-                                    v-tooltip="'May favor rewards leaching'"
+                                    v-tooltip="'May favor rewards leeching'"
                                 />
                             </div>
                         </div>

@@ -23,7 +23,7 @@
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
-                        <b-tag type="is-light">TOP active pools avg APR</b-tag>
+                        <b-tag type="is-light">TOP 100 active pools avg APR</b-tag>
                         <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
                 </div>
