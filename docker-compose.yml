@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+    node:
+        container_name: ${PROJECT_NAME}-node
+        build:
+            context: .
+            dockerfile: app.Dockerfile
+        image: ${PROJECT_NAME}-node
