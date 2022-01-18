@@ -1,7 +1,7 @@
 export default {
     api: {
         client: {
-            baseURL: 'https://phala.100k.dev:4004'
+            baseURL: 'http://localhost:4004'
         }
     }
 };

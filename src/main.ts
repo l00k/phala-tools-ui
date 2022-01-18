@@ -5,6 +5,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 import VTooltip from 'v-tooltip';
+import VueTour from 'vue-tour'
 
 Vue.config.productionTip = false;
 
@@ -15,6 +16,7 @@ Vue.use(Buefy, {
 });
 
 Vue.use(VTooltip);
+Vue.use(VueTour);
 
 (async () => {
     const objectManager = ObjectManager.getSingleton();

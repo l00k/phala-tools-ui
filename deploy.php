@@ -34,22 +34,67 @@ desc('Deploy your project');
 task('deploy', [
     'deploy:info',
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
-    'deploy:update_code',
+    'custom:asset_build',
+    'custom:file_upload',
     'deploy:shared',
-    'deploy:shared:copy',
-    'deploy:copy_dirs',
     'deploy:writable',
     'deploy:clear_paths',
-    'custom:build',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
-    'success'
+    'success',
 ]);
 
 after('deploy:failed', 'deploy:unlock');
 
 
-task('custom:build', function () {
+task('custom:asset_build', function () {
+    if (!empty(get('assets_path', false))) {
+        $assetsPath = trim(get('assets_path'), '/\\');
+        runLocally('cd ./' . $assetsPath . ' && yarn build');
+    }
+});
 
+task('custom:file_upload', function () {
+    $random = uniqid();
+    $compressedFilename = "package-$random.tar.gz";
+
+    $cmd = 'cd ./dist && tar -zcf ../' . $compressedFilename . ' .';
+    runLocally($cmd);
+
+    $releaseDir = test('[ -L {{deploy_path}}/release ]')
+        ? 'release'
+        : 'current';
+    $distPath = get('deploy_path') . '/' . $releaseDir;
+
+    upload('./' . $compressedFilename, $distPath);
+    runLocally('rm ' . $compressedFilename);
+
+    run('cd ' . $distPath . ' && tar -xf ' . $compressedFilename);
+    run('cd ' . $distPath . ' && rm -f ' . $compressedFilename);
+});
+
+task('deploy:shared:copy', function () {
+    $sharedPath = "{{deploy_path}}/shared";
+
+    foreach (get('shared_files:copy') as $file) {
+        $dirname = dirname(parse($file));
+
+        if (!test("[ -d {$sharedPath}/{$dirname} ]")) {
+            run("mkdir -p {$sharedPath}/{$dirname}");
+        }
+
+        if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
+            run("cp -rv {{release_path}}/$file $sharedPath/$file");
+        }
+
+        run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
+        run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
+        
+        run("touch $sharedPath/$file");
+
+        run("cp -r $sharedPath/$file {{release_path}}/$file");
+    }
 });

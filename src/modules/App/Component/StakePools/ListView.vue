@@ -7,7 +7,6 @@
             </div>
         </header>
         <div class="panel-block">
-
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"

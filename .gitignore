@@ -1,4 +1,5 @@
-/src/etc/local
+/dist
+/vendor
 
 node_modules
 
