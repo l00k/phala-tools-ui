@@ -251,7 +251,13 @@
                                 <span class="stats__label">Avg APR</span>
                                 <span class="stats__value">{{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</span>
                             </div>
-                            <div class="stats">
+                            <div
+                                class="stats"
+                                :class="{
+                                    'has-color-red': stakePool.lastHistoryEntry.currentApr == 0,
+                                    'has-color-orange': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) >= 2,
+                                }"
+                            >
                                 <span class="stats__label">Current APR</span>
                                 <span class="stats__value">{{ stakePool.lastHistoryEntry.currentApr | formatPercent }}</span>
                             </div>

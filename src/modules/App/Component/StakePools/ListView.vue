@@ -7,6 +7,52 @@
             </div>
         </header>
         <div class="panel-block">
+            <div class="mb-6 is-flex is-justify-content-start">
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.filters._identityVerified"
+                        :native-value="true"
+                        type="is-primary"
+                    >
+                        <b-icon icon="user-check"></b-icon>
+                        <span>Verified identity only</span>
+                    </b-checkbox-button>
+                </b-field>
+
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.filters._activeOnly"
+                        :native-value="true"
+                        type="is-primary"
+                    >
+                        <b-icon icon="chart-line"></b-icon>
+                        <span>Active pools only</span>
+                    </b-checkbox-button>
+                </b-field>
+
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.filters._issues.id.$nin"
+                        :native-value="1"
+                        type="is-primary"
+                    >
+                        <b-icon icon="skull-crossbones"></b-icon>
+                        <span>Exclude bad behaviors</span>
+                    </b-checkbox-button>
+                </b-field>
+
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.filters._issues.id.$nin"
+                        :native-value="2"
+                        type="is-primary"
+                    >
+                        <b-icon icon="skull-crossbones"></b-icon>
+                        <span>Exclude slashed pools</span>
+                    </b-checkbox-button>
+                </b-field>
+            </div>
+
             <ui-table
                 :data="stakePools"
                 :loading="isLoading"
@@ -226,13 +272,31 @@ export default class ListView
     protected collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
         filters: {
             onChainId: {},
-            _owner: {},
+            owner: {
+                identityVerified: {},
+            },
             lastHistoryEntry: {
+                workersNum: {},
                 avgApr: {},
                 stakeTotal: {},
                 stakeRemaining: {
                     $gte: 100
                 },
+            },
+            // special filters
+            _owner: {},
+            _issues: {
+                id: { $nin: [] }
+            },
+            // custom filters
+            set _identityVerified(v) {
+                (<any>this).owner.identityVerified = v ? { $eq: true } : {};
+            },
+            set _activeOnly(v) {
+                if (v) {
+                    (<any>this).lastHistoryEntry.avgApr.$gte = 0;
+                }
+                (<any>this).lastHistoryEntry.workersNum = v ? { $gt: 0 } : {};
             }
         },
         sorting: {

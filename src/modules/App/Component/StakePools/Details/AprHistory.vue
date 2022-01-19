@@ -18,6 +18,11 @@
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
+                        <b-tag type="is-dark">Pool current APR</b-tag>
+                        <b-tag :style="{ background: colors.requestCurrentApr }">{{ requestedLastHistoryEntry?.currentApr | formatPercent }}</b-tag>
+                    </b-taglist>
+
+                    <b-taglist attached class="mr-2">
                         <b-tag type="is-light">All active pools avg APR</b-tag>
                         <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
@@ -48,6 +53,8 @@ import { Filters } from '@inti5/api-frontend/Domain';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
+import Color from 'color';
+import { LineStyle } from 'lightweight-charts';
 import * as LightweightCharts from 'lightweight-charts';
 import moment from 'moment';
 import { Prop, Ref, Watch } from 'vue-property-decorator';
@@ -76,7 +83,8 @@ export default class AprHistory
     protected chart : LightweightCharts.IChartApi;
 
     protected requestedHistoryEntries : HistoryEntry[] = [];
-    protected requestedSeries : LightweightCharts.ISeriesApi<any>;
+    protected requestedAvgSeries : LightweightCharts.ISeriesApi<any>;
+    protected requestedCurrentSeries : LightweightCharts.ISeriesApi<any>;
 
     protected specialAllHistoryEntries : HistoryEntry[] = [];
     protected specialAllSeries : LightweightCharts.ISeriesApi<any>;
@@ -89,6 +97,7 @@ export default class AprHistory
 
     protected colors = {
         requestAvgApr: '#33d778',
+        requestCurrentApr: '#33d778',
         specialAll: '#2ca4df',
         specialTop: '#447ec6',
     };
@@ -208,8 +217,17 @@ export default class AprHistory
         this.specialTopSeries = this.chart.addLineSeries({
             color: this.colors.specialTop,
         });
-        this.requestedSeries = this.chart.addAreaSeries({
-            lineColor: this.colors.requestAvgApr
+        this.requestedAvgSeries = this.chart.addAreaSeries({
+            lineColor: this.colors.requestAvgApr,
+            topColor: Color(this.colors.requestAvgApr).alpha(0.4).toString(),
+            bottomColor: Color(this.colors.requestAvgApr).alpha(0).toString(),
+        });
+        this.requestedCurrentSeries = this.chart.addAreaSeries({
+            lineColor: this.colors.requestCurrentApr,
+            topColor: Color(this.colors.requestCurrentApr).alpha(0.1).toString(),
+            bottomColor: Color(this.colors.requestCurrentApr).alpha(0).toString(),
+            lineWidth: 1,
+            lineStyle: LightweightCharts.LineStyle.Dashed,
         });
 
         // refresh chart
@@ -224,7 +242,15 @@ export default class AprHistory
                     time: historyEntry.entryDate.getTime() / 1000,
                     value: historyEntry.avgApr
                 }));
-            this.requestedSeries.setData(data);
+            this.requestedAvgSeries.setData(data);
+        }
+        {
+            const data = this.requestedHistoryEntries
+                .map(historyEntry => ({
+                    time: historyEntry.entryDate.getTime() / 1000,
+                    value: historyEntry.currentApr
+                }));
+            this.requestedCurrentSeries.setData(data);
         }
 
         {
@@ -289,7 +315,7 @@ export default class AprHistory
             }
         }
 
-        this.requestedSeries.setMarkers(markers);
+        this.requestedCurrentSeries.setMarkers(markers);
     }
 
 }
