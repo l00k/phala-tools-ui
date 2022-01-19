@@ -43,14 +43,14 @@ export default class StakePoolsListPage
 
     public isReady : boolean = false;
 
-    public tourName : string = 'stakepools_list';
+    public tourName : string = 'stakepools_list:2';
 
     @ClientStore.State('finishedTours')
     public finishedTours : string[];
 
     public tourSteps = [
         {
-            target: 'thead tr:nth-child(2) th:nth-child(5)',
+            target: '.ui-table thead tr:nth-child(2) th:nth-child(5)',
             header: {
                 title: 'Filters',
             },
@@ -61,7 +61,7 @@ export default class StakePoolsListPage
             }
         },
         {
-            target: 'thead th.is-sortable:nth-child(4)',
+            target: '.ui-table thead th.is-sortable:nth-child(4)',
             header: {
                 title: 'Sorting',
             },
@@ -79,6 +79,17 @@ export default class StakePoolsListPage
             content: `Click on any row to display stake pool details`,
             params: {
                 placement: 'bottom',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.ui-table thead',
+            header: {
+                title: 'Indexing delay',
+            },
+            content: `History is updated every 6h`,
+            params: {
+                placement: 'top',
                 enableScrolling: false,
             }
         },
