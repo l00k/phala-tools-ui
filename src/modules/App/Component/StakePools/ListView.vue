@@ -305,10 +305,7 @@ export default class ListView
                 (<any>this).owner.identityVerified = v ? { $eq: true } : {};
             },
             set _activeOnly(v) {
-                if (v) {
-                    (<any>this).lastHistoryEntry.avgApr.$gte = 0;
-                }
-                (<any>this).lastHistoryEntry.workersNum = v ? { $gt: 0 } : {};
+                (<any>this).lastHistoryEntry.avgApr.$gte = v ? 0 : undefined;
             }
         },
         sorting: {
