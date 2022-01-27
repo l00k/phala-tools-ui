@@ -251,6 +251,7 @@ import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { FilterType } from '@inti5/app-frontend/Domain';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
+import * as Trans from 'class-transformer';
 import Vue from 'vue';
 import { Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
@@ -310,31 +311,76 @@ export default class ListView
         unserialize: (formated) => formated * 100,
     };
 
+    protected request : Promise<any> = null;
+    protected waitingRequest : boolean = false;
+
     protected isLoading : boolean = false;
     protected stakePools : StakePool[] = [];
 
 
     public mounted ()
     {
+        this.onRouteChange();
         this.loadStakePools();
     }
 
+    @Watch('$route')
+    protected onRouteChange()
+    {
+        if (this.$route.hash && this.$route.hash.length > 1) {
+            const rawRequest = this.$route.hash.substring(1);
+            this.collectionRequest.fromPlainString(rawRequest);
+        }
+    }
+
     @Watch('collectionRequest', { deep: true })
+    protected async onCollectionRequestChange()
+    {
+        this.loadStakePools();
+
+        const currentHash = (this.$route.hash ?? '#').substring(1);
+        const rawRequest = this.collectionRequest.toPlainString();
+        if (currentHash != rawRequest) {
+            this.$router.push({
+                name: 'stakepools_list',
+                hash: '#' + rawRequest
+            });
+        }
+    }
+
     protected async loadStakePools ()
     {
+        if (this.request) {
+            this.waitingRequest = true;
+            return;
+        }
+
         this.isLoading = true;
 
-        const collection = await this.stakePoolService.getCollection(this.collectionRequest);
+        this.request = this.stakePoolService.getCollection(this.collectionRequest);
+        const collection = await this.request;
 
         this.stakePools = collection.items;
         this.collectionRequest.pagination.total = collection.total;
 
-        this.isLoading = false;
+        // clear promise
+        this.request = null;
+
+        if (this.waitingRequest) {
+            this.waitingRequest = false;
+            this.loadStakePools();
+        }
+        else {
+            this.isLoading = false;
+        }
     }
 
     public onRowClick(stakePool : StakePool)
     {
-        this.$router.replace(`stakepools/${stakePool.id}`);
+        this.$router.push({
+            name: 'stakepools_details',
+            params: { id: stakePool.id.toString() },
+        });
     }
 
 

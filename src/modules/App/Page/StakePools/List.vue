@@ -15,7 +15,7 @@
             <v-tour
                 :name="tourName"
                 :steps="tourSteps"
-                :callbacks="{ onFinish: onTourFinish }"
+                :callbacks="{ onFinish: onTourFinish, onSkip: onTourFinish }"
             />
         </div>
     </div>
