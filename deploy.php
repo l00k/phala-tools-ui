@@ -25,7 +25,7 @@ set('copy_dirs', [
 
 
 host('main')
-    ->hostname('100k-dev-server')
+    ->hostname('ovh-server')
     ->user('ubuntu')
     ->set('deploy_path', '/var/www/phala.100k.dev');
 

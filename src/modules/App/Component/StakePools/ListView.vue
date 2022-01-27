@@ -14,7 +14,7 @@
                         :native-value="true"
                         type="is-primary"
                     >
-                        <b-icon icon="user-check"></b-icon>
+                        <b-icon icon="user-shield"></b-icon>
                         <span>Verified identity only</span>
                     </b-checkbox-button>
                 </b-field>
@@ -49,6 +49,17 @@
                     >
                         <b-icon icon="skull-crossbones"></b-icon>
                         <span>Exclude slashed pools</span>
+                    </b-checkbox-button>
+                </b-field>
+
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.modifiers.distinctOwners"
+                        :native-value="true"
+                        type="is-primary"
+                    >
+                        <b-icon icon="people-arrows"></b-icon>
+                        <span>Distinct owners</span>
                     </b-checkbox-button>
                 </b-field>
             </div>
@@ -303,7 +314,10 @@ export default class ListView
         sorting: {
             lastHistoryEntry: { avgApr: 'DESC' }
         },
-        pagination: StakePoolService.getDefaultPagination()
+        pagination: StakePoolService.getDefaultPagination(),
+        modifiers: {
+            distinctOwners: {}
+        }
     });
 
     protected aprFilterConfig : FilterConfig = {
@@ -329,7 +343,7 @@ export default class ListView
     {
         if (this.$route.hash && this.$route.hash.length > 1) {
             const rawRequest = this.$route.hash.substring(1);
-            this.collectionRequest.fromPlainString(rawRequest);
+            this.collectionRequest.fromPlainString(rawRequest, true);
         }
     }
 
@@ -339,7 +353,7 @@ export default class ListView
         this.loadStakePools();
 
         const currentHash = (this.$route.hash ?? '#').substring(1);
-        const rawRequest = this.collectionRequest.toPlainString();
+        const rawRequest = this.collectionRequest.toPlainString(true);
         if (currentHash != rawRequest) {
             this.$router.push({
                 name: 'stakepools_list',
