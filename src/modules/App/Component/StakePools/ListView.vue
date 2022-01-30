@@ -7,12 +7,13 @@
             </div>
         </header>
         <div class="panel-block">
-            <div class="mb-6 is-flex is-justify-content-start">
+            <div class="list-filters mb-6 is-flex is-justify-content-start">
                 <b-field class="mr-2">
                     <b-checkbox-button
                         v-model="collectionRequest.filters._identityVerified"
                         :native-value="true"
                         type="is-primary"
+                        class="filter-identity-verified"
                     >
                         <b-icon icon="user-shield"></b-icon>
                         <span>Verified identity only</span>
@@ -24,6 +25,7 @@
                         v-model="collectionRequest.filters._activeOnly"
                         :native-value="true"
                         type="is-primary"
+                        class="filter-active-only"
                     >
                         <b-icon icon="chart-line"></b-icon>
                         <span>Active pools only</span>
@@ -35,6 +37,7 @@
                         v-model="collectionRequest.filters._issues.id.$nin"
                         :native-value="1"
                         type="is-primary"
+                        class="filter-exclude-bad-behaviors"
                     >
                         <b-icon icon="skull-crossbones"></b-icon>
                         <span>Exclude bad behaviors</span>
@@ -46,6 +49,7 @@
                         v-model="collectionRequest.filters._issues.id.$nin"
                         :native-value="2"
                         type="is-primary"
+                        class="filter-exclude-slashes"
                     >
                         <b-icon icon="skull-crossbones"></b-icon>
                         <span>Exclude slashed pools</span>
@@ -57,6 +61,7 @@
                         v-model="collectionRequest.modifiers.distinctOwners"
                         :native-value="true"
                         type="is-primary"
+                        class="filter-distinct-owners"
                     >
                         <b-icon icon="people-arrows"></b-icon>
                         <span>Distinct owners</span>
@@ -305,7 +310,7 @@ export default class ListView
                 (<any>this).owner.identityVerified = v ? { $eq: true } : {};
             },
             set _activeOnly(v) {
-                (<any>this).lastHistoryEntry.avgApr.$gte = v ? 0 : undefined;
+                (<any>this).lastHistoryEntry.avgApr.$gt = v ? 0 : undefined;
             }
         },
         sorting: {
@@ -313,7 +318,7 @@ export default class ListView
         },
         pagination: StakePoolService.getDefaultPagination(),
         modifiers: {
-            distinctOwners: {}
+            distinctOwners: false
         }
     });
 

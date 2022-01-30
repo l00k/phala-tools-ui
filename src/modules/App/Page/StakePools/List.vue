@@ -43,7 +43,8 @@ export default class StakePoolsListPage
 
     public isReady : boolean = false;
 
-    public tourName : string = 'stakepools_list:2';
+
+    public tourName : string = 'stakepools_list:3';
 
     @ClientStore.State('finishedTours')
     public finishedTours : string[];
@@ -65,9 +66,64 @@ export default class StakePoolsListPage
             header: {
                 title: 'Sorting',
             },
-            content: `Your can sort though multiple columns`,
+            content: `Your can sort though multiple columns (use CTRL key)`,
             params: {
                 placement: 'top',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.list-filters .filter-identity-verified',
+            header: {
+                title: 'Filters',
+            },
+            content: `You can restrict displayed pools to verified owners only`,
+            params: {
+                placement: 'bottom',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.list-filters .filter-active-only',
+            header: {
+                title: 'Filters',
+            },
+            content: `..with non 0 avg APR`,
+            params: {
+                placement: 'bottom',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.list-filters .filter-exclude-bad-behaviors',
+            header: {
+                title: 'Filters',
+            },
+            content: `..exclude unfair owners`,
+            params: {
+                placement: 'bottom',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.list-filters .filter-exclude-slashes',
+            header: {
+                title: 'Filters',
+            },
+            content: `..exclude non reliable owners`,
+            params: {
+                placement: 'bottom',
+                enableScrolling: false,
+            }
+        },
+        {
+            target: '.list-filters .filter-distinct-owners',
+            header: {
+                title: 'Filters',
+            },
+            content: `In case you would like to diversify`,
+            params: {
+                placement: 'bottom',
                 enableScrolling: false,
             }
         },
