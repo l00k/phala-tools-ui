@@ -13,7 +13,7 @@
                     @click="navigate"
                 >
                     <a>
-                        <span class="icon is-small"><i class="fas fa-swimming-pool" aria-hidden="true"></i></span>
+                        <span class="icon is-small"><i class="fas fa-piggy-bank" aria-hidden="true"></i></span>
                         <span>StakePools</span>
                     </a>
                 </li>

@@ -248,6 +248,11 @@
                         <div class="card-content">
 
                             <div class="stats">
+                                <span class="stats__label">Current commission</span>
+                                <span class="stats__value">{{ stakePool.lastHistoryEntry.commission | formatPercent }}</span>
+                            </div>
+
+                            <div class="stats">
                                 <span class="stats__label">Avg APR</span>
                                 <span class="stats__value">{{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</span>
                             </div>
@@ -372,10 +377,11 @@ export default class BasicInfo
 .stats {
     &__label {
         display: inline-block;
-        width:   50%;
+        width:   60%;
     }
     &__value {
-        width: 50%;
+        display: inline-block;
+        width:   40%;
     }
 }
 </style>

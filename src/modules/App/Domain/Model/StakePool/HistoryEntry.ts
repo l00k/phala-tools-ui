@@ -96,7 +96,7 @@ export class HistoryEntry
     
     public get widthdrawalsIssue () : boolean
     {
-        return this.stakeReleasingPercent > 0.5;
+        return this.withdrawalsPercent > 0.5;
     }
     
 }
