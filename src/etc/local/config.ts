@@ -1,7 +1,7 @@
 export default {
     api: {
         client: {
-            baseURL: 'http://localhost:4004'
+            baseURL: 'http://localhost:54004'
         }
     }
 };
