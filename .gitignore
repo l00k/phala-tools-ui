@@ -1,4 +1,5 @@
 /dist
+/etc/local/config.ts
 /vendor
 
 node_modules

@@ -3,11 +3,15 @@
         <NetworkData
             :context.sync="context"
         />
+        <Wizard
+            :context.sync="context"
+        />
     </div>
 </template>
 
 <script lang="ts">
 import NetworkData from '#/App/Component/AprCalculator/Calculator/NetworkData.vue';
+import Wizard from '#/App/Component/AprCalculator/Calculator/Wizard.vue';
 import { Context } from '#/App/Component/AprCalculator/Domain/Context';
 import { StakePool } from '#/App/Domain/Model/StakePool';
 import BaseComponent from '@/core/app-frontend/Component/BaseComponent.vue';
@@ -18,7 +22,8 @@ import { Prop, Watch } from 'vue-property-decorator';
 
 @Component({
     components: {
-        NetworkData
+        NetworkData,
+        Wizard,
     }
 })
 export default class Calculator

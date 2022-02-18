@@ -1,7 +1,6 @@
 export class Context
 {
 
-    public vTotal : number;
-    public pTotal : number;
+    public vTotal : number = 0;
 
 }

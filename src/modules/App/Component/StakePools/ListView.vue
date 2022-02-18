@@ -246,6 +246,7 @@
                     >
                         <b-tag
                             v-for="issue in stakePool.issues"
+                            :key="issue.id"
                             size="is-small"
                             :style="{ backgroundColor: issue.color }"
                             v-tooltip="issue.description"
