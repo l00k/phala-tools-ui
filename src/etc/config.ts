@@ -1,7 +1,7 @@
 export default {
     api: {
         client: {
-            baseURL: 'https://phala.100k.dev:4004'
+            baseURL: 'https://phala.100k.dev/api/'
         }
     },
     module: {
@@ -15,7 +15,7 @@ export default {
         },
         phala: {
             api: {
-                wsUrl: 'ws://localhost:19944/ws',
+                wsUrl: 'wss://khala-api.phala.network/ws',
             },
             subscan: {
                 baseUrl: 'https://khala.api.subscan.io/api/'

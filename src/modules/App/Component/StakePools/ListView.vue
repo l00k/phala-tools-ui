@@ -44,17 +44,17 @@
                     </b-checkbox-button>
                 </b-field>
 
-                <b-field class="mr-2">
-                    <b-checkbox-button
-                        v-model="collectionRequest.filters._issues.id.$nin"
-                        :native-value="2"
-                        type="is-primary"
-                        class="filter-exclude-slashes"
-                    >
-                        <b-icon icon="skull-crossbones"></b-icon>
-                        <span>Exclude slashed pools</span>
-                    </b-checkbox-button>
-                </b-field>
+<!--                <b-field class="mr-2">-->
+<!--                    <b-checkbox-button-->
+<!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
+<!--                        :native-value="2"-->
+<!--                        type="is-primary"-->
+<!--                        class="filter-exclude-slashes"-->
+<!--                    >-->
+<!--                        <b-icon icon="skull-crossbones"></b-icon>-->
+<!--                        <span>Exclude slashed pools</span>-->
+<!--                    </b-checkbox-button>-->
+<!--                </b-field>-->
 
                 <b-field class="mr-2">
                     <b-checkbox-button
@@ -395,8 +395,8 @@ export default class ListView
     public onRowClick(stakePool : StakePool)
     {
         this.$router.push({
-            name: 'stakepools_details',
-            params: { id: stakePool.id.toString() },
+            name: 'stakepools_details2',
+            params: { onChainId: stakePool.onChainId.toString() },
         });
     }
 

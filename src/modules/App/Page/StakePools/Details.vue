@@ -25,6 +25,7 @@ import * as VueRouter from 'vue-router';
 
 
 @Route('/stakepools/:id', 'stakepools_details')
+@Route('/stakepools/onchain/:onChainId', 'stakepools_details2')
 @Component({
     components: {
         DetailsView
@@ -44,20 +45,27 @@ export default class StakePoolsDetailsPage
         await this.$store.dispatch('StakePools/RuntimeStorage/init');
         this.isReady = true;
 
-        this.requestedId = Number(this.$route.params.id);
+        this.requestedId = this.getRequestedId(this.$route);
     }
 
     public async beforeRouteEnter (to : VueRouter.Route, from : VueRouter.Route, next : VueRouter.NavigationGuardNext<any>)
     {
         next((component : StakePoolsDetailsPage) => {
-            component.requestedId = Number(to.params.id);
+            component.requestedId = component.getRequestedId(to);
         });
     }
 
     public async beforeRouteUpdate (to : VueRouter.Route, from : VueRouter.Route, next : VueRouter.NavigationGuardNext<any>)
     {
-        this.requestedId = Number(to.params.id);
+        this.requestedId = this.getRequestedId(to);
         next();
+    }
+
+    protected getRequestedId(route : VueRouter.Route) : number
+    {
+        return route.params.onChainId
+            ? Number(route.params.onChainId) + 3
+            : Number(route.params.id);
     }
 
 }

@@ -2,7 +2,7 @@
     <div>
         <b-loading
             :is-full-page="true"
-            v-model="readyStage != ReadyStage.Ready"
+            :active="readyStage != ReadyStage.Ready"
             :can-cancel="false"
         >
             <div class="loading-icon"></div>
