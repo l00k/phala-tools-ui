@@ -24,12 +24,14 @@
 
 <script lang="ts">
 import { Context } from '#/App/Component/AprCalculator/Domain/Context';
+import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
 import { ApiProvider, MiningStates } from '#/Phala';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import { ApiPromise } from '@polkadot/api';
+import Decimal from 'decimal.js';
 import chunk from 'lodash/chunk';
 import fill from 'lodash/fill';
 import { Prop } from 'vue-property-decorator';
@@ -43,8 +45,13 @@ enum ReadyStage
     Ready,
 }
 
+type WorkerData = {
+    minerInfo : typeof Phala.KhalaTypes.MinerInfo,
+    workerInfo : typeof Phala.KhalaTypes.WorkerInfo
+}
+
 type StakePoolDto = typeof Phala.KhalaTypes.PoolInfo & {
-    workersData : typeof Phala.KhalaTypes.MinerInfo[],
+    workersData : WorkerData[],
 }
 
 @Component({
@@ -71,8 +78,9 @@ export default class NetworkData
 
     public async mounted ()
     {
-        this.context.vTotal = 8.302471195243322e+26;
         this.readyStage = ReadyStage.Ready;
+
+        this.context.networkShares = 26399078.556516007;
 
         //await this.loadNetworkData();
     }
@@ -87,15 +95,28 @@ export default class NetworkData
 
         this.readyStage = ReadyStage.PullingStakePools;
 
+        let totalShare = 0;
+
         for await (const stakePool of this.loadStakePools(this.stakePoolsToLoad)) {
-            for (const worker of stakePool.workersData) {
-                if (MiningStates.includes(worker.state)) {
-                    this.context.vTotal += Number(worker.v);
+            for (const { minerInfo, workerInfo } of stakePool.workersData) {
+                if (!MiningStates.includes(minerInfo.state)) {
+                    continue;
                 }
+
+                const workerV = (new Decimal(minerInfo.v)).div(new Decimal(2).pow(64)).toNumber();
+                const workerShare = NetworkService.calculateWorkerShare(
+                    workerV,
+                    Number(workerInfo.confidenceLevel),
+                    Number(minerInfo.benchmark.pInstant)
+                );
+
+                totalShare += workerShare;
             }
 
             ++this.stakePoolsLoaded;
         }
+
+        this.context.networkShares = totalShare;
 
         this.readyStage = ReadyStage.Ready;
     }
@@ -141,18 +162,23 @@ export default class NetworkData
         }
     }
 
-    protected async* loadWorkers (workersPubKeys : string[]) : AsyncGenerator<typeof Phala.KhalaTypes.MinerInfo, any, any>
+    protected async* loadWorkers (workersPubKeys : string[]) : AsyncGenerator<WorkerData, any, any>
     {
         const workersChunks = chunk(workersPubKeys, 50);
 
         for (const workersChunk of workersChunks) {
             const bindingAddresses = (await this.api.query.phalaMining.workerBindings.multi(workersChunk))
                 .map(raw => raw.toString());
-            const workers = <any>(await this.api.query.phalaMining.miners.multi(bindingAddresses))
+            const minerInfos = <any>(await this.api.query.phalaMining.miners.multi(bindingAddresses))
+                .map(raw => raw.toJSON());
+            const workerInfos = <any>(await this.api.query.phalaRegistry.workers.multi(workersChunk))
                 .map(raw => raw.toJSON());
 
-            for (const worker of workers) {
-                yield worker;
+            for (let i=0; i<workersChunk.length; ++i) {
+                yield {
+                    minerInfo: minerInfos[i],
+                    workerInfo: workerInfos[i],
+                }
             }
         }
     }

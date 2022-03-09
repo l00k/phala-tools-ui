@@ -19,21 +19,21 @@
                 </li>
             </router-link>
 
-<!--            <router-link-->
-<!--                to="/aprcalc"-->
-<!--                exact custom-->
-<!--                v-slot="{ navigate, isActive }"-->
-<!--            >-->
-<!--                <li-->
-<!--                    :class="{ 'is-active': isActive }"-->
-<!--                    @click="navigate"-->
-<!--                >-->
-<!--                    <a>-->
-<!--                        <span class="icon is-small"><i class="fas fa-chart-column" aria-hidden="true"></i></span>-->
-<!--                        <span>APR calculator</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </router-link>-->
+            <router-link
+                to="/aprcalc"
+                exact custom
+                v-slot="{ navigate, isActive }"
+            >
+                <li
+                    :class="{ 'is-active': isActive }"
+                    @click="navigate"
+                >
+                    <a>
+                        <span class="icon is-small"><i class="fas fa-chart-column" aria-hidden="true"></i></span>
+                        <span>APR calculator</span>
+                    </a>
+                </li>
+            </router-link>
 
 <!--            <router-link-->
 <!--                to="/network-map"-->

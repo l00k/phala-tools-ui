@@ -5,7 +5,9 @@
     "license": "MIT",
     "dependencies": {
         "@polkadot/vue-identicon": "^0.84.1",
+        "clipboard": "^2.0.8",
         "lightweight-charts": "^3.7.0",
-        "vue-tour": "^2.0.0"
+        "vue-tour": "^2.0.0",
+        "decimal.js": "^10.3.1"
     }
 }

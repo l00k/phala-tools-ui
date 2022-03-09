@@ -30,12 +30,10 @@
             "buefy/types"
         ],
         "paths": {
-            "@/*": [
-                "src/*"
-            ],
-            "#/*": [
-                "src/modules/*",
-            ]
+            "@/*": ["./src/*"],
+            "#/*": ["./src/modules/*"],
+            "@inti5/*": ["./src/core/inti5/*"],
+            "@inti5/app-frontend/*": ["./src/core/inti5/app-frontend/*"]
         },
         "lib": [
             "esnext",
