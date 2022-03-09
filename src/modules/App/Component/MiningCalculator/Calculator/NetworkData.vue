@@ -87,8 +87,11 @@ export default class NetworkData
 
     public async mounted ()
     {
-        this.readyStage = ReadyStage.Ready;
+        this.readyStage = ReadyStage.NodeConnnecting;
 
+        this.api = await this.apiProvider.getApi();
+
+        // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
         if (!this.networkShares) {
@@ -97,14 +100,12 @@ export default class NetworkData
         }
 
         this.context.networkShares = this.networkShares;
+
+        this.readyStage = ReadyStage.Ready;
     }
 
     protected async loadNetworkData ()
     {
-        this.readyStage = ReadyStage.NodeConnnecting;
-
-        this.api = await this.apiProvider.getApi();
-
         this.stakePoolsToLoad = <any>(await this.api.query.phalaStakePool.poolCount()).toJSON();
 
         this.readyStage = ReadyStage.PullingStakePools;
