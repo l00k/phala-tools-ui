@@ -95,7 +95,7 @@ export default class NetworkData
         // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
-        this.context.networkShares = await this.permanentCache<number>(
+        this.context.networkShares = await this.permanentCache(
             'NetworkData::networkShares',
             async() => this.loadNetworkData(),
             { lifetime: 3600 }
