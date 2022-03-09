@@ -112,7 +112,7 @@
 
                     <div class="is-flex">
                         <b-field
-                            label="Pick from know CPUs"
+                            label="Pick from known CPUs"
                             label-position="on-border"
                         >
                             <b-select
