@@ -39,33 +39,15 @@ async function calculateBlockTime(
     
     {
         const blockHash = await phalaApi.rpc.chain.getBlockHash(finalizedBlockNumber);
-        
-        const { block } = await phalaApi.rpc.chain.getBlock(blockHash);
-        const allEvents = await phalaApi.query.system.events.at(block.header.hash);
-        
-        const allExtrinsics = block.extrinsics
-            .map((extrinsic, index) => ({ extrinsic, index }));
-        
-        const timestampExtrinsic = allExtrinsics
-            .find(({ extrinsic }) => extrinsic.method.section === 'timestamp' && extrinsic.method.method === 'set');
-        
-        lastBlockTimestamp = parseInt(timestampExtrinsic.extrinsic.args[0].toString());
+        const blockDateUts : number = (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
+        lastBlockTimestamp = Number(blockDateUts);
     }
     
     {
         const blockNumber = finalizedBlockNumber - blockRange;
         const blockHash = await phalaApi.rpc.chain.getBlockHash(blockNumber);
-        
-        const { block } = await phalaApi.rpc.chain.getBlock(blockHash);
-        const allEvents = await phalaApi.query.system.events.at(block.header.hash);
-        
-        const allExtrinsics = block.extrinsics
-            .map((extrinsic, index) => ({ extrinsic, index }));
-        
-        const timestampExtrinsic = allExtrinsics
-            .find(({ extrinsic }) => extrinsic.method.section === 'timestamp' && extrinsic.method.method === 'set');
-        
-        firstBlockTimestamp = parseInt(timestampExtrinsic.extrinsic.args[0].toString());
+        const blockDateUts : number = (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
+        firstBlockTimestamp = Number(blockDateUts);
     }
     
     return (lastBlockTimestamp - firstBlockTimestamp) / blockRange / 1000;

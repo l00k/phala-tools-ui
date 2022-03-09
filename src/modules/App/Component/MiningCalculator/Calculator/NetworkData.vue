@@ -26,7 +26,8 @@
 import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
-import { ApiProvider, KhalaTypes, MiningStates } from '#/Phala';
+import { ApiProvider, MiningStates } from '#/Phala';
+import { GetCached } from '@/core/app-frontend/Store/PermanentCache';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
@@ -56,7 +57,7 @@ type StakePoolDto = typeof Phala.KhalaTypes.PoolInfo & {
 }
 
 
-const LocalStorage = namespace('MiningCalculator/LocalStorage');
+const PermanentCache = namespace('PermanentCache');
 
 
 @Component({
@@ -74,8 +75,8 @@ export default class NetworkData
     @Prop()
     protected context : Context;
 
-    @LocalStorage.State('networkShares')
-    protected networkShares : number;
+    @PermanentCache.Getter('getCached')
+    protected permanentCache : GetCached;
 
     protected api : ApiPromise;
 
@@ -94,12 +95,11 @@ export default class NetworkData
         // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
-        if (!this.networkShares) {
-            const networkShares = await this.loadNetworkData();
-            this.$store.commit('MiningCalculator/LocalStorage/setNetworkShares', networkShares)
-        }
-
-        this.context.networkShares = this.networkShares;
+        this.context.networkShares = await this.permanentCache<number>(
+            'NetworkData::networkShares',
+            async() => this.loadNetworkData(),
+            { lifetime: 3600 }
+        );
 
         this.readyStage = ReadyStage.Ready;
     }
@@ -189,11 +189,11 @@ export default class NetworkData
             const workerInfos = <any>(await this.api.query.phalaRegistry.workers.multi(workersChunk))
                 .map(raw => raw.toJSON());
 
-            for (let i=0; i<workersChunk.length; ++i) {
+            for (let i = 0; i < workersChunk.length; ++i) {
                 yield {
                     minerInfo: minerInfos[i],
                     workerInfo: workerInfos[i],
-                }
+                };
             }
         }
     }
