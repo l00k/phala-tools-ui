@@ -5,17 +5,19 @@
             :active="readyStage != ReadyStage.Ready"
             :can-cancel="false"
         >
-            <div class="loading-icon"></div>
-            <div class="ml-6 pl-4">
-                <div v-if="readyStage == ReadyStage.Init">
-                    Initiation
-                </div>
-                <div v-if="readyStage == ReadyStage.NodeConnnecting">
-                    Connecting to node...
-                </div>
-                <div v-if="readyStage == ReadyStage.PullingStakePools">
-                    <p class="has-text-weight-bold">Pulling network data</p>
-                    <p>Stake pools: {{ stakePoolsLoaded }} / {{ stakePoolsToLoad }}</p>
+            <div class="is-flex loading-content">
+                <div class="loading-icon"></div>
+                <div class="loading-text ml-6 pl-4">
+                    <div v-if="readyStage == ReadyStage.Init">
+                        Initiation
+                    </div>
+                    <div v-if="readyStage == ReadyStage.NodeConnnecting">
+                        Connecting to node...
+                    </div>
+                    <div v-if="readyStage == ReadyStage.PullingStakePools">
+                        <p class="has-text-weight-bold">Pulling network data</p>
+                        <p>Stake pools: {{ stakePoolsLoaded }} / {{ stakePoolsToLoad }}</p>
+                    </div>
                 </div>
             </div>
         </b-loading>
@@ -200,3 +202,13 @@ export default class NetworkData
 
 }
 </script>
+
+<style scoped lang="scss">
+.loading-content {
+    filter: drop-shadow(0 0 2px rgba(0,0,0, 0.8))
+            drop-shadow(0 0 8px rgba(0,0,0, 0.5))
+            drop-shadow(0 0 16px rgba(0,0,0, 0.3))
+            ;
+
+}
+</style>

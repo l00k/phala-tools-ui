@@ -10,7 +10,7 @@
         <div class="panel-block">
 
             <b-notification
-                type="is-danger"
+                type="is-warning"
             >
                 This is beta version of calculator!<br/>
                 It may include some serious bugs! Don't relay on it considering investments.
