@@ -480,23 +480,23 @@
                         </tr>
                         <tr>
                             <th>Daily</th>
-                            <td>{{ resultsDaily.rewards.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.electricityCost.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.deviceAmortisation.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.otherCosts.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.revenue.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.totalCosts.toFixed(2) }}</td>
-                            <td>{{ resultsDaily.income.toFixed(2) }}</td>
+                            <td>{{ resultsDaily.rewards | formatCoin }} PHA</td>
+                            <td>{{ resultsDaily.electricityCost | formatCoin }} $</td>
+                            <td>{{ resultsDaily.deviceAmortisation | formatCoin }} $</td>
+                            <td>{{ resultsDaily.otherCosts | formatCoin }} $</td>
+                            <td>{{ resultsDaily.revenue | formatCoin }} $</td>
+                            <td>{{ resultsDaily.totalCosts | formatCoin }} $</td>
+                            <td>{{ resultsDaily.income | formatCoin }} $</td>
                         </tr>
                         <tr>
                             <th>Monthly</th>
-                            <td>{{ resultsMonthly.rewards.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.electricityCost.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.deviceAmortisation.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.otherCosts.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.revenue.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.totalCosts.toFixed(2) }}</td>
-                            <td>{{ resultsMonthly.income.toFixed(2) }}</td>
+                            <td>{{ resultsMonthly.rewards | formatCoin }} PHA</td>
+                            <td>{{ resultsMonthly.electricityCost | formatCoin }} $</td>
+                            <td>{{ resultsMonthly.deviceAmortisation | formatCoin }} $</td>
+                            <td>{{ resultsMonthly.otherCosts | formatCoin }} $</td>
+                            <td>{{ resultsMonthly.revenue | formatCoin }} $</td>
+                            <td>{{ resultsMonthly.totalCosts | formatCoin }} $</td>
+                            <td>{{ resultsMonthly.income | formatCoin }} $</td>
                         </tr>
                     </table>
                 </div>
@@ -584,7 +584,6 @@ export default class Wizard
 
     protected resultsDaily : ResultInPeriod = new ResultInPeriod();
     protected resultsMonthly : ResultInPeriod = new ResultInPeriod();
-    protected resultsYearly : ResultInPeriod = new ResultInPeriod();
 
 
     public mounted()
@@ -607,6 +606,14 @@ export default class Wizard
     public calculateResults ()
     {
         this.resultsDaily.rewards = this.context.ownerRewardsDaily;
+        this.resultsDaily.electricityCost = this.context.devicePowerConsumption * 24 / 1000 * this.context.electricityCost;
+        this.resultsDaily.deviceAmortisation = this.context.deviceCost / (this.context.deviceAmortisation * 365);
+        this.resultsDaily.otherCosts = this.context.otherCosts / 30;
+        this.resultsDaily.revenue = this.resultsDaily.rewards * this.context.phaPrice;
+        this.resultsDaily.totalCosts = this.resultsDaily.electricityCost
+            + this.resultsDaily.deviceAmortisation
+            + this.resultsDaily.otherCosts;
+        this.resultsDaily.income = this.resultsDaily.revenue - this.resultsDaily.totalCosts;
 
         for (const [prop, value] of Object.entries(this.resultsDaily)) {
             this.resultsMonthly[prop] = value * 30;
