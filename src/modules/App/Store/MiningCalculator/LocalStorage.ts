@@ -7,9 +7,9 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators';
 @Module({
     dynamic: true,
     store: ObjectManager.getSingleton().getInstance(App).getVuexStore(),
-    preserveState: StoreManager.isModulePersisted('AprCalculator/LocalStorage'),
+    preserveState: StoreManager.isModulePersisted('MiningCalculator/LocalStorage'),
     namespaced: true,
-    name: 'AprCalculator/LocalStorage',
+    name: 'MiningCalculator/LocalStorage',
 })
 export class LocalStorage
     extends VuexModule<LocalStorage>

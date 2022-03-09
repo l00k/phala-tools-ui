@@ -507,7 +507,7 @@
 </template>
 
 <script lang="ts">
-import { Context } from '#/App/Component/AprCalculator/Domain/Context';
+import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';

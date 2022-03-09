@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Context } from '#/App/Component/AprCalculator/Domain/Context';
+import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
 import { ApiProvider, KhalaTypes, MiningStates } from '#/Phala';
@@ -56,7 +56,7 @@ type StakePoolDto = typeof Phala.KhalaTypes.PoolInfo & {
 }
 
 
-const LocalStorage = namespace('AprCalculator/LocalStorage');
+const LocalStorage = namespace('MiningCalculator/LocalStorage');
 
 
 @Component({
@@ -91,7 +91,7 @@ export default class NetworkData
 
         if (!this.networkShares) {
             const networkShares = await this.loadNetworkData();
-            this.$store.commit('AprCalculator/LocalStorage/setNetworkShares', networkShares)
+            this.$store.commit('MiningCalculator/LocalStorage/setNetworkShares', networkShares)
         }
 
         this.context.networkShares = this.networkShares;

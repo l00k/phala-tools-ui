@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import NetworkData from '#/App/Component/AprCalculator/Calculator/NetworkData.vue';
-import Wizard from '#/App/Component/AprCalculator/Calculator/Wizard.vue';
-import { Context } from '#/App/Component/AprCalculator/Domain/Context';
+import NetworkData from '#/App/Component/MiningCalculator/Calculator/NetworkData.vue';
+import Wizard from '#/App/Component/MiningCalculator/Calculator/Wizard.vue';
+import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { KhalaTypes } from '#/Phala';
 import BaseComponent from '@/core/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
@@ -23,7 +23,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { namespace } from 'vuex-class';
 
 
-const RuntimeStorage = namespace('AprCalculator/RuntimeStorage');
+const RuntimeStorage = namespace('MiningCalculator/RuntimeStorage');
 
 
 @Component({
@@ -52,7 +52,7 @@ export default class Calculator
 
     public async mounted ()
     {
-        await this.$store.dispatch('AprCalculator/RuntimeStorage/init');
+        await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
         this.context.tokenomicParams = cloneDeep(this.tokenomicParameters);
         this.context.blockTime = this.blockTime;

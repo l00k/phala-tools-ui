@@ -20,7 +20,7 @@
             </router-link>
 
             <router-link
-                to="/aprcalc"
+                to="/mining-calc"
                 exact custom
                 v-slot="{ navigate, isActive }"
             >
@@ -30,7 +30,7 @@
                 >
                     <a>
                         <span class="icon is-small"><i class="fas fa-chart-column" aria-hidden="true"></i></span>
-                        <span>APR calculator</span>
+                        <span>Mining calculator</span>
                     </a>
                 </li>
             </router-link>

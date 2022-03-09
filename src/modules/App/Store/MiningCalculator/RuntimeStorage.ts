@@ -91,7 +91,7 @@ async function calculateMiningEra(
     store: ObjectManager.getSingleton().getInstance(App).getVuexStore(),
     preserveState: false,
     namespaced: true,
-    name: 'AprCalculator/RuntimeStorage',
+    name: 'MiningCalculator/RuntimeStorage',
 })
 export class RuntimeStorage
     extends VuexModule<RuntimeStorage>
