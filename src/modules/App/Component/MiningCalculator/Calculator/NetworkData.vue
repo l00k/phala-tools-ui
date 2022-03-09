@@ -89,6 +89,8 @@ export default class NetworkData
     {
         this.readyStage = ReadyStage.Ready;
 
+        await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
+
         if (!this.networkShares) {
             const networkShares = await this.loadNetworkData();
             this.$store.commit('MiningCalculator/LocalStorage/setNetworkShares', networkShares)
