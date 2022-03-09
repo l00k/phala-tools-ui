@@ -26,7 +26,7 @@
 import { Context } from '#/App/Component/AprCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
-import { ApiProvider, MiningStates } from '#/Phala';
+import { ApiProvider, KhalaTypes, MiningStates } from '#/Phala';
 import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
 import { Component } from '@inti5/app-frontend/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
@@ -35,6 +35,7 @@ import Decimal from 'decimal.js';
 import chunk from 'lodash/chunk';
 import fill from 'lodash/fill';
 import { Prop } from 'vue-property-decorator';
+import { namespace } from 'vuex-class';
 
 
 enum ReadyStage
@@ -54,6 +55,10 @@ type StakePoolDto = typeof Phala.KhalaTypes.PoolInfo & {
     workersData : WorkerData[],
 }
 
+
+const LocalStorage = namespace('AprCalculator/LocalStorage');
+
+
 @Component({
     components: {}
 })
@@ -69,6 +74,9 @@ export default class NetworkData
     @Prop()
     protected context : Context;
 
+    @LocalStorage.State('networkShares')
+    protected networkShares : number;
+
     protected api : ApiPromise;
 
     public readyStage : ReadyStage = ReadyStage.Init;
@@ -76,13 +84,17 @@ export default class NetworkData
     public stakePoolsLoaded : number = 0;
     public stakePoolsToLoad : number = 0;
 
+
     public async mounted ()
     {
         this.readyStage = ReadyStage.Ready;
 
-        this.context.networkShares = 26399078.556516007;
+        if (!this.networkShares) {
+            const networkShares = await this.loadNetworkData();
+            this.$store.commit('AprCalculator/LocalStorage/setNetworkShares', networkShares)
+        }
 
-        //await this.loadNetworkData();
+        this.context.networkShares = this.networkShares;
     }
 
     protected async loadNetworkData ()
@@ -116,9 +128,9 @@ export default class NetworkData
             ++this.stakePoolsLoaded;
         }
 
-        this.context.networkShares = totalShare;
-
         this.readyStage = ReadyStage.Ready;
+
+        return totalShare;
     }
 
     protected async* loadStakePools (stakePoolsCount : number) : AsyncGenerator<StakePoolDto, any, any>

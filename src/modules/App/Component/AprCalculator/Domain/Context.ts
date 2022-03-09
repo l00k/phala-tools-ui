@@ -12,11 +12,11 @@ export class Context
     
     public networkShares : number = 0;
     
-    public cpuScore : number = 100;
+    public cpuScore : number = null;
     
-    public cpuCores : number = 2;
+    public cpuCores : number = null;
     
-    public confidenceLevel : number = 1;
+    public confidenceLevel : number = null;
     
     public devicePowerConsumption : number = 0;
     
@@ -32,9 +32,9 @@ export class Context
     
     public commissionPercent : number = 50;
     
-    public stakePersonal : number = 0;
+    public stakePersonal : number = null;
     
-    public stakeDelegators : number = 0;
+    public stakeDelegators : number = null;
     
     public stakeFree : number = 0;
     

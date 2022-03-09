@@ -9,7 +9,16 @@
         </header>
         <div class="panel-block">
 
-            <ValidationObserver>
+            <b-notification
+                type="is-danger"
+            >
+                This is beta version of calculator!<br/>
+                It may include some serious bugs! Don't relay on it considering investments.
+            </b-notification>
+
+            <ValidationObserver
+                ref="validator"
+            >
                 <div class="box">
                     <h2 class="title is-6">Tokenomics params</h2>
 
@@ -576,6 +585,12 @@ export default class Wizard
     protected resultsDaily : ResultInPeriod = new ResultInPeriod();
     protected resultsMonthly : ResultInPeriod = new ResultInPeriod();
     protected resultsYearly : ResultInPeriod = new ResultInPeriod();
+
+
+    public mounted()
+    {
+        (<any>this.$refs.validator).validate();
+    }
 
 
     public selectPredefinedDevice(deviceKey : string)
