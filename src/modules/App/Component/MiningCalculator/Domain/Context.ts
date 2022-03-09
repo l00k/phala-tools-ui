@@ -87,16 +87,26 @@ export class Context
     
     public get stakeTotalDevice () : number
     {
-        return this.stakePersonal + this.stakeDelegators;
+        const value = this.stakePersonal + this.stakeDelegators;
+        return isNaN(value)
+            ? 0
+            : value;
     }
     
     public get stakeTotalPool () : number
     {
-        return this.stakePersonal + this.stakeDelegators + this.stakeFree;
+        const value = this.stakePersonal + this.stakeDelegators + this.stakeFree;
+        return isNaN(value)
+            ? 0
+            : value;
     }
     
     public get ownerFraction () : number
     {
+        if (!this.stakeTotalPool) {
+            return 0;
+        }
+    
         return (this.stakePersonal + (this.stakeDelegators + this.stakeFree) * this.commission)
             / this.stakeTotalPool;
     }
@@ -141,6 +151,10 @@ export class Context
     
     public get poolApr () : number
     {
+        if (!this.stakeTotalPool) {
+            return 0;
+        }
+        
         return this.rewardsDaily * 365
             * (1 - this.commission)
             / this.stakeTotalPool;
