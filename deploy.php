@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/common.php';
 
 set('application', 'phala-stats');
-set('repository', 'git@github.com:l00k/phala-stats-ui.git');
+set('repository', 'git@github.com:l00k/phala-tools-ui.git');
 
 set('git_tty', true);
 set('allow_anonymous_stats', false);

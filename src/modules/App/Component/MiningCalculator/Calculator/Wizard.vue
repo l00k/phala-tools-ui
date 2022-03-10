@@ -1,5 +1,8 @@
 <template>
-    <div class="panel is-primary">
+    <div
+        id="mining-calc-wizard"
+        class="panel is-primary"
+    >
         <header class="panel-heading">
             <div class="panel-heading-title is-justify-content-space-between">
                 <span>
@@ -19,7 +22,7 @@
             <ValidationObserver
                 ref="validator"
             >
-                <div class="box">
+                <div class="box" data-tour-id="step1">
                     <h2 class="title is-6">Tokenomics params</h2>
 
                     <div class="is-flex">
@@ -107,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <div class="box" data-tour-id="step2">
                     <h2 class="title is-6">Device params</h2>
 
                     <div class="is-flex">
@@ -229,7 +232,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <div class="box" data-tour-id="step3">
                     <h2 class="title is-6">Stake</h2>
 
                     <div class="is-flex">
@@ -335,7 +338,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <div class="box" data-tour-id="step4">
                     <h2 class="title is-6">Stake pool config</h2>
 
                     <div class="is-flex">
@@ -378,7 +381,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <div class="box" data-tour-id="step5">
                     <h2 class="title is-6">Cost config</h2>
 
                     <div class="is-flex">
@@ -408,7 +411,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <div class="box" data-tour-id="step6">
                     <h2 class="title is-6">Network params</h2>
 
                     <div class="is-flex">
@@ -467,7 +470,7 @@
 
                     <h2 class="title is-6 has-color-primary">Owner rewards</h2>
 
-                    <table class="results-table is-100-wide">
+                    <table class="results-table is-100-wide" data-tour-id="step7">
                         <tr>
                             <th></th>
                             <th>Rewards (PHA)</th>

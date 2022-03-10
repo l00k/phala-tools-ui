@@ -104,6 +104,8 @@ export default class NetworkData
         );
 
         this.readyStage = ReadyStage.Ready;
+
+        this.$emit('ready');
     }
 
     protected async loadNetworkData ()
