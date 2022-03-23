@@ -2,16 +2,16 @@ import { Issue } from '#/App/Domain/Model/StakePool/Issue';
 import { Tag } from '#/App/Domain/Model/Tag';
 import { IssueService } from '#/App/Domain/Service/IssueService';
 import { TagService } from '#/App/Domain/Service/TagService';
-import { EntityRuntimeCache } from '@inti5/api-frontend/EntityRuntimeCache';
-import { asyncGeneratorToArray } from '@inti5/utils/asyncGeneratorToArray';
-import { App } from '#/AppFrontend/App';
+import { App } from '#/FrontendCore/App';
+import { Provider } from '@/core/api-frontend';
 import { ObjectManager } from '@inti5/object-manager';
+import { asyncGeneratorToArray } from '@inti5/utils/asyncGeneratorToArray';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 
 
 @Module({
     dynamic: true,
-    store: ObjectManager.getSingleton().getInstance(App).getVuexStore(),
+    store: ObjectManager.getSingleton().getService<App>('app').getVuexStore(),
     preserveState: false,
     namespaced: true,
     name: 'StakePools/RuntimeStorage',
@@ -30,30 +30,24 @@ export class RuntimeStorage
     public async init () : Promise<boolean>
     {
         if (!this.context.state.initPromise) {
-            const objectManager = ObjectManager.getSingleton();
-            const entityRuntimeCache = objectManager.getInstance(EntityRuntimeCache);
-            const tagService = objectManager.getInstance(TagService);
-            const issueService = objectManager.getInstance(IssueService);
+            const apiClient = ObjectManager.getSingleton()
+                .getInstance(Provider)
+                .get('stats');
+            
+            const tagService = apiClient.getService(TagService);
+            const issueService = apiClient.getService(IssueService);
             
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {
-                    // load tags
-                    const tags = await asyncGeneratorToArray(
+                    this.context.state.tags = await asyncGeneratorToArray(
                         tagService.getFetcher(),
                         chunk => chunk
                     );
                     
-                    entityRuntimeCache.cacheEntities(tags);
-                    this.context.state.tags = tags;
-                    
-                    // load issues
-                    const issues = await asyncGeneratorToArray(
+                    this.context.state.issues = await asyncGeneratorToArray(
                         issueService.getFetcher(),
                         chunk => chunk
                     );
-                    
-                    entityRuntimeCache.cacheEntities(issues);
-                    this.context.state.issues = issues;
                     
                     resolve(true);
                 }
@@ -63,7 +57,6 @@ export class RuntimeStorage
                 }
             });
         }
-        
         
         return this.context.state.initPromise;
     }

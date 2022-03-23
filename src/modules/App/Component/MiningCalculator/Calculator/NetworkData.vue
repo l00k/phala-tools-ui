@@ -29,9 +29,9 @@ import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
 import { ApiProvider, MiningStates } from '#/Phala';
-import { GetCached } from '@/core/app-frontend/Store/PermanentCache';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component } from '#/AppFrontend/Vue/Annotations';
+import { GetCached } from '#/FrontendCore/Store/PersistentCache';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import { ApiPromise } from '@polkadot/api';
 import Decimal from 'decimal.js';
@@ -59,7 +59,7 @@ type StakePoolDto = typeof Phala.KhalaTypes.PoolInfo & {
 }
 
 
-const PermanentCache = namespace('PermanentCache');
+const PersistentCache = namespace('PersistentCache');
 
 
 @Component({
@@ -77,8 +77,8 @@ export default class NetworkData
     @Prop()
     protected context : Context;
 
-    @PermanentCache.Getter('getCached')
-    protected permanentCache : GetCached;
+    @PersistentCache.Getter('getCached')
+    protected PersistentCache : GetCached;
 
     protected api : ApiPromise;
 
@@ -97,7 +97,7 @@ export default class NetworkData
         // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
-        this.context.networkShares = await this.permanentCache(
+        this.context.networkShares = await this.PersistentCache(
             'NetworkData::networkShares',
             async() => this.loadNetworkData(),
             { lifetime: 3600 }

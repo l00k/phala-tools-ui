@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import DetailsView from '#/App/Component/StakePools/DetailsView.vue';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component, Route } from '#/AppFrontend/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component, Route } from '#/FrontendCore/Vue/Annotations';
 import * as VueRouter from 'vue-router';
 
 
@@ -63,9 +63,7 @@ export default class StakePoolsDetailsPage
 
     protected getRequestedId(route : VueRouter.Route) : number
     {
-        return route.params.onChainId
-            ? Number(route.params.onChainId) + 3
-            : Number(route.params.id);
+        return Number(route.params.id ?? route.params.onChainId);
     }
 
 }

@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import Calculator from '#/App/Component/MiningCalculator/Calculator.vue';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component, Route } from '#/AppFrontend/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component, Route } from '#/FrontendCore/Vue/Annotations';
 
 
 @Route('/mining-calc', 'mining_calc')
@@ -18,7 +18,7 @@ import { Component, Route } from '#/AppFrontend/Vue/Annotations';
         Calculator
     }
 })
-export default class MiningCalculatorPage
+export default class MiningCalculatorIndexPage
     extends BaseComponent
 {
 

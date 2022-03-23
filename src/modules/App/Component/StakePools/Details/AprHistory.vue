@@ -49,12 +49,11 @@ import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
 import { EventService } from '#/App/Domain/Service/EventService';
 import { HistoryEntryService } from '#/App/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
-import { Filters } from '@inti5/api-frontend/Domain';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component } from '#/AppFrontend/Vue/Annotations';
+import * as Api from '@/core/api-frontend';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import Color from 'color';
-import { LineStyle } from 'lightweight-charts';
 import * as LightweightCharts from 'lightweight-charts';
 import moment from 'moment';
 import { Prop, Ref, Watch } from 'vue-property-decorator';
@@ -173,7 +172,7 @@ export default class AprHistory
         }
 
         // events
-        const filters : Filters<Event<any>> = {
+        const filters : Api.Domain.Filters<Event<any>> = {
             type: {
                 $in: [ EventType.CommissionChange, EventType.Halving, EventType.BadBehavior ]
             }
@@ -272,7 +271,7 @@ export default class AprHistory
         }
 
         // get events
-        const markers : LightweightCharts.SeriesMarker<LightweightCharts.Time>[]= [];
+        const markers : LightweightCharts.SeriesMarker<LightweightCharts.Time>[] = [];
 
         for (const event of this.events) {
             let timestamp = moment(event.blockDate)
@@ -283,7 +282,11 @@ export default class AprHistory
             if (event.type == EventType.CommissionChange) {
                 const text = 'Commission: '
                     + Utility.formatPercent(event.additionalData.commission, { output: 'percent', mantissa: 0 }) + ' ('
-                    + Utility.formatPercent(event.additionalData.delta, { output: 'percent', mantissa: 0, forceSign: true }) + ')';
+                    + Utility.formatPercent(event.additionalData.delta, {
+                        output: 'percent',
+                        mantissa: 0,
+                        forceSign: true
+                    }) + ')';
                 markers.push({
                     time: <any>timestamp.unix(),
                     size: 2,
@@ -299,7 +302,7 @@ export default class AprHistory
                     size: 2,
                     position: 'belowBar',
                     shape: 'square',
-                    color: '#5492B0',
+                    color: '#5492b0',
                     text: 'Halving'
                 });
             }

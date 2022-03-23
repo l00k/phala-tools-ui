@@ -1,7 +1,10 @@
 export default {
     api: {
-        client: {
-            baseURL: 'https://phala.100k.dev/api/'
+        stats: {
+            baseUrl: 'https://phala.100k.dev/stats-api/'
+        },
+        watchdog: {
+            baseUrl: 'https://phala.100k.dev/watchdog-api/'
         }
     },
     module: {

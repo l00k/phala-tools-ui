@@ -18,8 +18,8 @@ import BasicInfo from '#/App/Component/StakePools/Details/BasicInfo.vue';
 import StakingHistory from '#/App/Component/StakePools/Details/StakingHistory.vue';
 import { StakePool } from '#/App/Domain/Model/StakePool';
 import { StakePoolService } from '#/App/Domain/Service/StakePoolService';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component } from '#/AppFrontend/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import { Prop, Watch } from 'vue-property-decorator';
 

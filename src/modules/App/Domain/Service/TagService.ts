@@ -1,17 +1,16 @@
 import { Tag } from '#/App/Domain/Model/Tag';
-import { Pagination } from '@inti5/api-frontend/Domain';
-import * as Api from '@inti5/api-frontend';
+import * as Api from '@/core/api-frontend';
 
 
 export class TagService
-    extends Api.ApiConsumer<Tag>
+    extends Api.EntityService<Tag>
 {
     
     public static readonly RESOURCE = Tag;
     
-    public static getDefaultPagination () : Pagination
+    public static getDefaultPagination () : Api.Domain.Pagination
     {
-        return new Pagination([ 1000 ], 1000);
+        return new Api.Domain.Pagination([ 1000 ], 1000);
     }
     
 }

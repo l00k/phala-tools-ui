@@ -9,16 +9,16 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
 import MainMenuView from '#/App/Component/MainMenuView.vue';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component } from 'vue-property-decorator';
 
 @Component({
     components: {
         MainMenuView
     }
 })
-export default class App
+export default class AppComponent
     extends BaseComponent
 {
 }

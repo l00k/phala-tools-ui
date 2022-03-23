@@ -1,18 +1,16 @@
 import { HistoryEntry } from '#/App/Domain/Model/StakePool/HistoryEntry';
-import { CollectionRequest, Pagination } from '@inti5/api-frontend/Domain';
-import * as Api from '@inti5/api-frontend';
-import { Collection } from '@inti5/api-frontend';
+import * as Api from '@/core/api-frontend';
 
 
 export class HistoryEntryService
-    extends Api.ApiConsumer<HistoryEntry>
+    extends Api.EntityService<HistoryEntry>
 {
     
     public static readonly RESOURCE = HistoryEntry;
     
-    public static getDefaultPagination () : Pagination
+    public static getDefaultPagination () : Api.Domain.Pagination
     {
-        return new Pagination([ 200 ]);
+        return new Api.Domain.Pagination([ 200 ]);
     }
     
     public getStakePoolHistoryFetcher (

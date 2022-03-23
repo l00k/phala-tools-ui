@@ -44,17 +44,17 @@
                     </b-checkbox-button>
                 </b-field>
 
-<!--                <b-field class="mr-2">-->
-<!--                    <b-checkbox-button-->
-<!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
-<!--                        :native-value="2"-->
-<!--                        type="is-primary"-->
-<!--                        class="filter-exclude-slashes"-->
-<!--                    >-->
-<!--                        <b-icon icon="skull-crossbones"></b-icon>-->
-<!--                        <span>Exclude slashed pools</span>-->
-<!--                    </b-checkbox-button>-->
-<!--                </b-field>-->
+                <!--                <b-field class="mr-2">-->
+                <!--                    <b-checkbox-button-->
+                <!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
+                <!--                        :native-value="2"-->
+                <!--                        type="is-primary"-->
+                <!--                        class="filter-exclude-slashes"-->
+                <!--                    >-->
+                <!--                        <b-icon icon="skull-crossbones"></b-icon>-->
+                <!--                        <span>Exclude slashed pools</span>-->
+                <!--                    </b-checkbox-button>-->
+                <!--                </b-field>-->
 
                 <b-field class="mr-2">
                     <b-checkbox-button
@@ -250,7 +250,8 @@
                             size="is-small"
                             :style="{ backgroundColor: issue.color }"
                             v-tooltip="issue.description"
-                        >{{ issue.name }}</b-tag>
+                        >{{ issue.name }}
+                        </b-tag>
                     </ui-table-column>
                 </template>
             </ui-table>
@@ -262,14 +263,13 @@
 <script lang="ts">
 import { StakePool } from '#/App/Domain/Model/StakePool';
 import { StakePoolService } from '#/App/Domain/Service/StakePoolService';
-import { FilterConfig } from '@/core/app-frontend/Component/UI/FilterField/FilterBase.vue';
-import * as Api from '@inti5/api-frontend';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { FilterType } from '#/AppFrontend/Domain';
-import { Component } from '#/AppFrontend/Vue/Annotations';
+import * as Api from '@/core/api-frontend';
+import { Annotation as API } from '@/core/api-frontend';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { FilterConfig } from '#/FrontendCore/Component/UI/FilterField/FilterBase.vue';
+import { FilterType } from '#/FrontendCore/Domain';
+import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
-import * as Trans from 'class-transformer';
-import Vue from 'vue';
 import { Watch } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
@@ -282,7 +282,7 @@ export default class ListView
     extends BaseComponent
 {
 
-    @Inject()
+    @API.InjectService('stats')
     protected stakePoolService : StakePoolService;
 
     protected FilterType = FilterType;
@@ -298,7 +298,7 @@ export default class ListView
                 avgApr: {},
                 stakeTotal: {},
                 stakeRemaining: {
-                    $gte: 100
+                    $gte: 10
                 },
             },
             // special filters
@@ -307,10 +307,12 @@ export default class ListView
                 id: { $nin: [] }
             },
             // custom filters
-            set _identityVerified(v) {
+            set _identityVerified (v)
+            {
                 (<any>this).owner.identityVerified = v ? { $eq: true } : {};
             },
-            set _activeOnly(v) {
+            set _activeOnly (v)
+            {
                 (<any>this).lastHistoryEntry.avgApr.$gt = v ? 0 : undefined;
             }
         },
@@ -342,7 +344,7 @@ export default class ListView
     }
 
     @Watch('$route')
-    protected onRouteChange()
+    protected onRouteChange ()
     {
         if (this.$route.hash && this.$route.hash.length > 1) {
             const rawRequest = this.$route.hash.substring(1);
@@ -351,7 +353,7 @@ export default class ListView
     }
 
     @Watch('collectionRequest', { deep: true })
-    protected async onCollectionRequestChange()
+    protected async onCollectionRequestChange ()
     {
         this.loadStakePools();
 
@@ -392,11 +394,11 @@ export default class ListView
         }
     }
 
-    public onRowClick(stakePool : StakePool)
+    public onRowClick (stakePool : StakePool)
     {
         this.$router.push({
-            name: 'stakepools_details2',
-            params: { onChainId: stakePool.onChainId.toString() },
+            name: 'stakepools_details',
+            params: { id: stakePool.onChainId.toString() },
         });
     }
 

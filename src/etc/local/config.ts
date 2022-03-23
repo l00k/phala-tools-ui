@@ -1,7 +1,10 @@
 export default {
     api: {
-        client: {
-            baseURL: 'http://localhost:4004'
+        stats: {
+            baseUrl: 'http://localhost:4004'
+        },
+        watchdog: {
+            baseUrl: 'http://localhost:4005',
         }
     },
     module: {

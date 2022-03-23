@@ -318,8 +318,8 @@
 
 <script lang="ts">
 import { StakePool } from '#/App/Domain/Model/StakePool';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component } from '#/AppFrontend/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Prop } from 'vue-property-decorator';
 
 

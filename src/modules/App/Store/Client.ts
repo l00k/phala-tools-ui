@@ -1,12 +1,12 @@
-import { App } from '#/AppFrontend/App';
-import { StoreManager } from '#/AppFrontend/Store';
+import { App } from '#/FrontendCore/App';
+import { StoreManager } from '#/FrontendCore/Store';
 import { ObjectManager } from '@inti5/object-manager';
 import { Mutation, Module, VuexModule } from 'vuex-module-decorators';
 
 
 @Module({
     dynamic: true,
-    store: ObjectManager.getSingleton().getInstance(App).getVuexStore(),
+    store: ObjectManager.getSingleton().getService<App>('app').getVuexStore(),
     preserveState: StoreManager.isModulePersisted('App/Client'),
     namespaced: true,
     name: 'App/Client',

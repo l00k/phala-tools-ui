@@ -1,26 +1,24 @@
 import { Event } from '#/App/Domain/Model/Event';
-import { Cache } from '@inti5/cache';
-import * as Api from '@inti5/api-frontend';
-import { CollectionRequest, Filters, Pagination } from '@inti5/api-frontend/Domain';
+import * as Api from '@/core/api-frontend';
 
 
 export class EventService
-    extends Api.ApiConsumer<Event<any>>
+    extends Api.EntityService<Event<any>>
 {
     
     public static readonly RESOURCE = Event;
     
-    public static getDefaultPagination () : Pagination
+    public static getDefaultPagination () : Api.Domain.Pagination
     {
-        return new Pagination([ 200 ]);
+        return new Api.Domain.Pagination([ 200 ]);
     }
     
     public getStakePoolEventsFetcher (
         stakePoolId : number,
-        filters? : Filters<Event<any>>
+        filters? : Api.Domain.Filters<Event<any>>
     ) : AsyncGenerator<Event<any>[], void, void>
     {
-        const request = new CollectionRequest<Event<any>>({ filters });
+        const request = new Api.Domain.CollectionRequest<Event<any>>({ filters });
         
         const path = `stake_pool/${stakePoolId}/events`;
         return super.getFetcher(

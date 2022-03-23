@@ -2,6 +2,7 @@ import { Annotation as API } from '@inti5/api-frontend';
 
 
 @API.Resource()
+@API.Cacheable()
 export class Issue
 {
     

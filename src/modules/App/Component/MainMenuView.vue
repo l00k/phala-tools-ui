@@ -70,8 +70,8 @@
 </template>
 
 <script lang="ts">
-import { Component } from '#/AppFrontend/Vue/Annotations';
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
+import { Component } from '#/FrontendCore/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 
 @Component()
 export default class MainMenuView

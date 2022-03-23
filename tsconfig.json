@@ -50,9 +50,11 @@
         "src/shims-vue.d.ts"
     ],
     "exclude": [
-        "node_modules",
         "node_modules/**",
+        "**/test/**",
         "**/tests/**",
-        "jest.config.ts"
+        "**/jest.config.ts",
+        "src/core/express-ext/**",
+        "src/core/api-backend/**"
     ]
 }

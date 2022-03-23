@@ -1,17 +1,16 @@
 import { StakePool } from '#/App/Domain/Model/StakePool';
-import { Pagination } from '@inti5/api-frontend/Domain';
-import * as Api from '@inti5/api-frontend';
+import * as Api from '@/core/api-frontend';
 
 
 export class StakePoolService
-    extends Api.ApiConsumer<StakePool>
+    extends Api.EntityService<StakePool>
 {
     
     public static readonly RESOURCE = StakePool;
     
-    public static getDefaultPagination () : Pagination
+    public static getDefaultPagination () : Api.Domain.Pagination
     {
-        return new Pagination([ 25, 50, 100 ], 25);
+        return new Api.Domain.Pagination([ 25, 50, 100 ], 25);
     }
     
 }

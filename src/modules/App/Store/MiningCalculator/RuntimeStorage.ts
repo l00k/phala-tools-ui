@@ -1,5 +1,5 @@
 import { ApiProvider, KhalaTypes } from '#/Phala';
-import { App } from '#/AppFrontend/App';
+import { App } from '#/FrontendCore/App';
 import { ObjectManager } from '@inti5/object-manager';
 import { ApiPromise } from '@polkadot/api';
 import Decimal from 'decimal.js';
@@ -67,10 +67,9 @@ async function calculateMiningEra(
 }
 
 
-
 @Module({
     dynamic: true,
-    store: ObjectManager.getSingleton().getInstance(App).getVuexStore(),
+    store: ObjectManager.getSingleton().getService<App>('app').getVuexStore(),
     preserveState: false,
     namespaced: true,
     name: 'MiningCalculator/RuntimeStorage',

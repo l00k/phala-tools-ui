@@ -1,6 +1,6 @@
 <script lang="ts">
-import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
-import { Component, Route } from '#/AppFrontend/Vue/Annotations';
+import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
+import { Component, Route } from '#/FrontendCore/Vue/Annotations';
 
 
 @Route('/', 'index')

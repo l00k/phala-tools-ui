@@ -12,7 +12,6 @@
         "src/modules/*"
     ],
     "dependencies": {
-        "@inti5/app-frontend": "*",
         "@inti5/api-frontend": "*",
         "@inti5/configuration": "*",
         "@inti5/event-bus": "*",
