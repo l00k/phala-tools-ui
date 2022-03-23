@@ -4,7 +4,7 @@ import { IssueService } from '#/App/Domain/Service/IssueService';
 import { TagService } from '#/App/Domain/Service/TagService';
 import { EntityRuntimeCache } from '@inti5/api-frontend/EntityRuntimeCache';
 import { asyncGeneratorToArray } from '@inti5/utils/asyncGeneratorToArray';
-import { App } from '@inti5/app-frontend/App';
+import { App } from '#/AppFrontend/App';
 import { ObjectManager } from '@inti5/object-manager';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 

@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import ListView from '#/App/Component/StakePools/ListView.vue';
-import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
-import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
+import { Component, Route } from '#/AppFrontend/Vue/Annotations';
 import { namespace } from 'vuex-class';
 
 

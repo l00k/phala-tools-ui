@@ -8,12 +8,11 @@
         "build": "NODE_ENV=production vue-cli-service build"
     },
     "workspaces": [
-        "src/core/inti5",
-        "src/core/inti5/*",
-        "src/core/app-frontend",
+        "src/core/*",
         "src/modules/*"
     ],
     "dependencies": {
+        "@inti5/app-frontend": "*",
         "@inti5/api-frontend": "*",
         "@inti5/configuration": "*",
         "@inti5/event-bus": "*",

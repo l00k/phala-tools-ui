@@ -1,5 +1,5 @@
 import { ApiProvider, KhalaTypes } from '#/Phala';
-import { App } from '@inti5/app-frontend/App';
+import { App } from '#/AppFrontend/App';
 import { ObjectManager } from '@inti5/object-manager';
 import { ApiPromise } from '@polkadot/api';
 import Decimal from 'decimal.js';

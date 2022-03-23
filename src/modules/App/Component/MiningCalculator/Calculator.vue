@@ -25,7 +25,7 @@ import Wizard from '#/App/Component/MiningCalculator/Calculator/Wizard.vue';
 import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { KhalaTypes } from '#/Phala';
 import BaseComponent from '@/core/app-frontend/Component/BaseComponent.vue';
-import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import { Component } from '#/AppFrontend/Vue/Annotations';
 import cloneDeep from 'lodash/cloneDeep';
 import { namespace } from 'vuex-class';
 

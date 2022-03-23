@@ -513,8 +513,8 @@
 import { Context } from '#/App/Component/MiningCalculator/Domain/Context';
 import { NetworkService } from '#/App/Service/NetworkService';
 import * as Phala from '#/Phala';
-import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
-import { Component } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
+import { Component } from '#/AppFrontend/Vue/Annotations';
 import { Prop, Watch } from 'vue-property-decorator';
 
 

@@ -1,5 +1,5 @@
-import { App } from '@inti5/app-frontend/App';
-import { StoreManager } from '@inti5/app-frontend/Store';
+import { App } from '#/AppFrontend/App';
+import { StoreManager } from '#/AppFrontend/Store';
 import { ObjectManager } from '@inti5/object-manager';
 import { Mutation, Module, VuexModule } from 'vuex-module-decorators';
 

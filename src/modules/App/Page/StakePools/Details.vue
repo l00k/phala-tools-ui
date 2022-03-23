@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import DetailsView from '#/App/Component/StakePools/DetailsView.vue';
-import BaseComponent from '@inti5/app-frontend/Component/BaseComponent.vue';
-import { Component, Route } from '@inti5/app-frontend/Vue/Annotations';
+import BaseComponent from '#/AppFrontend/Component/BaseComponent.vue';
+import { Component, Route } from '#/AppFrontend/Vue/Annotations';
 import * as VueRouter from 'vue-router';
 
 
