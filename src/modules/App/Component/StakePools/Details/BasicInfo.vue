@@ -10,13 +10,6 @@
             </div>
         </header>
         <div class="panel-block">
-            <b-notification
-                type="is-warning"
-            >
-                In order to consider halvings in APR calculations entire history has to be reindexed!<br/>
-                It will take some time.. please be patient ;)
-            </b-notification>
-
             <!-- INFO PLACEHOLDER -->
             <div
                 v-if="!stakePool"

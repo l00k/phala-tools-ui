@@ -1,4 +1,6 @@
 import * as Utility from '#/App/Utility';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTowerObservation } from '@fortawesome/free-solid-svg-icons';
 import Vue from 'vue';
 
 
@@ -12,3 +14,8 @@ Vue.filter('formatCoin', Utility.formatCoin);
 Vue.filter('unformatCoin', Utility.unformatCoin);
 Vue.filter('formatAddress', Utility.formatAddress);
 Vue.filter('formatPublicKey', Utility.formatPublicKey);
+
+
+library.add(
+    faTowerObservation
+);

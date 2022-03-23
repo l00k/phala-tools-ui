@@ -35,6 +35,22 @@
                 </li>
             </router-link>
 
+            <router-link
+                to="/watchdog"
+                exact custom
+                v-slot="{ navigate, isActive }"
+            >
+                <li
+                    :class="{ 'is-active': isActive }"
+                    @click="navigate"
+                >
+                    <a>
+                        <span class="icon is-small"><i class="fas fa-tower-observation" aria-hidden="true"></i></span>
+                        <span>Watchdog</span>
+                    </a>
+                </li>
+            </router-link>
+
 <!--            <router-link-->
 <!--                to="/network-map"-->
 <!--                custom v-slot="{ navigate, isActive }"-->

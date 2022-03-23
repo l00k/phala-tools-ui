@@ -7,13 +7,6 @@
             </div>
         </header>
         <div class="panel-block">
-            <b-notification
-                type="is-warning"
-            >
-                In order to consider halvings in APR calculations entire history has to be reindexed!<br/>
-                It will take some time.. please be patient ;)
-            </b-notification>
-
             <div class="list-filters mb-6 is-flex is-justify-content-start">
                 <b-field class="mr-2">
                     <b-checkbox-button
