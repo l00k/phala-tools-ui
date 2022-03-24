@@ -1,4 +1,4 @@
-import { Account } from '#/App/Domain/Model/Account';
+import { Account } from '#/Stats/Domain/Model/Account';
 import numbro from 'numbro';
 
 
