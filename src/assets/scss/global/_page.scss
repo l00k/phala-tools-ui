@@ -4,6 +4,7 @@
 
 .g-container {
     @extend .container;
+    position: static;
 
     &--default {
         margin-top: 6rem;
@@ -19,4 +20,11 @@
     a {
         background: #363636;
     }
+}
+
+.g-menu-secondary {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 1000;
 }

@@ -34,7 +34,14 @@ export class RuntimeStorage
             
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {
+                    this.context.state.isLoggedIn = !!apiClient.getAuthData();
                     
+                    if (this.context.state.isLoggedIn) {
+                        const { status, data } = await apiClient.get('/user/me');
+                        if (status) {
+                            this.context.state.user = data;
+                        }
+                    }
                     
                     resolve(true);
                 }

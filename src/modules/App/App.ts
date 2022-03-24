@@ -28,11 +28,11 @@ export class App
         // init api clients
         this.apiProvider.get('stats')
             .setBaseUrl(this.configuration.get('api.stats.baseUrl'))
-            ;
+            .init();
             
         this.apiProvider.get('watchdog')
             .setBaseUrl(this.configuration.get('api.watchdog.baseUrl'))
-            ;
+            .init();
     }
     
 }

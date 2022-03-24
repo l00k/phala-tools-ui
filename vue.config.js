@@ -69,6 +69,9 @@ module.exports = {
         config.optimization.minimize = false;
         config.devServer = {
             port: 4001,
+            allowedHosts: [
+                '.ngrok.io',
+            ],
             headers: {
                 'Access-Control-Allow-Origin': '*',
             },

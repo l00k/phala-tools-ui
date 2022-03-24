@@ -7,15 +7,15 @@
         />
 
         <div v-if="isReady">
-<!--            <LoginWidget-->
-<!--                v-if="!isLoggedIn"-->
-<!--                :context.sync="context"-->
-<!--                @ready=""-->
-<!--            />-->
+            <LoginWidget
+                v-if="!isLoggedIn"
+            />
 
-<!--            <Wizard-->
-<!--                :context.sync="context"-->
-<!--            />-->
+            <UserPanel
+                v-if="isLoggedIn"
+            />
+
+
         </div>
     </div>
 </template>
@@ -24,22 +24,26 @@
 import { BaseComponent } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { namespace } from 'vuex-class';
+import LoginWidget from '#/Watchdog/Component/Watchdog/LoginWidget.vue';
+import UserPanel from '#/Watchdog/Component/Watchdog/UserPanel.vue';
 
-const ClientStore = namespace('App/Client');
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
 
 @Component({
     components: {
+        LoginWidget,
+        UserPanel,
     }
 })
-export default class Calculator
+export default class Watchdog
     extends BaseComponent
 {
 
     protected isReady : boolean = false;
 
-    protected isLoggedIn : boolean = false;
+    @RuntimeStorage.State('isLoggedIn')
+    protected isLoggedIn : boolean;
 
 
     public async mounted ()
