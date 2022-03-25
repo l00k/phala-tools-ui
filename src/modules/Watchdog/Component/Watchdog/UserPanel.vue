@@ -74,11 +74,11 @@ export default class UserPanel
     cursor: default;
     pointer-events: none;
 
-    .is-discord {
-        background: #5865F2;
-    }
-    .is-telegram {
+    &.is-telegram {
         background: #28A0D3;
+    }
+    &.is-discord {
+        background: #5865F2;
     }
 }
 </style>

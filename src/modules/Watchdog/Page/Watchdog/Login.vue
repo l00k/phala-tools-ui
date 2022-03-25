@@ -86,7 +86,7 @@ export default class WatchdogLoginPage
 
         const { status, data } = await this.apiClient.post(
             '/login/telegram',
-            this.$route.query.user
+            this.$route.query
         );
         if (status !== 200 || !data) {
             this.$buefy.toast.open({

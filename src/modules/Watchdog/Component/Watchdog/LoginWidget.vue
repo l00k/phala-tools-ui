@@ -27,6 +27,7 @@ import { BaseComponent } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Config } from '@/core/configuration';
 import { Ref } from 'vue-property-decorator';
+import camelCase from 'lodash/camelCase';
 
 
 @Component()
@@ -60,11 +61,16 @@ export default class LoginWidget
         (<any>window).onTelegramAuth = this.onTelegramLogin.bind(this);
     }
 
-    protected onTelegramLogin(user)
+    protected onTelegramLogin(userData)
     {
+        const preparedData : any = Object.fromEntries(
+            Object.entries(userData)
+                .map(([ key, value ]) => [ camelCase(key), value ])
+        );
+
         this.$router.push({
-            name: 'watchdog_login_telegram',
-            query: { user },
+            name: 'watchdog_logged_telegram',
+            query: preparedData,
         });
     }
 
