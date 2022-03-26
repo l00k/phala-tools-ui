@@ -27,12 +27,16 @@ export class App
         
         // init api clients
         this.apiProvider.get('stats')
-            .setBaseUrl(this.configuration.get('api.stats.baseUrl'))
-            .init();
+            .init({
+                baseUrl: this.configuration.get('api.stats.baseUrl'),
+                refreshUri: '/token/refresh',
+            });
             
         this.apiProvider.get('watchdog')
-            .setBaseUrl(this.configuration.get('api.watchdog.baseUrl'))
-            .init();
+            .init({
+                baseUrl: this.configuration.get('api.watchdog.baseUrl'),
+                refreshUri: '/token/refresh',
+            });
     }
     
 }

@@ -7,14 +7,15 @@
         />
 
         <div v-if="isReady">
-            <LoginWidget
-                v-if="!isLoggedIn"
-            />
-
-            <UserPanel
-                v-if="isLoggedIn"
-            />
-
+            <div v-if="isLoggedIn">
+                <UserPanel/>
+                <WatchdogConfiguration/>
+            </div>
+            <div v-else>
+                <LoginWidget
+                    v-if="!isLoggedIn"
+                />
+            </div>
 
         </div>
     </div>
@@ -26,6 +27,7 @@ import { Component } from '#/FrontendCore/Vue/Annotations';
 import { namespace } from 'vuex-class';
 import LoginWidget from '#/Watchdog/Component/Watchdog/LoginWidget.vue';
 import UserPanel from '#/Watchdog/Component/Watchdog/UserPanel.vue';
+import WatchdogConfiguration from './Watchdog/WatchdogConfiguration.vue';
 
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
@@ -34,6 +36,7 @@ const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
     components: {
         LoginWidget,
         UserPanel,
+        WatchdogConfiguration,
     }
 })
 export default class Watchdog
@@ -49,7 +52,6 @@ export default class Watchdog
     public async mounted ()
     {
         await this.$store.dispatch('Watchdog/RuntimeStorage/init');
-
         this.isReady = true;
     }
 
