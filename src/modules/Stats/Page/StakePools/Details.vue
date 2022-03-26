@@ -36,7 +36,6 @@ export default class StakePoolsDetailsPage
 {
 
     public isReady : boolean = false;
-
     public requestedId : number = null;
 
 
@@ -45,23 +44,23 @@ export default class StakePoolsDetailsPage
         await this.$store.dispatch('StakePools/RuntimeStorage/init');
         this.isReady = true;
 
-        this.requestedId = this.getRequestedId(this.$route);
+        this.requestedId = this._getRequestedId(this.$route);
     }
 
     public async beforeRouteEnter (to : VueRouter.Route, from : VueRouter.Route, next : VueRouter.NavigationGuardNext<any>)
     {
         next((component : StakePoolsDetailsPage) => {
-            component.requestedId = component.getRequestedId(to);
+            component.requestedId = component._getRequestedId(to);
         });
     }
 
     public async beforeRouteUpdate (to : VueRouter.Route, from : VueRouter.Route, next : VueRouter.NavigationGuardNext<any>)
     {
-        this.requestedId = this.getRequestedId(to);
+        this.requestedId = this._getRequestedId(to);
         next();
     }
 
-    protected getRequestedId(route : VueRouter.Route) : number
+    protected _getRequestedId(route : VueRouter.Route) : number
     {
         return Number(route.params.id ?? route.params.onChainId) + 3;
     }

@@ -11,7 +11,7 @@
                 size="is-large"
                 expanded
                 class="is-discord mb-4"
-                @click="discordLoginRequest"
+                @click="onDiscordLoginRequest"
             >
                 <i class="fab fa-discord"></i>
                 <span class="ml-4">Login using Discord</span>
@@ -36,13 +36,13 @@ export default class LoginWidget
 {
 
     @Config('module.watchdog.login.discord')
-    protected discordConfig;
+    public discordConfig;
 
     @Config('module.watchdog.login.telegram')
-    protected telegramConfig;
+    public telegramConfig;
 
     @Ref('telegramWidget')
-    protected $telegramWidget : HTMLDivElement;
+    public $telegramWidget : HTMLDivElement;
 
 
     public mounted()
@@ -61,7 +61,7 @@ export default class LoginWidget
         (<any>window).onTelegramAuth = this.onTelegramLogin.bind(this);
     }
 
-    protected onTelegramLogin(userData)
+    public onTelegramLogin(userData)
     {
         const preparedData : any = Object.fromEntries(
             Object.entries(userData)
@@ -74,7 +74,7 @@ export default class LoginWidget
         });
     }
 
-    protected discordLoginRequest()
+    public onDiscordLoginRequest()
     {
         document.location.href = this.discordConfig.authUrl;
     }

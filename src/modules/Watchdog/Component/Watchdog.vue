@@ -43,10 +43,10 @@ export default class Watchdog
     extends BaseComponent
 {
 
-    protected isReady : boolean = false;
+    public isReady : boolean = false;
 
     @RuntimeStorage.State('isLoggedIn')
-    protected isLoggedIn : boolean;
+    public isLoggedIn : boolean;
 
 
     public async mounted ()

@@ -50,19 +50,19 @@ export default class UserPanel
     extends BaseComponent
 {
 
-    protected MessagingChannel = MessagingChannel;
-
-
     @API.InjectClient('watchdog')
-    protected apiClient : Api.Client;
+    protected _apiClient : Api.Client;
+
+
+    public MessagingChannel = MessagingChannel;
 
     @RuntimeStorage.State('user')
-    protected user : User;
+    public user : User;
 
 
-    protected doLogout()
+    public doLogout()
     {
-        this.apiClient.clearTokens();
+        this._apiClient.clearTokens();
         location.reload();
     }
 

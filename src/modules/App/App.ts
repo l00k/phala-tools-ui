@@ -9,13 +9,13 @@ export class App
     extends AppBase
 {
     
-    protected appComponent : Vue.Component = AppComponent;
+    protected _appComponent : Vue.Component = AppComponent;
     
     @Inject()
-    protected api : Api.Service;
+    protected _api : Api.Service;
 
     @Inject()
-    protected apiProvider : Api.Provider;
+    protected _apiProvider : Api.Provider;
     
     
     protected _beforeAppSetup ()
@@ -23,18 +23,18 @@ export class App
         super._beforeAppSetup();
         
         // bootstrap api
-        this.api.bootstrap();
+        this._api.bootstrap();
         
         // init api clients
-        this.apiProvider.get('stats')
+        this._apiProvider.get('stats')
             .init({
-                baseUrl: this.configuration.get('api.stats.baseUrl'),
+                baseUrl: this._configuration.get('api.stats.baseUrl'),
                 refreshUri: '/token/refresh',
             });
             
-        this.apiProvider.get('watchdog')
+        this._apiProvider.get('watchdog')
             .init({
-                baseUrl: this.configuration.get('api.watchdog.baseUrl'),
+                baseUrl: this._configuration.get('api.watchdog.baseUrl'),
                 refreshUri: '/token/refresh',
             });
     }

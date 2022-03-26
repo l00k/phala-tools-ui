@@ -99,15 +99,15 @@ export default class WatchdogConfiguration
     extends BaseComponent
 {
 
-    protected MessagingChannel = MessagingChannel;
-    protected ObservationMode = ObservationMode;
-
-
     @API.InjectClient('watchdog')
-    protected apiClient : Api.Client;
+    protected _apiClient : Api.Client;
+
+
+    public MessagingChannel = MessagingChannel;
+    public ObservationMode = ObservationMode;
 
     @RuntimeStorage.State('user')
-    protected user : User;
+    public user : User;
 
 
     public mounted ()

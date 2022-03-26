@@ -535,7 +535,7 @@ export default class Wizard
     extends BaseComponent
 {
 
-    protected static PREDEFINED_DEVICES = {
+    protected static readonly PREDEFINED_DEVICES = {
         celeron: {
             cpuCores: 2,
             cpuScore: 250,
@@ -581,12 +581,12 @@ export default class Wizard
     }
 
     @Prop()
-    protected context : Context;
+    public context : Context;
 
-    protected selectedPredefinedDevice : string = '';
+    public selectedPredefinedDevice : string = '';
 
-    protected resultsDaily : ResultInPeriod = new ResultInPeriod();
-    protected resultsMonthly : ResultInPeriod = new ResultInPeriod();
+    public resultsDaily : ResultInPeriod = new ResultInPeriod();
+    public resultsMonthly : ResultInPeriod = new ResultInPeriod();
 
 
     public mounted()

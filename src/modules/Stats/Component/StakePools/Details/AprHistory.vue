@@ -68,36 +68,37 @@ export default class AprHistory
 
 
     @API.InjectService('stats')
-    protected historyEntryService : HistoryEntryService;
+    protected _historyEntryService : HistoryEntryService;
 
     @API.InjectService('stats')
-    protected eventService : EventService;
+    protected _eventService : EventService;
+
 
     @Prop()
-    protected stakePool : StakePool;
+    public stakePool : StakePool;
 
     @Ref('chartDiv')
-    protected $chartDiv : HTMLDivElement;
+    public $chartDiv : HTMLDivElement;
 
 
-    protected isReady : boolean = false;
+    public isReady : boolean = false;
 
-    protected chart : LightweightCharts.IChartApi;
+    public chart : LightweightCharts.IChartApi;
 
-    protected requestedHistoryEntries : HistoryEntry[] = [];
-    protected requestedAvgSeries : LightweightCharts.ISeriesApi<any>;
-    protected requestedCurrentSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedHistoryEntries : HistoryEntry[] = [];
+    public requestedAvgSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedCurrentSeries : LightweightCharts.ISeriesApi<any>;
 
-    protected specialAllHistoryEntries : HistoryEntry[] = [];
-    protected specialAllSeries : LightweightCharts.ISeriesApi<any>;
+    public specialAllHistoryEntries : HistoryEntry[] = [];
+    public specialAllSeries : LightweightCharts.ISeriesApi<any>;
 
-    protected specialTopHistoryEntries : HistoryEntry[] = [];
-    protected specialTopSeries : LightweightCharts.ISeriesApi<any>;
+    public specialTopHistoryEntries : HistoryEntry[] = [];
+    public specialTopSeries : LightweightCharts.ISeriesApi<any>;
 
-    protected events : Event<any>[] = [];
-    protected eventsSeries : any;
+    public events : Event<any>[] = [];
+    public eventsSeries : any;
 
-    protected colors = {
+    public colors = {
         requestAvgApr: '#33d778',
         requestCurrentApr: '#33d778',
         specialAll: '#2ca4df',
@@ -129,11 +130,11 @@ export default class AprHistory
 
     public mounted ()
     {
-        this.reinit();
+        this._reinit();
     }
 
     @Watch('stakePool')
-    protected async reinit ()
+    protected async _reinit ()
     {
         if (!this.stakePool) {
             return;
@@ -146,31 +147,31 @@ export default class AprHistory
         }
 
         // load history
-        await this.loadHistory();
+        await this._loadHistory();
 
-        this.$nextTick(() => this.mountChart());
+        this.$nextTick(() => this._mountChart());
     }
 
-    protected async loadHistory ()
+    protected async _loadHistory ()
     {
 
         this.isReady = false;
 
         // requested stake pool
         this.requestedHistoryEntries = [];
-        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
             this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
         // avg entire network history
         this.specialAllHistoryEntries = [];
-        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_NETWORK_AVG_ID)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_NETWORK_AVG_ID)) {
             this.specialAllHistoryEntries.unshift(...items.reverse());
         }
 
         // avg top history
         this.specialTopHistoryEntries = [];
-        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
             this.specialTopHistoryEntries.unshift(...items.reverse());
         }
 
@@ -182,14 +183,14 @@ export default class AprHistory
         };
 
         this.events = [];
-        for await (const items of this.eventService.getStakePoolEventsFetcher(this.stakePool.id, filters)) {
+        for await (const items of this._eventService.getStakePoolEventsFetcher(this.stakePool.id, filters)) {
             this.events.push(...items);
         }
 
         this.isReady = true;
     }
 
-    protected mountChart ()
+    protected _mountChart ()
     {
         // mount chart
         this.chart = LightweightCharts.createChart(this.$chartDiv, {
@@ -233,10 +234,10 @@ export default class AprHistory
         });
 
         // refresh chart
-        this.refreshChart();
+        this._refreshChart();
     }
 
-    protected refreshChart ()
+    protected _refreshChart ()
     {
         {
             const data = this.requestedHistoryEntries

@@ -70,25 +70,26 @@ export default class AprHistory
 {
 
     @API.InjectService('stats')
-    protected historyEntryService : HistoryEntryService;
+    protected _historyEntryService : HistoryEntryService;
+
 
     @Prop()
-    protected stakePool : StakePool;
+    public stakePool : StakePool;
 
     @Ref('chartDiv')
-    protected $chartDiv : HTMLDivElement;
+    public $chartDiv : HTMLDivElement;
 
 
-    protected isReady : boolean = false;
+    public isReady : boolean = false;
 
-    protected chart : LightweightCharts.IChartApi;
+    public chart : LightweightCharts.IChartApi;
 
-    protected requestedHistoryEntries : HistoryEntry[] = [];
-    protected requestedTotalSeries : LightweightCharts.ISeriesApi<any>;
-    protected requestedFreeSeries : LightweightCharts.ISeriesApi<any>;
-    protected requestedReleasingSeries : LightweightCharts.ISeriesApi<any>;
-    protected requestedCapSeries : LightweightCharts.ISeriesApi<any>;
-    protected requestedWithdrawalsSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedHistoryEntries : HistoryEntry[] = [];
+    public requestedTotalSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedFreeSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedReleasingSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedCapSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedWithdrawalsSeries : LightweightCharts.ISeriesApi<any>;
 
     protected colors = {
         cap: '#33d778',
@@ -109,11 +110,11 @@ export default class AprHistory
 
     public mounted ()
     {
-        this.reinit();
+        this._reinit();
     }
 
     @Watch('stakePool')
-    protected async reinit ()
+    protected async _reinit ()
     {
         if (!this.stakePool) {
             return;
@@ -126,25 +127,25 @@ export default class AprHistory
         }
 
         // load history
-        await this.loadHistory();
+        await this._loadHistory();
 
-        this.$nextTick(() => this.mountChart());
+        this.$nextTick(() => this._mountChart());
     }
 
-    protected async loadHistory ()
+    protected async _loadHistory ()
     {
         this.isReady = false;
 
         // requested stake pool
         this.requestedHistoryEntries = [];
-        for await (const items of this.historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
             this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
         this.isReady = true;
     }
 
-    protected mountChart ()
+    protected _mountChart ()
     {
         // mount chart
         this.chart = LightweightCharts.createChart(this.$chartDiv, {
@@ -194,10 +195,10 @@ export default class AprHistory
         });
 
         // refresh chart
-        this.refreshChart();
+        this._refreshChart();
     }
 
-    protected refreshChart ()
+    protected _refreshChart ()
     {
         {
             const data = this.requestedHistoryEntries

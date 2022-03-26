@@ -24,15 +24,15 @@ export default class WatchdogLoginPage
 {
 
     @API.InjectClient('watchdog')
-    protected apiClient : Api.Client;
+    protected _apiClient : Api.Client;
 
 
     public mounted()
     {
-        this.checkLogin();
+        this._checkLogin();
     }
 
-    protected async checkLogin ()
+    protected async _checkLogin ()
     {
         const isLoggedIn = this.$store.state['Watchdog/RuntimeStorage'].isLoggedIn;
         if (isLoggedIn) {
@@ -41,16 +41,16 @@ export default class WatchdogLoginPage
         }
 
         if (this.$route.name == 'watchdog_logged_discord') {
-            await this.tryToLoginUsingDiscord();
+            await this._tryToLoginUsingDiscord();
         }
         else if (this.$route.name == 'watchdog_logged_telegram') {
-            await this.tryToLoginUsingTelegram();
+            await this._tryToLoginUsingTelegram();
         }
 
         this.$router.push({ name: 'watchdog' });
     }
 
-    protected async tryToLoginUsingDiscord()
+    protected async _tryToLoginUsingDiscord()
     {
         if (!this.$route.query.code) {
             this.$buefy.toast.open({
@@ -60,7 +60,7 @@ export default class WatchdogLoginPage
             return;
         }
 
-        const { status, data } = await this.apiClient.post('/login/discord', {
+        const { status, data } = await this._apiClient.post('/login/discord', {
             code: this.$route.query.code,
         });
         if (status !== 200 || !data) {
@@ -71,10 +71,10 @@ export default class WatchdogLoginPage
             return;
         }
 
-        this.apiClient.setTokens(data.accessToken, data.refreshToken);
+        this._apiClient.setTokens(data.accessToken, data.refreshToken);
     }
 
-    protected async tryToLoginUsingTelegram()
+    protected async _tryToLoginUsingTelegram()
     {
         if (!this.$route.query.id) {
             this.$buefy.toast.open({
@@ -84,7 +84,7 @@ export default class WatchdogLoginPage
             return;
         }
 
-        const { status, data } = await this.apiClient.post(
+        const { status, data } = await this._apiClient.post(
             '/login/telegram',
             this.$route.query
         );
@@ -96,7 +96,7 @@ export default class WatchdogLoginPage
             return;
         }
 
-        this.apiClient.setTokens(data.accessToken, data.refreshToken);
+        this._apiClient.setTokens(data.accessToken, data.refreshToken);
     }
 
 }

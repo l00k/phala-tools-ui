@@ -283,11 +283,12 @@ export default class ListView
 {
 
     @API.InjectService('stats')
-    protected stakePoolService : StakePoolService;
+    protected _stakePoolService : StakePoolService;
 
-    protected FilterType = FilterType;
 
-    protected collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
+    public FilterType = FilterType;
+
+    public collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
         filters: {
             onChainId: {},
             owner: {
@@ -325,26 +326,26 @@ export default class ListView
         }
     });
 
-    protected aprFilterConfig : FilterConfig = {
+    public aprFilterConfig : FilterConfig = {
         serialize: (raw) => raw / 100,
         unserialize: (formated) => formated * 100,
     };
 
-    protected request : Promise<any> = null;
-    protected waitingRequest : boolean = false;
+    public request : Promise<any> = null;
+    public waitingRequest : boolean = false;
 
-    protected isLoading : boolean = false;
-    protected stakePools : StakePool[] = [];
+    public isLoading : boolean = false;
+    public stakePools : StakePool[] = [];
 
 
     public mounted ()
     {
-        this.onRouteChange();
-        this.loadStakePools();
+        this._onRouteChange();
+        this._loadStakePools();
     }
 
     @Watch('$route')
-    protected onRouteChange ()
+    protected _onRouteChange ()
     {
         if (this.$route.hash && this.$route.hash.length > 1) {
             const rawRequest = this.$route.hash.substring(1);
@@ -353,9 +354,9 @@ export default class ListView
     }
 
     @Watch('collectionRequest', { deep: true })
-    protected async onCollectionRequestChange ()
+    protected async _onCollectionRequestChange ()
     {
-        this.loadStakePools();
+        this._loadStakePools();
 
         const currentHash = (this.$route.hash ?? '#').substring(1);
         const rawRequest = this.collectionRequest.toPlainString(true);
@@ -367,7 +368,7 @@ export default class ListView
         }
     }
 
-    protected async loadStakePools ()
+    protected async _loadStakePools ()
     {
         if (this.request) {
             this.waitingRequest = true;
@@ -376,7 +377,7 @@ export default class ListView
 
         this.isLoading = true;
 
-        this.request = this.stakePoolService.getCollection(this.collectionRequest);
+        this.request = this._stakePoolService.getCollection(this.collectionRequest);
         const collection = await this.request;
 
         this.stakePools = collection.items;
@@ -387,7 +388,7 @@ export default class ListView
 
         if (this.waitingRequest) {
             this.waitingRequest = false;
-            this.loadStakePools();
+            this._loadStakePools();
         }
         else {
             this.isLoading = false;
@@ -401,7 +402,6 @@ export default class ListView
             params: { id: stakePool.onChainId.toString() },
         });
     }
-
 
 }
 </script>

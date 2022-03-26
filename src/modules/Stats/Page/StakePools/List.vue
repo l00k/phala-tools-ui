@@ -43,7 +43,6 @@ export default class StakePoolsListPage
 
     public isReady : boolean = false;
 
-
     public tourName : string = 'stakepools_list:3';
 
     @ClientStore.State('finishedTours')

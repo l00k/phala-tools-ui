@@ -44,18 +44,18 @@ export default class Calculator
     extends BaseComponent
 {
 
-    protected isReady : boolean = false;
+    public isReady : boolean = false;
 
-    protected context : Context = new Context();
+    public context : Context = new Context();
 
     @RuntimeStorage.State('tokenomicParameters')
-    protected tokenomicParameters : typeof KhalaTypes.TokenomicParameters;
+    public tokenomicParameters : typeof KhalaTypes.TokenomicParameters;
 
     @RuntimeStorage.State('blockTime')
-    protected blockTime : number;
+    public blockTime : number;
 
     @RuntimeStorage.State('miningEra')
-    protected miningEra : number;
+    public miningEra : number;
 
 
     @ClientStore.State('finishedTours')

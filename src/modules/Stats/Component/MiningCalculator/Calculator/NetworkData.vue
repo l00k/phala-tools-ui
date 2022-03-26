@@ -69,18 +69,19 @@ export default class NetworkData
     extends BaseComponent
 {
 
-    protected ReadyStage = ReadyStage;
-
     @Inject()
-    protected apiProvider : ApiProvider;
-
-    @Prop()
-    protected context : Context;
+    protected _apiProvider : ApiProvider;
 
     @PersistentCache.Getter('getCached')
-    protected PersistentCache : GetCached;
+    protected _persistentCache : GetCached;
 
-    protected api : ApiPromise;
+    protected _api : ApiPromise;
+
+
+    public ReadyStage = ReadyStage;
+
+    @Prop()
+    public context : Context;
 
     public readyStage : ReadyStage = ReadyStage.Init;
 
@@ -92,14 +93,14 @@ export default class NetworkData
     {
         this.readyStage = ReadyStage.NodeConnnecting;
 
-        this.api = await this.apiProvider.getApi();
+        this._api = await this._apiProvider.getApi();
 
         // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
 
-        this.context.networkShares = await this.PersistentCache(
+        this.context.networkShares = await this._persistentCache(
             'NetworkData::networkShares',
-            async() => this.loadNetworkData(),
+            async() => this._loadNetworkData(),
             { lifetime: 3600 }
         );
 
@@ -108,15 +109,15 @@ export default class NetworkData
         this.$emit('ready');
     }
 
-    protected async loadNetworkData ()
+    protected async _loadNetworkData ()
     {
-        this.stakePoolsToLoad = <any>(await this.api.query.phalaStakePool.poolCount()).toJSON();
+        this.stakePoolsToLoad = <any>(await this._api.query.phalaStakePool.poolCount()).toJSON();
 
         this.readyStage = ReadyStage.PullingStakePools;
 
         let totalShare = 0;
 
-        for await (const stakePool of this.loadStakePools(this.stakePoolsToLoad)) {
+        for await (const stakePool of this._loadStakePools(this.stakePoolsToLoad)) {
             for (const { minerInfo, workerInfo } of stakePool.workersData) {
                 if (!MiningStates.includes(minerInfo.state)) {
                     continue;
@@ -140,13 +141,13 @@ export default class NetworkData
         return totalShare;
     }
 
-    protected async* loadStakePools (stakePoolsCount : number) : AsyncGenerator<StakePoolDto, any, any>
+    protected async* _loadStakePools (stakePoolsCount : number) : AsyncGenerator<StakePoolDto, any, any>
     {
         const stakePoolIdChunks = chunk([ ...Array(stakePoolsCount).keys() ], 25);
 
         for (const stakePoolsIdChunk of stakePoolIdChunks) {
             const stakePoolsChunk : StakePoolDto[] =
-                <any>(await this.api.query.phalaStakePool.stakePools.multi(stakePoolsIdChunk))
+                <any>(await this._api.query.phalaStakePool.stakePools.multi(stakePoolsIdChunk))
                     .map(raw => raw.toJSON());
             stakePoolsChunk
                 .forEach(stakePool => stakePool.workersData = []);
@@ -169,7 +170,7 @@ export default class NetworkData
 
                 // load workers
                 let wid = 0;
-                for await (const worker of this.loadWorkers(workersToFetch)) {
+                for await (const worker of this._loadWorkers(workersToFetch)) {
                     const _pid = workerToPoolMap[wid++];
                     stakePoolsToLoad[_pid].workersData.push(worker);
                 }
@@ -181,16 +182,16 @@ export default class NetworkData
         }
     }
 
-    protected async* loadWorkers (workersPubKeys : string[]) : AsyncGenerator<WorkerData, any, any>
+    protected async* _loadWorkers (workersPubKeys : string[]) : AsyncGenerator<WorkerData, any, any>
     {
         const workersChunks = chunk(workersPubKeys, 50);
 
         for (const workersChunk of workersChunks) {
-            const bindingAddresses = (await this.api.query.phalaMining.workerBindings.multi(workersChunk))
+            const bindingAddresses = (await this._api.query.phalaMining.workerBindings.multi(workersChunk))
                 .map(raw => raw.toString());
-            const minerInfos = <any>(await this.api.query.phalaMining.miners.multi(bindingAddresses))
+            const minerInfos = <any>(await this._api.query.phalaMining.miners.multi(bindingAddresses))
                 .map(raw => raw.toJSON());
-            const workerInfos = <any>(await this.api.query.phalaRegistry.workers.multi(workersChunk))
+            const workerInfos = <any>(await this._api.query.phalaRegistry.workers.multi(workersChunk))
                 .map(raw => raw.toJSON());
 
             for (let i = 0; i < workersChunk.length; ++i) {

@@ -36,25 +36,26 @@ export default class DetailsView
 {
 
     @API.InjectService('stats')
-    protected stakePoolService : StakePoolService;
+    protected _stakePoolService : StakePoolService;
 
     @Prop({ default: null })
     public stakePoolId : number;
 
     public isReady : boolean = false;
+
     public stakePool : StakePool = null;
 
 
     public mounted ()
     {
-        this.loadView();
+        this._loadView();
     }
 
     @Watch('stakePoolId')
-    protected async loadView ()
+    protected async _loadView ()
     {
         this.isReady = false;
-        this.stakePool = await this.stakePoolService.getItem(this.stakePoolId);
+        this.stakePool = await this._stakePoolService.getItem(this.stakePoolId);
         this.isReady = true;
     }
 }
