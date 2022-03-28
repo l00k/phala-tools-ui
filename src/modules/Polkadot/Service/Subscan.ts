@@ -126,11 +126,18 @@ export class Subscan
         
         // first execution to get count
         const { status, data } = await this.post('scan/extrinsics', filters);
-        const pagesNum = Math.ceil(data.data.count / filters.row);
+        
+        const totalCount : number = data.data.count;
+        const pagesNum = Math.ceil(totalCount / filters.row);
+        if (pagesNum == 0) {
+            return;
+        }
         
         if (ascendingOrder) {
             filters.page = pagesNum - 1;
         }
+        
+        let counter = 0;
         
         let result : SubscanResponse;
         while (true) {
@@ -168,6 +175,11 @@ export class Subscan
             
             yield extrinsics;
             
+            counter += extrinsics.length;
+            if (counter == totalCount) {
+                break;
+            }
+            
             if (ascendingOrder) {
                 --filters.page;
             }
@@ -192,11 +204,18 @@ export class Subscan
         
         // first execution to get count
         const { status, data } = await this.post('scan/events', filters);
-        const pagesNum = Math.ceil(data.data.count / filters.row);
+        
+        const totalCount : number = data.data.count;
+        const pagesNum = Math.ceil(totalCount / filters.row);
+        if (pagesNum == 0) {
+            return;
+        }
         
         if (ascendingOrder) {
             filters.page = pagesNum - 1;
         }
+        
+        let counter = 0;
         
         let result : SubscanResponse;
         while (true) {
@@ -234,6 +253,11 @@ export class Subscan
                 })
             
             yield events;
+            
+            counter += events.length;
+            if (counter == totalCount) {
+                break;
+            }
             
             if (ascendingOrder) {
                 --filters.page;

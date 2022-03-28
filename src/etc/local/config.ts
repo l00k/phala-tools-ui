@@ -10,7 +10,9 @@ export default {
     module: {
         phala: {
             api: {
-                wsUrl: 'ws://localhost:19944/ws',
+                urls: {
+                    WS: 'ws://localhost:19944/ws'
+                }
             },
         },
         watchdog: {

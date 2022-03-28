@@ -22,7 +22,7 @@ export class AccountService
     {
         const Service : typeof Api.EntityService = <any>this.constructor;
         
-        const path = this.resource.path + `/find/${address}`;
+        const path = this.resource.path + `/by_address/${address}`;
         
         const response = await this._apiClient.get(path);
         if (response.status !== 200) {

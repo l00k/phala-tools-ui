@@ -65,7 +65,7 @@
                     <div class="column is-6">
                         <UiValidatedField
                             name="Delegator address"
-                            :rules="{ required: false, length: 48 }"
+                            :rules="{ isPolkadotAddress: true }"
                         >
                             <b-input
                                 v-model.lazy="observationAccountAddress"
@@ -129,6 +129,7 @@ export default class StakePoolObservationForm
     public mounted()
     {
         this._stakePoolService = this._apiClient.getService(StakePoolService);
+        this._accountService = this._apiClient.getService(AccountService);
     }
 
     public setupCreateForm()
@@ -169,6 +170,7 @@ export default class StakePoolObservationForm
     {
         if (address) {
             // try to load account
+            console.log(address);
             this.observation.account = await this._accountService.findAccount(address);
         }
         else {
