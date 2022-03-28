@@ -12,4 +12,7 @@ export class Account
     @API.Property()
     public address : string;
     
+    @API.Property()
+    public identity : string;
+    
 }

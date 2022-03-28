@@ -1,7 +1,7 @@
 import { Account } from '#/Watchdog/Domain/Model/Account';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { StakePoolObservation } from '#/Watchdog/Domain/Model/StakePoolObservation';
-import { UserConfiguration } from '#/Watchdog/Domain/Model/UserConfiguration';
+import { StakePoolObservation } from '#/Watchdog/Domain/Model/StakePool/StakePoolObservation';
+import { UserConfiguration } from '#/Watchdog/Domain/Model/User/UserConfiguration';
 import { Annotation as API } from '@inti5/api-frontend';
 
 
