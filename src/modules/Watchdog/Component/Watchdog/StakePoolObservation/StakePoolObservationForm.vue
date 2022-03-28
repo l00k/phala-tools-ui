@@ -81,6 +81,106 @@
                     </div>
                 </div>
 
+                <h4 class="title is-6">Notifications</h4>
+
+                <div
+                    class="columns"
+                    :class="{ 'is-row-disabled': observation.mode == ObservationMode.Delegator && !observation.account }"
+                >
+                    <div class="column is-2">
+                        <UiValidatedField
+                            name="Active"
+                        >
+                            <b-switch
+                                v-model="observation.config[NotificationType.ClaimableRewards].active"
+                            />
+                        </UiValidatedField>
+                    </div>
+                    <div class="column is-4">
+                        Pending claimable rewards
+                        <div
+                            v-if="observation.mode == ObservationMode.Delegator && !observation.account"
+                            class="has-color-red"
+                        >
+                            Delegator account required!
+                        </div>
+                    </div>
+                    <div class="column is-6 is-flex is-flow-direction-row">
+                        <UiValidatedField
+                            name="Frequency"
+                            :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                        >
+                            <b-select
+                                v-model.number="observation.config[NotificationType.ClaimableRewards].frequency"
+                            >
+                                <option
+                                    v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                    :key="value"
+                                    :value="value"
+                                >{{ label }}</option>
+                            </b-select>
+                        </UiValidatedField>
+
+                        <UiValidatedField
+                            name="Threshold"
+                            :rules="{ required: true, integer: true, min_value: 0 }"
+                            class="ml-4"
+                        >
+                            <b-input
+                                v-model.number="observation.config[NotificationType.ClaimableRewards].threshold"
+                            />
+                            <p class="control">
+                                <span class="button is-disabled">PHA</span>
+                            </p>
+                        </UiValidatedField>
+                    </div>
+                </div>
+
+                <div
+                    class="columns"
+                >
+                    <div class="column is-2">
+                        <UiValidatedField
+                            name="Active"
+                        >
+                            <b-switch
+                                v-model="observation.config[NotificationType.RewardsDrop].active"
+                            />
+                        </UiValidatedField>
+                    </div>
+                    <div class="column is-4">
+                        Rewards decreased
+                    </div>
+                    <div class="column is-6 is-flex is-flow-direction-row">
+                        <UiValidatedField
+                            name="Frequency"
+                            :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                        >
+                            <b-select
+                                v-model.number="observation.config[NotificationType.RewardsDrop].frequency"
+                            >
+                                <option
+                                    v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                    :key="value"
+                                    :value="value"
+                                >{{ label }}</option>
+                            </b-select>
+                        </UiValidatedField>
+
+                        <UiValidatedField
+                            name="Threshold"
+                            :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
+                            class="ml-4"
+                        >
+                            <b-input
+                                v-model.number="observation.config[NotificationType.RewardsDrop].threshold"
+                            />
+                            <p class="control">
+                                <span class="button is-disabled">%</span>
+                            </p>
+                        </UiValidatedField>
+                    </div>
+                </div>
 
             </ValidationObserver>
         </div>
@@ -99,6 +199,8 @@ import { AccountService } from '#/Watchdog/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Watch } from 'vue-property-decorator';
+import { NotificationType } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
+import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
 
 
 enum FormMode {
@@ -120,7 +222,19 @@ export default class StakePoolObservationForm
 
 
     public FormMode = FormMode;
+    public NotificationType = NotificationType;
     public ObservationMode = ObservationMode;
+
+    public frequencyOptions = {
+        900 : '15 min',
+        3600  : '1 hour',
+        14400 : '4 hours',
+        43200 : '12 hours',
+        86400 : '1 day',
+        172800 : '2 days',
+        345600 : '4 days',
+        604800 : '7 days',
+    };
 
     public observation : StakePoolObservation = new StakePoolObservation();
     public formMode : FormMode = null;
@@ -155,6 +269,9 @@ export default class StakePoolObservationForm
     protected _setup()
     {
         this.observationAccountAddress = this.observation.account?.address;
+        if (!this.observation.config) {
+            this.observation.config = new ObservationConfiguration();
+        }
     }
 
     public async doSearchStakePool(term : string) : Promise<StakePool[]>
@@ -200,3 +317,10 @@ export default class StakePoolObservationForm
 
 }
 </script>
+
+<style lang="scss">
+.is-row-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+</style>
