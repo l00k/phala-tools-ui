@@ -110,9 +110,11 @@
 
         <UiModal
             ref="observationFormModal"
+            :confirm-cancel="isObservationModified"
         >
             <StakePoolObservationForm
                 ref="observationForm"
+                @change="isObservationModified = true"
             />
         </UiModal>
 
@@ -167,6 +169,10 @@ export default class WatchdogConfiguration
     public observationForm : StakePoolObservationForm;
 
 
+    public isModified : boolean = false;
+    public isObservationModified : boolean = false;
+
+
     public getLastNotifications(observation : StakePoolObservation) : Notification[]
     {
         const notificationTypes = Object.values(NotificationType);
@@ -187,12 +193,14 @@ export default class WatchdogConfiguration
 
     public doCreate()
     {
+        this.isObservationModified = false;
         this.observationEditModal.show();
         this.$nextTick(() => this.observationForm.setupCreateForm());
     }
 
     public doEdit(observation : StakePoolObservation)
     {
+        this.isObservationModified = false;
         this.observationEditModal.show();
         this.$nextTick(() => this.observationForm.setupEditForm(observation));
     }
@@ -206,6 +214,8 @@ export default class WatchdogConfiguration
         });
         if (confirmed) {
             this.user.stakePoolObservations = this.user.stakePoolObservations.filter(obs => obs !== observation);
+
+            this.isModified = true;
 
             this.notify({
                 message: 'Observation deleted',

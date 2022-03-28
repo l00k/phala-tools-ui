@@ -13,6 +13,7 @@
         <div class="panel-block pt-5">
             <ValidationObserver
                 ref="validator"
+                @change="onAnyChange"
             >
                 <div class="columns">
                     <div class="column is-6">
@@ -96,6 +97,7 @@ import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
 import { AccountService } from '#/Watchdog/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
+import * as Polkadot from '#/Polkadot';
 import { Watch } from 'vue-property-decorator';
 
 
@@ -124,6 +126,8 @@ export default class StakePoolObservationForm
     public formMode : FormMode = null;
 
     public observationAccountAddress : string = '';
+
+    public isModified : boolean = false;
 
 
     public mounted()
@@ -165,12 +169,27 @@ export default class StakePoolObservationForm
         return collection.items;
     }
 
+    public onAnyChange()
+    {
+        this.isModified = true;
+        this.$emit('change');
+    }
+
     @Watch('observationAccountAddress')
-    public async onObservationAccountChange(address)
+    public async onObservationAccountChange(address : string)
     {
         if (address) {
+            const valid = Polkadot.Utility.isAddress(address);
+            if (!valid) {
+                return;
+            }
+
+            if (this.observation.account?.address == address) {
+                // already loaded
+                return;
+            }
+
             // try to load account
-            console.log(address);
             this.observation.account = await this._accountService.findAccount(address);
         }
         else {

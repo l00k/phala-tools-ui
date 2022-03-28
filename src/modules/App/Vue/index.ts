@@ -23,7 +23,7 @@ library.add(
 );
 
 extend('isPolkadotAddress', {
-    validate (value, params : any[]) {
+    validate (value: any, params: any[] | Record<string, any>) {
         const prefix = params.length > 0
             ? params[0]
             : undefined;
