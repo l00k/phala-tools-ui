@@ -1,5 +1,5 @@
 import { NotificationType } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
-import { Assert } from '@/core/validator/Object';
+import { Assert, AssertObject } from '@/core/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
@@ -10,7 +10,8 @@ export class NotificationConfig
     
     @API.Property()
     @Assert({
-        type: 'boolean'
+        presence: true,
+        type: 'boolean',
     })
     public active : boolean;
     
@@ -46,6 +47,7 @@ export class ObservationConfiguration
 {
     
     @API.Property(() => NotificationConfig)
+    @Assert({ presence: true })
     [NotificationType.ClaimableRewards] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 604800,
@@ -53,13 +55,14 @@ export class ObservationConfiguration
     });
     
     @API.Property(() => NotificationConfig)
-    @Assert({
+    @Assert({ presence: true })
+    @AssertObject({
         threshold: {
             numericality: {
                 lessThanOrEqualTo: 100,
             }
         }
-    }, { isComplex: true })
+    })
     [NotificationType.RewardsDrop] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
@@ -67,13 +70,14 @@ export class ObservationConfiguration
     });
     
     @API.Property(() => NotificationConfig)
-    @Assert({
+    @Assert({ presence: true })
+    @AssertObject({
         threshold: {
             numericality: {
                 lessThanOrEqualTo: 100,
             }
         }
-    }, { isComplex: true })
+    })
     [NotificationType.PoolCommissionChange] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
@@ -82,18 +86,21 @@ export class ObservationConfiguration
     
     
     @API.Property(() => NotificationConfig)
+    @Assert({ presence: true })
     [NotificationType.UnresponsiveWorker] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 3600,
     });
     
     @API.Property(() => NotificationConfig)
+    @Assert({ presence: true })
     [NotificationType.NodeStuck] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 3600,
     });
     
     @API.Property(() => NotificationConfig)
+    @Assert({ presence: true })
     [NotificationType.FreePoolFunds] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
@@ -101,6 +108,7 @@ export class ObservationConfiguration
     });
     
     @API.Property(() => NotificationConfig)
+    @Assert({ presence: true })
     [NotificationType.PendingWithdrawals] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
