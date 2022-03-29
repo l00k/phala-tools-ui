@@ -3,6 +3,7 @@ import { StakePool } from '#/Watchdog/Domain/Model/StakePool';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
 import { ObservationNotifications } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
 import { Annotation as API } from '@inti5/api-frontend';
+import * as Trans from 'class-transformer';
 
 
 export enum ObservationMode
@@ -26,7 +27,7 @@ export class StakePoolObservation
     public account : Account;
     
     @API.Property()
-    public mode : ObservationMode;
+    public mode : ObservationMode = ObservationMode.Delegator;
     
     
     @API.Property(() => ObservationConfiguration)
@@ -35,5 +36,11 @@ export class StakePoolObservation
     
     @API.Property(() => ObservationNotifications)
     public lastNotifications : ObservationNotifications = new ObservationNotifications();
+    
+    
+    public constructor (data? : Partial<StakePoolObservation>)
+    {
+        Trans.plainToClassFromExist(this, data);
+    }
     
 }

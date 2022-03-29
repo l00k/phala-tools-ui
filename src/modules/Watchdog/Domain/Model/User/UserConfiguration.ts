@@ -1,5 +1,6 @@
 import { Annotation as API } from '@inti5/api-frontend';
 import { Assert } from '@inti5/validator/Object';
+import * as Trans from 'class-transformer';
 
 
 @API.Resource('Watchdog/User/Configuration')
@@ -61,5 +62,11 @@ export class UserConfiguration
         },
     })
     public delayUnresponsiveWorkerNotification : number = 1;
+    
+    
+    public constructor (data? : Partial<UserConfiguration>)
+    {
+        Trans.plainToClassFromExist(this, data);
+    }
     
 };

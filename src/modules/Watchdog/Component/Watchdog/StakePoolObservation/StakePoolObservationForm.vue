@@ -10,7 +10,7 @@
                 </span>
             </div>
         </header>
-        <div class="panel-block pt-5">
+        <div class="panel-block p-5">
             <ValidationObserver
                 ref="validator"
                 @change="onAnyChange"
@@ -83,104 +83,332 @@
 
                 <h4 class="title is-6">Notifications</h4>
 
-                <div
-                    class="columns"
-                    :class="{ 'is-row-disabled': observation.mode == ObservationMode.Delegator && !observation.account }"
+                <table
+                    class="is-100-wide"
                 >
-                    <div class="column is-2">
-                        <UiValidatedField
-                            name="Active"
-                        >
-                            <b-switch
-                                v-model="observation.config[NotificationType.ClaimableRewards].active"
-                            />
-                        </UiValidatedField>
-                    </div>
-                    <div class="column is-4">
-                        Pending claimable rewards
-                        <div
-                            v-if="observation.mode == ObservationMode.Delegator && !observation.account"
-                            class="has-color-red"
-                        >
-                            Delegator account required!
-                        </div>
-                    </div>
-                    <div class="column is-6 is-flex is-flow-direction-row">
-                        <UiValidatedField
-                            name="Frequency"
-                            :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
-                        >
-                            <b-select
-                                v-model.number="observation.config[NotificationType.ClaimableRewards].frequency"
+                    <!-- CLAIMABLE REWARDS -->
+                    <tr
+                        class="config-row"
+                        :class="{ 'is-row-disabled': observation.mode == ObservationMode.Delegator && !observation.account }"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
                             >
-                                <option
-                                    v-for="([value, label]) in Object.entries(frequencyOptions)"
-                                    :key="value"
-                                    :value="value"
-                                >{{ label }}</option>
-                            </b-select>
-                        </UiValidatedField>
-
-                        <UiValidatedField
-                            name="Threshold"
-                            :rules="{ required: true, integer: true, min_value: 0 }"
-                            class="ml-4"
-                        >
-                            <b-input
-                                v-model.number="observation.config[NotificationType.ClaimableRewards].threshold"
-                            />
-                            <p class="control">
-                                <span class="button is-disabled">PHA</span>
-                            </p>
-                        </UiValidatedField>
-                    </div>
-                </div>
-
-                <div
-                    class="columns"
-                >
-                    <div class="column is-2">
-                        <UiValidatedField
-                            name="Active"
-                        >
-                            <b-switch
-                                v-model="observation.config[NotificationType.RewardsDrop].active"
-                            />
-                        </UiValidatedField>
-                    </div>
-                    <div class="column is-4">
-                        Rewards decreased
-                    </div>
-                    <div class="column is-6 is-flex is-flow-direction-row">
-                        <UiValidatedField
-                            name="Frequency"
-                            :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
-                        >
-                            <b-select
-                                v-model.number="observation.config[NotificationType.RewardsDrop].frequency"
+                                <b-switch
+                                    v-model="observation.config[NotificationType.ClaimableRewards].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td class="no-filter">
+                            Pending claimable rewards
+                            <div
+                                v-if="observation.mode == ObservationMode.Delegator && !observation.account"
+                                class="has-color-red"
                             >
-                                <option
-                                    v-for="([value, label]) in Object.entries(frequencyOptions)"
-                                    :key="value"
-                                    :value="value"
-                                >{{ label }}</option>
-                            </b-select>
-                        </UiValidatedField>
+                                Delegator account required!
+                            </div>
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.ClaimableRewards].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[NotificationType.ClaimableRewards].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">PHA</span>
+                                </p>
+                            </UiValidatedField>
+                        </td>
+                    </tr>
 
-                        <UiValidatedField
-                            name="Threshold"
-                            :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
-                            class="ml-4"
-                        >
-                            <b-input
-                                v-model.number="observation.config[NotificationType.RewardsDrop].threshold"
-                            />
-                            <p class="control">
-                                <span class="button is-disabled">%</span>
-                            </p>
-                        </UiValidatedField>
-                    </div>
-                </div>
+                    <!-- REWARDS DROP -->
+                    <tr
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.RewardsDrop].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Rewards decreased
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.RewardsDrop].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[NotificationType.RewardsDrop].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">%</span>
+                                </p>
+                            </UiValidatedField>
+                        </td>
+                    </tr>
+
+                    <!-- POOL COMMISSION CHANGE -->
+                    <tr
+                        v-if="observation.mode == ObservationMode.Delegator"
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.PoolCommissionChange].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Pool commission change
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.PoolCommissionChange].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[NotificationType.PoolCommissionChange].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">%</span>
+                                </p>
+                            </UiValidatedField>
+                        </td>
+                    </tr>
+
+                    <!-- UNRESPONSIVE WORKER -->
+                    <tr
+                        v-if="observation.mode == ObservationMode.Owner"
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.UnresponsiveWorker].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Unresponsive worker
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.UnresponsiveWorker].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                    </tr>
+
+                    <!-- NODE STUCK -->
+                    <tr
+                        v-if="observation.mode == ObservationMode.Owner"
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.NodeStuck].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Node stuck<br/>
+                            <span class="has-font-size-sm">(not processing blocks)</span>
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.NodeStuck].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                    </tr>
+
+                    <!-- FREE POOL FUNDS -->
+                    <tr
+                        v-if="observation.mode == ObservationMode.Owner"
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.FreePoolFunds].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Free pending funds in pool
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.FreePoolFunds].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[NotificationType.FreePoolFunds].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">PHA</span>
+                                </p>
+                            </UiValidatedField>
+                        </td>
+                    </tr>
+
+                    <!-- PENDING WITHDRAWALS -->
+                    <tr
+                        v-if="observation.mode == ObservationMode.Owner"
+                        class="config-row"
+                    >
+                        <td>
+                            <UiValidatedField
+                                name="Active"
+                            >
+                                <b-switch
+                                    v-model="observation.config[NotificationType.PendingWithdrawals].active"
+                                />
+                            </UiValidatedField>
+                        </td>
+                        <td>
+                            Pending withdrawals in pool queue
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Frequency"
+                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
+                            >
+                                <b-select
+                                    v-model.number="observation.config[NotificationType.PendingWithdrawals].frequency"
+                                >
+                                    <option
+                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
+                                        :key="value"
+                                        :value="value"
+                                    >{{ label }}</option>
+                                </b-select>
+                            </UiValidatedField>
+
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[NotificationType.PendingWithdrawals].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">PHA</span>
+                                </p>
+                            </UiValidatedField>
+                        </td>
+                    </tr>
+
+                </table>
 
             </ValidationObserver>
         </div>
@@ -319,8 +547,18 @@ export default class StakePoolObservationForm
 </script>
 
 <style lang="scss">
-.is-row-disabled {
-    pointer-events: none;
-    opacity: 0.6;
+.config-row {
+    td {
+        padding: 0.5rem 0;
+    }
+
+
+    &.is-row-disabled {
+        td:not(.no-filter) {
+            pointer-events: none;
+            opacity: 0.7;
+            filter: grayscale(1) brightness(50%);
+        }
+    }
 }
 </style>

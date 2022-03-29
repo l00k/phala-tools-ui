@@ -3,6 +3,7 @@ import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
 import { StakePoolObservation } from '#/Watchdog/Domain/Model/StakePool/StakePoolObservation';
 import { UserConfiguration } from '#/Watchdog/Domain/Model/User/UserConfiguration';
 import { Annotation as API } from '@inti5/api-frontend';
+import * as Trans from 'class-transformer';
 
 
 @API.Resource('Watchdog/User')
@@ -35,5 +36,11 @@ export class User
     
     @API.Property(() => StakePoolObservation)
     public stakePoolObservations : StakePoolObservation[];
+    
+    
+    public constructor (data? : Partial<User>)
+    {
+        Trans.plainToClassFromExist(this, data);
+    }
     
 }
