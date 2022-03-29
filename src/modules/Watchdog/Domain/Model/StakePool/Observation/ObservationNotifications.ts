@@ -21,68 +21,26 @@ export class ObservationNotifications
 {
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.ClaimableRewards] : number;
+    public readonly [NotificationType.ClaimableRewards] : number;
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.RewardsDrop] : number;
+    public readonly [NotificationType.RewardsDrop] : number;
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.PoolCommissionChange] : number;
+    public readonly [NotificationType.PoolCommissionChange] : number;
     
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.UnresponsiveWorker] : number;
+    public readonly [NotificationType.UnresponsiveWorker] : number;
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.NodeStuck] : number;
+    public readonly [NotificationType.NodeStuck] : number;
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.FreePoolFunds] : number;
+    public readonly [NotificationType.FreePoolFunds] : number;
     
     @API.Property()
-    @Assert({
-        numericality: {
-            onlyInteger: true,
-            greaterThan: 0,
-        }
-    })
-    [NotificationType.PendingWithdrawals] : number;
+    public readonly [NotificationType.PendingWithdrawals] : number;
     
     
     public constructor (data? : Partial<ObservationNotifications>)

@@ -86,6 +86,13 @@
                 <table
                     class="is-100-wide"
                 >
+                    <tr>
+                        <td width="10%"></td>
+                        <td width="40%"></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
                     <!-- CLAIMABLE REWARDS -->
                     <tr
                         class="config-row"

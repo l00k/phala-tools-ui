@@ -48,7 +48,7 @@ export class ObservationConfiguration
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
-    [NotificationType.ClaimableRewards] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.ClaimableRewards] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 604800,
         threshold: 100,
@@ -63,7 +63,7 @@ export class ObservationConfiguration
             }
         }
     })
-    [NotificationType.RewardsDrop] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.RewardsDrop] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
         threshold: 25,
@@ -78,7 +78,7 @@ export class ObservationConfiguration
             }
         }
     })
-    [NotificationType.PoolCommissionChange] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.PoolCommissionChange] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
         threshold: 10,
@@ -87,21 +87,21 @@ export class ObservationConfiguration
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
-    [NotificationType.UnresponsiveWorker] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.UnresponsiveWorker] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 3600,
     });
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
-    [NotificationType.NodeStuck] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.NodeStuck] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 3600,
     });
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
-    [NotificationType.FreePoolFunds] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.FreePoolFunds] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
         threshold: 10000,
@@ -109,7 +109,7 @@ export class ObservationConfiguration
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
-    [NotificationType.PendingWithdrawals] : NotificationConfig = new NotificationConfig({
+    public [NotificationType.PendingWithdrawals] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
         threshold: 0,
