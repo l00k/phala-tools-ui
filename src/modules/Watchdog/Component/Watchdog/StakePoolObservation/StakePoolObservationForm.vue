@@ -11,9 +11,12 @@
             </div>
         </header>
         <div class="panel-block p-5">
-            <ValidationObserver
-                ref="validator"
+
+            <UiForm
+                ref="form"
+                :formData="observation"
                 @change="onAnyChange"
+                @submit="onSubmit"
             >
                 <div class="columns">
                     <div class="column is-6">
@@ -417,7 +420,7 @@
 
                 </table>
 
-            </ValidationObserver>
+            </UiForm>
         </div>
     </div>
 </template>
@@ -512,11 +515,7 @@ export default class StakePoolObservationForm
     public async doSearchStakePool(term : string) : Promise<StakePool[]>
     {
         const collection = await this._stakePoolService
-            .getCollection(new Api.Domain.CollectionRequest({
-                filters: {
-                    onChainId: { $like: `%${term}%` },
-                }
-            }));
+            .getCollection(null, `#PATH#/find/${term}`);
 
         return collection.items;
     }
@@ -525,6 +524,11 @@ export default class StakePoolObservationForm
     {
         this.isModified = true;
         this.$emit('change');
+    }
+
+    public onSubmit()
+    {
+        console.log(this.observation);
     }
 
     @Watch('observationAccountAddress')

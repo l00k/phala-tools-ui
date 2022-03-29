@@ -169,7 +169,6 @@ export default class WatchdogConfiguration
     public observationForm : StakePoolObservationForm;
 
 
-    public isModified : boolean = false;
     public isObservationModified : boolean = false;
 
 
@@ -213,9 +212,7 @@ export default class WatchdogConfiguration
             message: `Confirm deleting stake pool observation #${observation.stakePool.onChainId}`,
         });
         if (confirmed) {
-            this.user.stakePoolObservations = this.user.stakePoolObservations.filter(obs => obs !== observation);
-
-            this.isModified = true;
+            alert('to request deletion');
 
             this.notify({
                 message: 'Observation deleted',
