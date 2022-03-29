@@ -214,9 +214,9 @@ export default class WatchdogConfiguration
         if (confirmed) {
             alert('to request deletion');
 
-            this.notify({
-                message: 'Observation deleted',
+            this.showNotification({
                 type: 'is-success',
+                message: 'Observation deleted',
             });
         }
     }

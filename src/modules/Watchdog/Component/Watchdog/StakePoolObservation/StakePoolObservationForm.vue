@@ -16,11 +16,14 @@
                 ref="form"
                 :formData="observation"
                 @change="onAnyChange"
-                @submit="onSubmit"
+                :submit="onSubmit"
+                :reset="onReset"
+                v-slot="{ isValid, isProcessing, doReset, doSubmit }"
             >
                 <div class="columns">
                     <div class="column is-6">
                         <UiValidatedField
+                            field="stakePool"
                             name="Stake pool"
                             :rules="{ required: true }"
                         >
@@ -420,6 +423,20 @@
 
                 </table>
 
+                <div class="mt-5 is-flex is-justify-content-space-between">
+                    <b-button
+                        type="is-warning"
+                        :disabled="isProcessing"
+                        :loading="isProcessing"
+                        @click="doReset"
+                    >Reset</b-button>
+                    <b-button
+                        type="is-success"
+                        :disabled="isProcessing"
+                        :loading="isProcessing"
+                        @click="doSubmit"
+                    >Save</b-button>
+                </div>
             </UiForm>
         </div>
     </div>
@@ -514,6 +531,10 @@ export default class StakePoolObservationForm
 
     public async doSearchStakePool(term : string) : Promise<StakePool[]>
     {
+        if (!term) {
+            return [];
+        }
+
         const collection = await this._stakePoolService
             .getCollection(null, `#PATH#/find/${term}`);
 
@@ -528,7 +549,12 @@ export default class StakePoolObservationForm
 
     public onSubmit()
     {
-        console.log(this.observation);
+        console.log('submit', this.observation);
+    }
+
+    public onReset()
+    {
+        console.log('reset', this.observation);
     }
 
     @Watch('observationAccountAddress')
