@@ -1,4 +1,5 @@
 import { NotificationType } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
+import { Assert } from '@/core/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
@@ -8,12 +9,27 @@ export class NotificationConfig
 {
     
     @API.Property()
+    @Assert({
+        type: 'boolean'
+    })
     public active : boolean;
     
     @API.Property()
+    @Assert({
+        numericality: {
+            onlyInteger: true,
+            greaterThan: 0,
+        }
+    })
     public frequency : number;
     
     @API.Property()
+    @Assert({
+        numericality: {
+            onlyInteger: true,
+            greaterThan: 0,
+        }
+    })
     public threshold : number;
     
     
@@ -37,6 +53,13 @@ export class ObservationConfiguration
     });
     
     @API.Property(() => NotificationConfig)
+    @Assert({
+        threshold: {
+            numericality: {
+                lessThanOrEqualTo: 100,
+            }
+        }
+    }, { isComplex: true })
     [NotificationType.RewardsDrop] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
@@ -44,6 +67,13 @@ export class ObservationConfiguration
     });
     
     @API.Property(() => NotificationConfig)
+    @Assert({
+        threshold: {
+            numericality: {
+                lessThanOrEqualTo: 100,
+            }
+        }
+    }, { isComplex: true })
     [NotificationType.PoolCommissionChange] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,

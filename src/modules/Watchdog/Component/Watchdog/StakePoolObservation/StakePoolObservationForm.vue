@@ -546,12 +546,11 @@ export default class StakePoolObservationForm
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .config-row {
     td {
         padding: 0.5rem 0;
     }
-
 
     &.is-row-disabled {
         td:not(.no-filter) {
