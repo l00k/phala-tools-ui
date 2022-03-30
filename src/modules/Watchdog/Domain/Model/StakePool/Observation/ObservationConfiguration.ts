@@ -19,7 +19,7 @@ export class NotificationConfig
     @Assert({
         numericality: {
             onlyInteger: true,
-            greaterThan: 0,
+            greaterThanOrEqualTo: 0,
         }
     })
     public frequency : number;
@@ -28,7 +28,7 @@ export class NotificationConfig
     @Assert({
         numericality: {
             onlyInteger: true,
-            greaterThan: 0,
+            greaterThanOrEqualTo: 0,
         }
     })
     public threshold : number;
@@ -48,6 +48,13 @@ export class ObservationConfiguration
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
+    @AssertObject({
+        threshold: {
+            numericality: {
+                greaterThan: 0,
+            }
+        }
+    })
     public [NotificationType.ClaimableRewards] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 604800,
@@ -59,6 +66,7 @@ export class ObservationConfiguration
     @AssertObject({
         threshold: {
             numericality: {
+                greaterThan: 0,
                 lessThanOrEqualTo: 100,
             }
         }
@@ -74,6 +82,7 @@ export class ObservationConfiguration
     @AssertObject({
         threshold: {
             numericality: {
+                greaterThan: 0,
                 lessThanOrEqualTo: 100,
             }
         }

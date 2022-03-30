@@ -2,6 +2,7 @@ import { Account } from '#/Watchdog/Domain/Model/Account';
 import { StakePool } from '#/Watchdog/Domain/Model/StakePool';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
 import { ObservationNotifications } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
+import { Assert } from '@/core/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
@@ -21,16 +22,20 @@ export class StakePoolObservation
     public id : number;
     
     @API.Property(() => StakePool)
+    @Assert({ presence: true })
     public stakePool : StakePool;
     
     @API.Property(() => Account)
+    @Assert()
     public account : Account;
     
     @API.Property()
+    @Assert({ presence: true })
     public mode : ObservationMode = ObservationMode.Delegator;
     
     
     @API.Property(() => ObservationConfiguration)
+    @Assert({ presence: true })
     public config : ObservationConfiguration = new ObservationConfiguration();
     
     
