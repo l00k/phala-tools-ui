@@ -26,15 +26,9 @@ export class App
         this._api.bootstrap();
         
         // init api clients
-        this._apiProvider.get('stats')
+        this._apiProvider.get('main')
             .init({
-                baseUrl: this._configuration.get('api.stats.baseUrl'),
-                refreshUri: '/token/refresh',
-            });
-            
-        this._apiProvider.get('watchdog')
-            .init({
-                baseUrl: this._configuration.get('api.watchdog.baseUrl'),
+                baseUrl: this._configuration.get('api.baseUrl'),
                 refreshUri: '/token/refresh',
             });
     }

@@ -445,12 +445,12 @@
 <script lang="ts">
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
-import { StakePool } from '#/Watchdog/Domain/Model/StakePool';
+import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { StakePoolObservation, ObservationMode } from '#/Watchdog/Domain/Model/StakePool/StakePoolObservation';
-import { StakePoolService } from '#/Watchdog/Domain/Service/StakePoolService';
+import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
-import { AccountService } from '#/Watchdog/Domain/Service/AccountService';
+import { AccountService } from '#/Phala/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Watch } from 'vue-property-decorator';

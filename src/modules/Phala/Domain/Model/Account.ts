@@ -2,9 +2,10 @@ import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
 
-@API.Resource('Watchdog/Account')
+@API.Resource('Account')
 export class Account
 {
+    
     
     @API.Id()
     public id : number;
@@ -16,10 +17,15 @@ export class Account
     @API.Property()
     public identity : string;
     
+    @API.Property()
+    public identityVerified : boolean = false;
+    
     
     public constructor (data? : Partial<Account>)
     {
-        Trans.plainToClassFromExist(this, data);
+        if (data) {
+            Trans.plainToClassFromExist(this, data);
+        }
     }
     
 }

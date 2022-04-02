@@ -1,11 +1,6 @@
 export default {
     api: {
-        stats: {
-            baseUrl: 'http://localhost:4004'
-        },
-        watchdog: {
-            baseUrl: 'http://localhost:4005',
-        }
+        baseUrl: 'http://localhost:4005'
     },
     module: {
         phala: {

@@ -1,12 +1,12 @@
-import { Account } from '#/Watchdog/Domain/Model/Account';
+import { Account } from '#/Phala/Domain/Model/Account';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
 
-
-@API.Resource('Watchdog/StakePool')
+@API.Resource('StakePool')
 export class StakePool
 {
+    
     
     @API.Id()
     public id : number;
@@ -21,7 +21,9 @@ export class StakePool
     
     public constructor (data? : Partial<StakePool>)
     {
-        Trans.plainToClassFromExist(this, data);
+        if (data) {
+            Trans.plainToClassFromExist(this, data);
+        }
     }
     
 }

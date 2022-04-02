@@ -1,5 +1,5 @@
+import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import * as Api from '@/core/api-frontend';
-import { StakePool } from '#/Watchdog/Domain/Model/StakePool';
 
 
 export class StakePoolService

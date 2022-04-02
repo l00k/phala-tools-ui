@@ -1,4 +1,4 @@
-import { Account } from '#/Watchdog/Domain/Model/Account';
+import { Account } from '#/Phala/Domain/Model/Account';
 import * as Api from '@/core/api-frontend';
 import { ApiException } from '@/core/api-frontend/Exception';
 import cloneDeep from 'lodash/cloneDeep';

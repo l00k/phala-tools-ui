@@ -1,11 +1,6 @@
 export default {
     api: {
-        stats: {
-            baseUrl: 'https://phala.100k.dev/stats-api/'
-        },
-        watchdog: {
-            baseUrl: 'https://phala.100k.dev/watchdog-api/'
-        }
+        baseUrl: 'https://phala.100k.dev/api/'
     },
     module: {
         polkadot: {

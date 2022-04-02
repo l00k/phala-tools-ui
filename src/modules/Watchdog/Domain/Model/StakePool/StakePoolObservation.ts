@@ -1,5 +1,5 @@
-import { Account } from '#/Watchdog/Domain/Model/Account';
-import { StakePool } from '#/Watchdog/Domain/Model/StakePool';
+import { Account } from '#/Phala/Domain/Model/Account';
+import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
 import { ObservationNotifications } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
 import { Assert } from '@/core/validator/Object';
