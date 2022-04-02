@@ -1,7 +1,6 @@
 import * as Utility from '#/App/Utility';
 import * as Polkadot from '#/Polkadot';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTowerObservation } from '@fortawesome/free-solid-svg-icons';
 import { extend } from 'vee-validate';
 import Vue from 'vue';
 import VueTour from 'vue-tour';
@@ -19,11 +18,12 @@ Vue.filter('formatAddress', Utility.formatAddress);
 Vue.filter('formatPublicKey', Utility.formatPublicKey);
 
 library.add(
-    faTowerObservation
+    require('@fortawesome/free-solid-svg-icons/faTowerObservation').faTowerObservation,
 );
 
 extend('isPolkadotAddress', {
-    validate (value: any, params: any[] | Record<string, any>) {
+    validate (value : any, params : any[] | Record<string, any>)
+    {
         const prefix = params.length > 0
             ? params[0]
             : undefined;

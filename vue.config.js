@@ -58,7 +58,8 @@ module.exports = {
         },
     },
     transpileDependencies: [
-        'vuex-module-decorators'
+        /@polkadot\/*/,
+        'vuex-module-decorators',
     ],
     configureWebpack (config)
     {
@@ -76,22 +77,35 @@ module.exports = {
                 'Access-Control-Allow-Origin': '*',
             },
         };
-        config.resolve.plugins = [ new IntiPathResolverPlugin() ];
         
+        // SETUP PLUGINS
+        
+        // path resolving
+        config.resolve.plugins = [
+            new IntiPathResolverPlugin()
+        ];
+        
+        // strip moment locales
+        config.plugins.push(
+            new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        );
+        
+        // global variables
         const buildVersion = generateUniqueBuildInfo();
         const appData = JSON.stringify({ buildVersion });
         
         config.plugins.push(
             new webpack.DefinePlugin({
                 __APP_DATA__: JSON.stringify(appData)
-            }),
+            })
         );
         
-        if (isDev) {
-            // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-            // config.plugins.push(new BundleAnalyzerPlugin());
-        }
+        // dev plugins
+        // config.plugins.push(
+        //     new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)()
+        // );
         
+        // CONFIGURE RULES
         config.module.rules.push({
             test: /\.mjs$/,
             include: /node_modules/,
@@ -107,5 +121,11 @@ module.exports = {
                 options.compiler = require('vue-template-babel-compiler');
                 return options;
             });
+        
+        config.module
+            .rule('js')
+            .test(/\.js$/)
+            .use('@open-wc/webpack-import-meta-loader')
+            .loader('@open-wc/webpack-import-meta-loader');
     }
 };

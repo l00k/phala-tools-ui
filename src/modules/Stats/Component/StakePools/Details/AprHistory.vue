@@ -67,10 +67,10 @@ export default class AprHistory
 {
 
 
-    @API.InjectService('stats')
+    @API.InjectService()
     protected _historyEntryService : HistoryEntryService;
 
-    @API.InjectService('stats')
+    @API.InjectService()
     protected _eventService : EventService;
 
 

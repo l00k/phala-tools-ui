@@ -469,7 +469,7 @@ export default class StakePoolObservationForm
     extends BaseComponent
 {
 
-    @API.InjectClient('watchdog')
+    @API.InjectClient()
     protected _apiClient : Api.Client;
 
     protected _stakePoolService : StakePoolService;

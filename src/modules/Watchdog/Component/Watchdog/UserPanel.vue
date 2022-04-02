@@ -50,7 +50,7 @@ export default class UserPanel
     extends BaseComponent
 {
 
-    @API.InjectClient('watchdog')
+    @API.InjectClient()
     protected _apiClient : Api.Client;
 
 

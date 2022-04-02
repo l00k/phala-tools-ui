@@ -23,14 +23,13 @@ export class RuntimeStorage
     public user : User;
     
     
-    
     @Action
     public async init () : Promise<boolean>
     {
         if (!this.context.state.initPromise) {
             const apiClient = ObjectManager.getSingleton()
                 .getInstance(Provider)
-                .get('watchdog');
+                .get();
             
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {

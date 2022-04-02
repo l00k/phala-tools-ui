@@ -152,7 +152,7 @@ export default class WatchdogConfiguration
     extends BaseComponent
 {
 
-    @API.InjectClient('watchdog')
+    @API.InjectClient()
     protected _apiClient : Api.Client;
 
 

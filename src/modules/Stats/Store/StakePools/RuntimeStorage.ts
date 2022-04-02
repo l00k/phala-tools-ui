@@ -32,7 +32,7 @@ export class RuntimeStorage
         if (!this.context.state.initPromise) {
             const apiClient = ObjectManager.getSingleton()
                 .getInstance(Provider)
-                .get('stats');
+                .get();
             
             const tagService = apiClient.getService(TagService);
             const issueService = apiClient.getService(IssueService);

@@ -23,7 +23,7 @@ export default class WatchdogLoginPage
     extends BaseComponent
 {
 
-    @API.InjectClient('watchdog')
+    @API.InjectClient()
     protected _apiClient : Api.Client;
 
 

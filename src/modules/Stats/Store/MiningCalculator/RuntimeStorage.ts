@@ -39,14 +39,14 @@ async function calculateBlockTime(
     
     {
         const blockHash = await phalaApi.rpc.chain.getBlockHash(finalizedBlockNumber);
-        const blockDateUts : number = (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
+        const blockDateUts : number = <any> (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
         lastBlockTimestamp = Number(blockDateUts);
     }
     
     {
         const blockNumber = finalizedBlockNumber - blockRange;
         const blockHash = await phalaApi.rpc.chain.getBlockHash(blockNumber);
-        const blockDateUts : number = (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
+        const blockDateUts : number = <any> (await phalaApi.query.timestamp.now.at(blockHash)).toJSON();
         firstBlockTimestamp = Number(blockDateUts);
     }
     
