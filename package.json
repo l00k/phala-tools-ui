@@ -17,6 +17,7 @@
         "@inti5/event-bus": "*",
         "@inti5/mapper": "*",
         "@inti5/object-manager": "*",
+        "@inti5/serializer": "*",
         "@inti5/utils": "*",
         "@inti5/validator": "*",
         "@inti5/webpack-loader": "*"
