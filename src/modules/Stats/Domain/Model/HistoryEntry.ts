@@ -1,7 +1,8 @@
 import { Annotation as API } from '@inti5/api-frontend';
+import * as Trans from 'class-transformer';
 
 
-@API.Resource()
+@API.Resource('Stats/HistoryEntry')
 export class HistoryEntry
 {
     
@@ -97,6 +98,12 @@ export class HistoryEntry
     public get widthdrawalsIssue () : boolean
     {
         return this.withdrawalsPercent > 0.5;
+    }
+    
+    
+    public constructor (data? : Partial<HistoryEntry>)
+    {
+        Trans.plainToClassFromExist(this, data);
     }
     
 }

@@ -18,8 +18,8 @@ import { Component } from '#/FrontendCore/Vue/Annotations';
 import AprHistory from '#/Stats/Component/StakePools/Details/AprHistory.vue';
 import BasicInfo from '#/Stats/Component/StakePools/Details/BasicInfo.vue';
 import StakingHistory from '#/Stats/Component/StakePools/Details/StakingHistory.vue';
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
-import { StakePoolService } from '#/Stats/Domain/Service/StakePoolService';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
+import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
 import { Annotation as API } from '@/core/api-frontend';
 import { Prop, Watch } from 'vue-property-decorator';
 
@@ -36,14 +36,14 @@ export default class DetailsView
 {
 
     @API.InjectService('stats')
-    protected _stakePoolService : StakePoolService;
+    protected _stakePoolService : StakePoolEntryService;
 
     @Prop({ default: null })
     public stakePoolId : number;
 
     public isReady : boolean = false;
 
-    public stakePool : StakePool = null;
+    public stakePool : StakePoolEntry = null;
 
 
     public mounted ()

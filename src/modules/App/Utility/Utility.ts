@@ -1,4 +1,4 @@
-import { Account } from '#/Stats/Domain/Model/Account';
+import { Account } from '#/Phala/Domain/Model';
 import numbro from 'numbro';
 
 

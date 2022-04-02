@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts">
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
-import { HistoryEntry } from '#/Stats/Domain/Model/StakePool/HistoryEntry';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
+import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { HistoryEntryService } from '#/Stats/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
@@ -74,7 +74,7 @@ export default class AprHistory
 
 
     @Prop()
-    public stakePool : StakePool;
+    public stakePool : StakePoolEntry;
 
     @Ref('chartDiv')
     public $chartDiv : HTMLDivElement;

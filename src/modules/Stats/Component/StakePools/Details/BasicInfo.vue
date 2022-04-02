@@ -317,7 +317,7 @@
 </template>
 
 <script lang="ts">
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Prop } from 'vue-property-decorator';
@@ -329,10 +329,10 @@ export default class BasicInfo
 {
 
     @Prop()
-    public stakePool : StakePool;
+    public stakePool : StakePoolEntry;
 
 
-    public getRewardsPer (stakePool : StakePool, amount : number, days : number)
+    public getRewardsPer (stakePool : StakePoolEntry, amount : number, days : number)
     {
         return amount * stakePool.lastHistoryEntry.avgApr * (days / 365);
     }

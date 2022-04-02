@@ -1,7 +1,8 @@
 import { Annotation as API } from '@inti5/api-frontend';
+import * as Trans from 'class-transformer';
 
 
-@API.Resource()
+@API.Resource('Stats/Issue')
 @API.Cacheable()
 export class Issue
 {
@@ -17,5 +18,11 @@ export class Issue
     
     @API.Property()
     public color : string = '';
+    
+    
+    public constructor (data? : Partial<Issue>)
+    {
+        Trans.plainToClassFromExist(this, data);
+    }
     
 }

@@ -3,7 +3,7 @@ import { Assert } from '@inti5/validator/Object';
 import * as Trans from 'class-transformer';
 
 
-@API.Resource('Watchdog/User/Configuration')
+@API.Resource('Watchdog/UserConfiguration')
 export class UserConfiguration
 {
     

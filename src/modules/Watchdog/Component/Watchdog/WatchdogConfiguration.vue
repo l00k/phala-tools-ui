@@ -125,12 +125,12 @@
 import { BaseComponent, UiModal } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { ObservationMode, StakePoolObservation } from '#/Watchdog/Domain/Model/StakePool/StakePoolObservation';
+import { ObservationMode, StakePoolObservation } from '#/Watchdog/Domain/Model/StakePoolObservation';
 import { User } from '#/Watchdog/Domain/Model/User';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
 import { namespace } from 'vuex-class';
-import { NotificationType } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
+import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import startCase from 'lodash/startCase';
 import { Ref } from 'vue-property-decorator';
 import StakePoolObservationForm from './StakePoolObservation/StakePoolObservationForm.vue';

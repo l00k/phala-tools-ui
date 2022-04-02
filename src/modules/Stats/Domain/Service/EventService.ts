@@ -3,7 +3,7 @@ import * as Api from '@/core/api-frontend';
 
 
 export class EventService
-    extends Api.EntityService<Event<any>>
+    extends Api.EntityService<Event>
 {
     
     public static readonly RESOURCE = Event;
@@ -15,12 +15,12 @@ export class EventService
     
     public getStakePoolEventsFetcher (
         stakePoolId : number,
-        filters? : Api.Domain.Filters<Event<any>>
-    ) : AsyncGenerator<Event<any>[], void, void>
+        filters? : Api.Domain.Filters<Event>
+    ) : AsyncGenerator<Event[], void, void>
     {
-        const request = new Api.Domain.CollectionRequest<Event<any>>({ filters });
+        const request = new Api.Domain.CollectionRequest<Event>({ filters });
         
-        const path = `stake_pool/${stakePoolId}/events`;
+        const path = `#PATH#/by_stakepool/${stakePoolId}`;
         return super.getFetcher(
             request,
             path

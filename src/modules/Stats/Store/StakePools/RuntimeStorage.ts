@@ -1,7 +1,5 @@
-import { Issue } from '#/Stats/Domain/Model/StakePool/Issue';
-import { Tag } from '#/Stats/Domain/Model/Tag';
+import { Issue } from '#/Stats/Domain/Model/Issue';
 import { IssueService } from '#/Stats/Domain/Service/IssueService';
-import { TagService } from '#/Stats/Domain/Service/TagService';
 import { App } from '#/FrontendCore/App';
 import { Provider } from '@/core/api-frontend';
 import { ObjectManager } from '@inti5/object-manager';
@@ -23,7 +21,6 @@ export class RuntimeStorage
     public initPromise : Promise<boolean> = null;
     
     public issues : Issue[] = [];
-    public tags : Tag[] = [];
     
     
     @Action
@@ -34,16 +31,10 @@ export class RuntimeStorage
                 .getInstance(Provider)
                 .get();
             
-            const tagService = apiClient.getService(TagService);
             const issueService = apiClient.getService(IssueService);
             
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {
-                    this.context.state.tags = await asyncGeneratorToArray(
-                        tagService.getFetcher(),
-                        chunk => chunk
-                    );
-                    
                     this.context.state.issues = await asyncGeneratorToArray(
                         issueService.getFetcher(),
                         chunk => chunk

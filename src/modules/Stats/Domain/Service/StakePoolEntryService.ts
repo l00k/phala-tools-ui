@@ -1,12 +1,12 @@
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
 import * as Api from '@/core/api-frontend';
 
 
-export class StakePoolService
-    extends Api.EntityService<StakePool>
+export class StakePoolEntryService
+    extends Api.EntityService<StakePoolEntry>
 {
     
-    public static readonly RESOURCE = StakePool;
+    public static readonly RESOURCE = StakePoolEntry;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

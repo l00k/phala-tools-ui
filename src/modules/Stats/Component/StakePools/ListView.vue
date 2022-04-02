@@ -261,8 +261,8 @@
 </template>
 
 <script lang="ts">
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
-import { StakePoolService } from '#/Stats/Domain/Service/StakePoolService';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
+import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
@@ -283,12 +283,12 @@ export default class ListView
 {
 
     @API.InjectService('stats')
-    protected _stakePoolService : StakePoolService;
+    protected _stakePoolService : StakePoolEntryService;
 
 
     public FilterType = FilterType;
 
-    public collectionRequest : Api.Domain.CollectionRequest<StakePool> = new Api.Domain.CollectionRequest({
+    public collectionRequest : Api.Domain.CollectionRequest<StakePoolEntry> = new Api.Domain.CollectionRequest({
         filters: {
             onChainId: {},
             owner: {
@@ -320,7 +320,7 @@ export default class ListView
         sorting: {
             lastHistoryEntry: { avgApr: 'DESC' }
         },
-        pagination: StakePoolService.getDefaultPagination(),
+        pagination: StakePoolEntryService.getDefaultPagination(),
         modifiers: {
             distinctOwners: false
         }
@@ -335,7 +335,7 @@ export default class ListView
     public waitingRequest : boolean = false;
 
     public isLoading : boolean = false;
-    public stakePools : StakePool[] = [];
+    public stakePools : StakePoolEntry[] = [];
 
 
     public mounted ()
@@ -395,11 +395,11 @@ export default class ListView
         }
     }
 
-    public onRowClick (stakePool : StakePool)
+    public onRowClick (stakePoolEntry : StakePoolEntry)
     {
         this.$router.push({
             name: 'stakepools_details',
-            params: { id: stakePool.onChainId.toString() },
+            params: { id: stakePoolEntry.stakePool.onChainId.toString() },
         });
     }
 

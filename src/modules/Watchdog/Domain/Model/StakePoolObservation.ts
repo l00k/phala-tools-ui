@@ -1,7 +1,7 @@
 import { Account } from '#/Phala/Domain/Model/Account';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
-import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
-import { ObservationNotifications } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
+import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
+import { ObservationNotifications } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import { Assert } from '@/core/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
@@ -14,7 +14,7 @@ export enum ObservationMode
 }
 
 
-@API.Resource('Watchdog/StakePool/Observation')
+@API.Resource('Watchdog/StakePoolObservation')
 export class StakePoolObservation
 {
     

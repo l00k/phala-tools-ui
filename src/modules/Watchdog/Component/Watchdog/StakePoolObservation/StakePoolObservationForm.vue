@@ -446,7 +446,7 @@
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
-import { StakePoolObservation, ObservationMode } from '#/Watchdog/Domain/Model/StakePool/StakePoolObservation';
+import { StakePoolObservation, ObservationMode } from '#/Watchdog/Domain/Model/StakePoolObservation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
@@ -454,8 +454,8 @@ import { AccountService } from '#/Phala/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Watch } from 'vue-property-decorator';
-import { NotificationType } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationNotifications';
-import { ObservationConfiguration } from '#/Watchdog/Domain/Model/StakePool/Observation/ObservationConfiguration';
+import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
+import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
 
 
 enum FormMode {

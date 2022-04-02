@@ -16,7 +16,7 @@ export enum NotificationType
 }
 
 
-@API.Resource('Watchdog/StakePool/Observation/Notifications')
+@API.Resource('Watchdog/Observation/Notifications')
 export class ObservationNotifications
 {
     

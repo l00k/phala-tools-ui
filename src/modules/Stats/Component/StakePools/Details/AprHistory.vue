@@ -44,12 +44,12 @@
 
 <script lang="ts">
 import { Event, EventType } from '#/Stats/Domain/Model/Event';
-import { StakePool } from '#/Stats/Domain/Model/StakePool';
-import { HistoryEntry } from '#/Stats/Domain/Model/StakePool/HistoryEntry';
+import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
+import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { EventService } from '#/Stats/Domain/Service/EventService';
 import { HistoryEntryService } from '#/Stats/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
-import { StakePoolService } from '#/Stats/Domain/Service/StakePoolService';
+import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
 import { Annotation as API } from '@/core/api-frontend';
 import * as Api from '@/core/api-frontend';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
@@ -75,7 +75,7 @@ export default class AprHistory
 
 
     @Prop()
-    public stakePool : StakePool;
+    public stakePool : StakePoolEntry;
 
     @Ref('chartDiv')
     public $chartDiv : HTMLDivElement;
@@ -95,7 +95,7 @@ export default class AprHistory
     public specialTopHistoryEntries : HistoryEntry[] = [];
     public specialTopSeries : LightweightCharts.ISeriesApi<any>;
 
-    public events : Event<any>[] = [];
+    public events : Event[] = [];
     public eventsSeries : any;
 
     public colors = {
@@ -165,18 +165,18 @@ export default class AprHistory
 
         // avg entire network history
         this.specialAllHistoryEntries = [];
-        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_NETWORK_AVG_ID)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePoolEntry.SPECIAL_NETWORK_AVG_ID)) {
             this.specialAllHistoryEntries.unshift(...items.reverse());
         }
 
         // avg top history
         this.specialTopHistoryEntries = [];
-        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePool.SPECIAL_TOP_AVG_ID)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(StakePoolEntry.SPECIAL_TOP_AVG_ID)) {
             this.specialTopHistoryEntries.unshift(...items.reverse());
         }
 
         // events
-        const filters : Api.Domain.Filters<Event<any>> = {
+        const filters : Api.Domain.Filters<Event> = {
             type: {
                 $in: [ EventType.CommissionChange, EventType.Halving, EventType.BadBehavior ]
             }

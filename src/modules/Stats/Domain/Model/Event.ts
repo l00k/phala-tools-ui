@@ -1,4 +1,5 @@
 import { Annotation as API } from '@inti5/api';
+import * as Trans from 'class-transformer';
 
 
 export enum EventType
@@ -53,8 +54,8 @@ class EventAdditionalData
 }
 
 
-@API.Resource()
-export class Event<T extends AbstractEventData>
+@API.Resource('Stats/Event')
+export class Event<T extends AbstractEventData = any>
 {
     
     @API.Id()
@@ -74,5 +75,11 @@ export class Event<T extends AbstractEventData>
     
     @API.Property(() => EventAdditionalData)
     public additionalData : T = <any>{};
+    
+    
+    public constructor (data? : Partial<Event>)
+    {
+        Trans.plainToClassFromExist(this, data);
+    }
     
 }

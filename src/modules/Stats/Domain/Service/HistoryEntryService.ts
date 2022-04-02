@@ -1,4 +1,4 @@
-import { HistoryEntry } from '#/Stats/Domain/Model/StakePool/HistoryEntry';
+import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import * as Api from '@/core/api-frontend';
 
 
@@ -17,7 +17,7 @@ export class HistoryEntryService
         stakePoolId : number
     ) : AsyncGenerator<HistoryEntry[], void, void>
     {
-        const path = `stake_pool/${stakePoolId}/history`;
+        const path = `#PATH#/by_stakepool/${stakePoolId}`;
         return super.getFetcher(
             null,
             path
