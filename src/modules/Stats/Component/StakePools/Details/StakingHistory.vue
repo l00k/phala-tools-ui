@@ -69,7 +69,7 @@ export default class AprHistory
     extends BaseComponent
 {
 
-    @API.InjectService('stats')
+    @API.InjectService()
     protected _historyEntryService : HistoryEntryService;
 
 

@@ -14,8 +14,8 @@ export enum ObservationMode
 }
 
 
-@API.Resource('Watchdog/StakePoolObservation')
-export class StakePoolObservation
+@API.Resource('Watchdog/Observation')
+export class Observation
 {
     
     @API.Id()
@@ -43,7 +43,7 @@ export class StakePoolObservation
     public lastNotifications : ObservationNotifications = new ObservationNotifications();
     
     
-    public constructor (data? : Partial<StakePoolObservation>)
+    public constructor (data? : Partial<Observation>)
     {
         Trans.plainToClassFromExist(this, data);
     }

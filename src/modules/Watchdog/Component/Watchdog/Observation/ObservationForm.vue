@@ -446,7 +446,7 @@
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
-import { StakePoolObservation, ObservationMode } from '#/Watchdog/Domain/Model/StakePoolObservation';
+import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
@@ -465,7 +465,7 @@ enum FormMode {
 
 
 @Component()
-export default class StakePoolObservationForm
+export default class ObservationForm
     extends BaseComponent
 {
 
@@ -491,7 +491,7 @@ export default class StakePoolObservationForm
         604800 : '7 days',
     };
 
-    public observation : StakePoolObservation = new StakePoolObservation();
+    public observation : Observation = new Observation();
     public formMode : FormMode = null;
 
     public observationAccountAddress : string = '';
@@ -507,13 +507,13 @@ export default class StakePoolObservationForm
 
     public setupCreateForm()
     {
-        this.observation = new StakePoolObservation();
+        this.observation = new Observation();
         this.formMode = FormMode.Create;
 
         this._setup();
     }
 
-    public setupEditForm(observation : StakePoolObservation)
+    public setupEditForm(observation : Observation)
     {
         this.observation = cloneDeep(observation);
         this.formMode = FormMode.Edit;

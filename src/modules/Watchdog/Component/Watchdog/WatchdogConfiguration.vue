@@ -28,11 +28,11 @@
                 </div>
 
                 <div
-                    v-if="user.stakePoolObservations?.length > 0"
+                    v-if="user.observations?.length > 0"
                 >
 
                     <div
-                        v-for="observation in user.stakePoolObservations"
+                        v-for="observation in user.observations"
                         :key="observation.id"
                         class="box mb-2"
                     >
@@ -112,7 +112,7 @@
             ref="observationFormModal"
             :confirm-cancel="isObservationModified"
         >
-            <StakePoolObservationForm
+            <ObservationForm
                 ref="observationForm"
                 @change="isObservationModified = true"
             />
@@ -125,7 +125,7 @@
 import { BaseComponent, UiModal } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { ObservationMode, StakePoolObservation } from '#/Watchdog/Domain/Model/StakePoolObservation';
+import { ObservationMode, Observation } from '#/Watchdog/Domain/Model/Observation';
 import { User } from '#/Watchdog/Domain/Model/User';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
@@ -133,7 +133,7 @@ import { namespace } from 'vuex-class';
 import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import startCase from 'lodash/startCase';
 import { Ref } from 'vue-property-decorator';
-import StakePoolObservationForm from './StakePoolObservation/StakePoolObservationForm.vue';
+import ObservationForm from './Observation/ObservationForm.vue';
 
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
@@ -145,7 +145,7 @@ type Notification = {
 
 @Component({
     components: {
-        StakePoolObservationForm,
+        ObservationForm,
     }
 })
 export default class WatchdogConfiguration
@@ -166,13 +166,13 @@ export default class WatchdogConfiguration
     public observationEditModal : UiModal;
 
     @Ref('observationForm')
-    public observationForm : StakePoolObservationForm;
+    public observationForm : ObservationForm;
 
 
     public isObservationModified : boolean = false;
 
 
-    public getLastNotifications(observation : StakePoolObservation) : Notification[]
+    public getLastNotifications(observation : Observation) : Notification[]
     {
         const notificationTypes = Object.values(NotificationType);
         return Object.entries(observation.lastNotifications)
@@ -197,14 +197,14 @@ export default class WatchdogConfiguration
         this.$nextTick(() => this.observationForm.setupCreateForm());
     }
 
-    public doEdit(observation : StakePoolObservation)
+    public doEdit(observation : Observation)
     {
         this.isObservationModified = false;
         this.observationEditModal.show();
         this.$nextTick(() => this.observationForm.setupEditForm(observation));
     }
 
-    public async doDelete(observation : StakePoolObservation)
+    public async doDelete(observation : Observation)
     {
         const confirmed = await this.confirm({
             type: 'is-danger',

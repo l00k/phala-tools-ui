@@ -1,5 +1,5 @@
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { StakePoolObservation } from '#/Watchdog/Domain/Model/StakePoolObservation';
+import { Observation } from '#/Watchdog/Domain/Model/Observation';
 import { UserConfiguration } from '#/Watchdog/Domain/Model/UserConfiguration';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
@@ -30,8 +30,8 @@ export class User
     @API.Property(() => UserConfiguration)
     public config : UserConfiguration = new UserConfiguration();
     
-    @API.Property(() => StakePoolObservation)
-    public stakePoolObservations : StakePoolObservation[];
+    @API.Property(() => Observation)
+    public observations : Observation[];
     
     
     public constructor (data? : Partial<User>)

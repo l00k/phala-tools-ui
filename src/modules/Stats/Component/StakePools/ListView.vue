@@ -282,7 +282,7 @@ export default class ListView
     extends BaseComponent
 {
 
-    @API.InjectService('stats')
+    @API.InjectService()
     protected _stakePoolService : StakePoolEntryService;
 
 

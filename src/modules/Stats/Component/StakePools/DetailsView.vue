@@ -35,7 +35,7 @@ export default class DetailsView
     extends BaseComponent
 {
 
-    @API.InjectService('stats')
+    @API.InjectService()
     protected _stakePoolService : StakePoolEntryService;
 
     @Prop({ default: null })
