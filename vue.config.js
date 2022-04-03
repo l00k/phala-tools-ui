@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const moment = require('moment');
+const path = require('path');
 
 
 class IntiPathResolverPlugin
@@ -37,7 +38,7 @@ function generateUniqueBuildInfo ()
 
 const env = process.env.NODE_ENV || 'production';
 const isDev = env !== 'production';
-
+const appVariant = process.env.APP_VARIANT === 'khala' ? 'khala' : 'phala';
 
 module.exports = {
     runtimeCompiler: true,
@@ -51,6 +52,7 @@ module.exports = {
             },
             sass: {
                 prependData: `
+                    $appVariant: ${appVariant};
                     @import "@/assets/scss/theme/_variables.scss";
                 `,
                 sourceMap: isDev,
@@ -114,6 +116,7 @@ module.exports = {
     },
     chainWebpack (config)
     {
+        // esnext features in vue files
         config.module
             .rule('vue')
             .use('vue-loader')
@@ -122,10 +125,27 @@ module.exports = {
                 return options;
             });
         
+        // fix import.meta
         config.module
             .rule('js')
             .test(/\.js$/)
             .use('@open-wc/webpack-import-meta-loader')
             .loader('@open-wc/webpack-import-meta-loader');
+        
+        // custom public directories
+        const publicDir = `public/${appVariant}`;
+        
+        config.plugin('html')
+            .tap((args) => {
+                args[0].template = path.resolve(publicDir, 'index.html');
+                return args;
+            });
+        config.plugin('copy')
+            .use(require('copy-webpack-plugin'))
+            .tap((args) => {
+                return [
+                    [...(args[0] ? args[0] : []), { from: path.resolve(publicDir) }],
+                ]
+            })
     }
 };

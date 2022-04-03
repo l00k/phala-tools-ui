@@ -4,8 +4,9 @@
     "private": true,
     "scripts": {
         "serve": "NODE_ENV=development vue-cli-service serve",
-        "serve:remote": "NODE_ENV=development USE_PUBLIC_API=1 vue-cli-service serve",
-        "build": "NODE_ENV=production vue-cli-service build"
+        "serve:khala": "NODE_ENV=development APP_VARIANT=khala vue-cli-service serve",
+        "build": "NODE_ENV=production vue-cli-service build",
+        "build:khala": "NODE_ENV=production APP_VARIANT=khala vue-cli-service build"
     },
     "workspaces": [
         "src/core/*",

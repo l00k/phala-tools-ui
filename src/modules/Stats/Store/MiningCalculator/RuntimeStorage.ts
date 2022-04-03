@@ -1,10 +1,10 @@
-import { ApiProvider, KhalaTypes } from '#/Phala';
 import { App } from '#/FrontendCore/App';
+import { ApiProvider, KhalaTypes } from '#/Phala';
+import { ApiMode } from '#/Polkadot';
 import { ObjectManager } from '@inti5/object-manager';
 import { ApiPromise } from '@polkadot/api';
 import Decimal from 'decimal.js';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
-import apply = Reflect.apply;
 
 
 
@@ -97,7 +97,7 @@ export class RuntimeStorage
         
         this.context.state.initPromise = new Promise(async(resolve, reject) => {
             try {
-                const phalaApi = await phalaApiProvider.getApi();
+                const phalaApi = await phalaApiProvider.getApi(ApiMode.WS);
                 
                 this.context.state.tokenomicParameters = await fetchTokenomicsParams(phalaApi);
                 this.context.state.blockTime = await calculateBlockTime(phalaApi, 200);

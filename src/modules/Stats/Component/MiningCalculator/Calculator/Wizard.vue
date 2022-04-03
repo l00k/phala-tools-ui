@@ -320,7 +320,7 @@
                             class="mr-2"
                         >
                             <b-input
-                                :value="context.networkShares"
+                                :value="context.totalShares"
                                 :disabled="true"
                             />
                         </b-field>
@@ -331,7 +331,7 @@
                             class="mr-2"
                         >
                             <b-input
-                                :value="(context.workerShare / context.networkShares * 100).toFixed(4)"
+                                :value="(context.workerShare / context.totalShares * 100).toFixed(4)"
                                 :disabled="true"
                             />
                         </b-field>

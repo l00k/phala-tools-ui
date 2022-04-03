@@ -10,7 +10,7 @@ export class Context
     
     public blockTime : number = 12;
     
-    public networkShares : number = 0;
+    public totalShares : number = 0;
     
     public cpuScore : number = null;
     
@@ -135,7 +135,7 @@ export class Context
     {
         const budgetPerBlock = this.tokenomicParams.budgetPerBlock * this.rewardsFractionInEra;
         
-        const workerRewardUnlimited = this.workerShare / this.networkShares * budgetPerBlock;
+        const workerRewardUnlimited = this.workerShare / this.totalShares * budgetPerBlock;
         const workerMaxReward = this.workerInitialV * 0.0002 / (3600 / 12);
         const workerRewardLimited = Math.min(workerRewardUnlimited, workerMaxReward);
 

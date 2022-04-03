@@ -24,10 +24,15 @@ set('copy_dirs', [
 ]);
 
 
-host('main')
+host('phala')
     ->hostname('ovh-server')
     ->user('ubuntu')
     ->set('deploy_path', '/var/www/phala.100k.dev');
+
+host('khala')
+    ->hostname('ovh-server')
+    ->user('ubuntu')
+    ->set('deploy_path', '/var/www/khala.100k.dev');
 
 
 desc('Deploy your project');
