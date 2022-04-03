@@ -11,7 +11,7 @@
             class="g-container g-container--default"
         >
             <DetailsView
-                :stakePoolId="requestedId"
+                :stake-pool-entry-id="requestedId"
             />
         </div>
     </div>

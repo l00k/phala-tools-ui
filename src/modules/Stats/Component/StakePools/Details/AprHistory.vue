@@ -75,7 +75,7 @@ export default class AprHistory
 
 
     @Prop()
-    public stakePool : StakePoolEntry;
+    public stakePoolEntry : StakePoolEntry;
 
     @Ref('chartDiv')
     public $chartDiv : HTMLDivElement;
@@ -133,10 +133,10 @@ export default class AprHistory
         this._reinit();
     }
 
-    @Watch('stakePool')
+    @Watch('stakePoolEntry')
     protected async _reinit ()
     {
-        if (!this.stakePool) {
+        if (!this.stakePoolEntry) {
             return;
         }
 
@@ -159,7 +159,7 @@ export default class AprHistory
 
         // requested stake pool
         this.requestedHistoryEntries = [];
-        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePoolEntry.id)) {
             this.requestedHistoryEntries.unshift(...items.reverse());
         }
 
@@ -183,7 +183,7 @@ export default class AprHistory
         };
 
         this.events = [];
-        for await (const items of this._eventService.getStakePoolEventsFetcher(this.stakePool.id, filters)) {
+        for await (const items of this._eventService.getStakePoolEventsFetcher(this.stakePoolEntry.id, filters)) {
             this.events.push(...items);
         }
 

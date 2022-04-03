@@ -4,15 +4,15 @@
             <div class="panel-heading-title is-justify-content-space-between">
                 <span>
                     Stake pool
-                    <span v-if="!stakePool">(loading)</span>
-                    <span v-else-if="stakePool.onChainId">#{{ stakePool.onChainId }}</span>
+                    <span v-if="!stakePoolEntry">(loading)</span>
+                    <span v-else-if="stakePoolEntry.stakePool.onChainId">#{{ stakePoolEntry.stakePool.onChainId }}</span>
                 </span>
             </div>
         </header>
         <div class="panel-block">
             <!-- INFO PLACEHOLDER -->
             <div
-                v-if="!stakePool"
+                v-if="!stakePoolEntry"
                 class="columns"
             >
                 <div class="column is-4">
@@ -66,7 +66,7 @@
             >
                 <!-- SPECIAL ENTRY -->
                 <div
-                    v-if="stakePool.special"
+                    v-if="stakePoolEntry.special"
                     class="column is-4"
                 >
                     <div class="card">
@@ -78,7 +78,7 @@
                         <div class="card-content">
 
                             <div class="">
-                                {{ stakePool.special }}
+                                {{ stakePoolEntry.special }}
                             </div>
 
                         </div>
@@ -87,7 +87,7 @@
 
                 <!-- OWNER DETAILS -->
                 <div
-                    v-if="stakePool.owner"
+                    v-if="stakePoolEntry.stakePool"
                     class="column is-4"
                 >
                     <div class="card">
@@ -101,21 +101,21 @@
                             <div class="is-flex is-justify-content-start is-align-items-center">
                                 <Identicon
                                     :size="32"
-                                    :value="stakePool.owner.address"
+                                    :value="stakePoolEntry.stakePool.owner.address"
                                     class="js-clipboard account__icon"
-                                    :data-clipboard-text="stakePool.owner.address"
+                                    :data-clipboard-text="stakePoolEntry.stakePool.owner.address"
                                 ></Identicon>
                                 <div class="ml-4">
                                     <div>
                                         <a
-                                            :href="stakePool.owner | getSubscanAccountUrl"
+                                            :href="stakePoolEntry.stakePool.owner | getSubscanAccountUrl"
                                             class="account__address"
                                             target="_blank"
-                                        >{{ stakePool.owner.address }}</a>
+                                        >{{ stakePoolEntry.stakePool.owner.address }}</a>
                                     </div>
                                     <div>
                                         <b-icon
-                                            v-if="stakePool.owner.identityVerified"
+                                            v-if="stakePoolEntry.stakePool.owner.identityVerified"
                                             pack="fas"
                                             icon="check-square"
                                             size="is-small"
@@ -123,8 +123,8 @@
                                             class="is-valign-middle mr-2"
                                             v-tooltip="'Identity judgement'"
                                         />
-                                        <span class="account__displayName">{{ stakePool.owner.identity }}</span>
-                                        <span class="account__displayName--alias">{{ stakePool.owner.alias }}</span>
+                                        <span class="account__displayName">{{ stakePoolEntry.stakePool.owner.identity }}</span>
+                                        <span class="account__displayName--alias">{{ stakePoolEntry.stakePool.owner.alias }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@
 
                 <!-- STAKE IMFO -->
                 <div
-                    v-if="stakePool.lastHistoryEntry"
+                    v-if="stakePoolEntry.lastHistoryEntry"
                     class="column is-4"
                 >
                     <div class="card is-light">
@@ -148,20 +148,20 @@
 
                             <div
                                 class="stats"
-                                :class="{ 'has-color-red': !stakePool.lastHistoryEntry.cap }"
+                                :class="{ 'has-color-red': !stakePoolEntry.lastHistoryEntry.cap }"
                             >
                                 <span class="stats__label">Capacity</span>
                                 <span
-                                    v-if="stakePool.lastHistoryEntry.cap"
+                                    v-if="stakePoolEntry.lastHistoryEntry.cap"
                                     class="stats__value"
-                                >{{ stakePool.lastHistoryEntry.cap | formatCoin({ mantissa: 0 }) }} PHA</span>
+                                >{{ stakePoolEntry.lastHistoryEntry.cap | formatCoin({ mantissa: 0 }) }} PHA</span>
                                 <span
                                     v-else
                                     class="stats__value"
                                 >
                                     Unlimited
                                     <b-icon
-                                        v-if="!stakePool.lastHistoryEntry.cap"
+                                        v-if="!stakePoolEntry.lastHistoryEntry.cap"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -172,18 +172,18 @@
                             </div>
                             <div class="stats">
                                 <span class="stats__label">Total stake</span>
-                                <span class="stats__value">{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</span>
+                                <span class="stats__value">{{ stakePoolEntry.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</span>
                             </div>
                             <div
                                 class="stats"
-                                :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }"
+                                :class="{ 'has-color-red': stakePoolEntry.lastHistoryEntry.stakeFreeIssue }"
                             >
                                 <span class="stats__label">Free stake</span>
                                 <span class="stats__value">
-                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
-                                    ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
+                                    {{ stakePoolEntry.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePoolEntry.lastHistoryEntry.stakeFreePercent | formatPercent }})
                                     <b-icon
-                                        v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
+                                        v-if="stakePoolEntry.lastHistoryEntry.stakeFreeIssue"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -194,14 +194,14 @@
                             </div>
                             <div
                                 class="stats"
-                                :class="{ 'has-color-orange': stakePool.lastHistoryEntry.stakeReleasingIssue }"
+                                :class="{ 'has-color-orange': stakePoolEntry.lastHistoryEntry.stakeReleasingIssue }"
                             >
                                 <span class="stats__label">Releasing stake</span>
                                 <span class="stats__value">
-                                    {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
-                                    ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
+                                    {{ stakePoolEntry.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePoolEntry.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
                                     <b-icon
-                                        v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
+                                        v-if="stakePoolEntry.lastHistoryEntry.stakeReleasingIssue"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -212,14 +212,14 @@
                             </div>
                             <div
                                 class="stats"
-                                :class="{ 'has-color-orange': stakePool.lastHistoryEntry.widthdrawalsIssue }"
+                                :class="{ 'has-color-orange': stakePoolEntry.lastHistoryEntry.widthdrawalsIssue }"
                             >
                                 <span class="stats__label">Pending withdrawals</span>
                                 <span class="stats__value">
-                                    {{ stakePool.lastHistoryEntry.withdrawals | formatCoin({ mantissa: 0 }) }} PHA
-                                    ({{ stakePool.lastHistoryEntry.withdrawalsPercent | formatPercent }})
+                                    {{ stakePoolEntry.lastHistoryEntry.withdrawals | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePoolEntry.lastHistoryEntry.withdrawalsPercent | formatPercent }})
                                     <b-icon
-                                        v-if="stakePool.lastHistoryEntry.widthdrawalsIssue"
+                                        v-if="stakePoolEntry.lastHistoryEntry.widthdrawalsIssue"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -236,7 +236,7 @@
 
                 <!-- BASIC POOL STATS -->
                 <div
-                    v-if="stakePool.lastHistoryEntry"
+                    v-if="stakePoolEntry.lastHistoryEntry"
                     class="column is-4"
                 >
                     <div class="card is-light">
@@ -249,30 +249,30 @@
 
                             <div class="stats">
                                 <span class="stats__label">Current commission</span>
-                                <span class="stats__value">{{ stakePool.lastHistoryEntry.commission | formatPercent }}</span>
+                                <span class="stats__value">{{ stakePoolEntry.lastHistoryEntry.commission | formatPercent }}</span>
                             </div>
 
                             <div class="stats">
                                 <span class="stats__label">Avg APR</span>
-                                <span class="stats__value">{{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</span>
+                                <span class="stats__value">{{ stakePoolEntry.lastHistoryEntry.avgApr | formatPercent }}</span>
                             </div>
                             <div
                                 class="stats"
                                 :class="{
-                                    'has-color-red': stakePool.lastHistoryEntry.currentApr == 0,
-                                    'has-color-orange': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) >= 2,
+                                    'has-color-red': stakePoolEntry.lastHistoryEntry.currentApr == 0,
+                                    'has-color-orange': (stakePoolEntry.lastHistoryEntry.avgApr / stakePoolEntry.lastHistoryEntry.currentApr) >= 2,
                                 }"
                             >
                                 <span class="stats__label">Current APR</span>
-                                <span class="stats__value">{{ stakePool.lastHistoryEntry.currentApr | formatPercent }}</span>
+                                <span class="stats__value">{{ stakePoolEntry.lastHistoryEntry.currentApr | formatPercent }}</span>
                             </div>
                             <div class="stats">
                                 <span class="stats__label">Daily rewards per 1000 PHA</span>
-                                <span class="stats__value">{{ getRewardsPer(stakePool, 1000, 1) | formatCoin({ mantissa: 2 }) }} PHA</span>
+                                <span class="stats__value">{{ getRewardsPer(stakePoolEntry, 1000, 1) | formatCoin({ mantissa: 2 }) }} PHA</span>
                             </div>
                             <div class="stats">
                                 <span class="stats__label">Monthly rewards per 1000 PHA</span>
-                                <span class="stats__value">{{ getRewardsPer(stakePool, 1000, 30) | formatCoin({ mantissa: 2 }) }} PHA</span>
+                                <span class="stats__value">{{ getRewardsPer(stakePoolEntry, 1000, 30) | formatCoin({ mantissa: 2 }) }} PHA</span>
                             </div>
 
                         </div>
@@ -282,7 +282,7 @@
 
                 <!-- ISSUES -->
                 <div
-                    v-if="stakePool.issues?.length"
+                    v-if="stakePoolEntry.issues?.length"
                     class="column is-4"
                 >
                     <div class="card is-light">
@@ -294,7 +294,7 @@
                         <div class="card-content">
 
                             <div
-                                v-for="issue in stakePool.issues"
+                                v-for="issue in stakePoolEntry.issues"
                                 class="mb-2"
                             >
                                 <b-tag
@@ -329,12 +329,12 @@ export default class BasicInfo
 {
 
     @Prop()
-    public stakePool : StakePoolEntry;
+    public stakePoolEntry : StakePoolEntry;
 
 
-    public getRewardsPer (stakePool : StakePoolEntry, amount : number, days : number)
+    public getRewardsPer (stakePoolEntry : StakePoolEntry, amount : number, days : number)
     {
-        return amount * stakePool.lastHistoryEntry.avgApr * (days / 365);
+        return amount * stakePoolEntry.lastHistoryEntry.avgApr * (days / 365);
     }
 }
 </script>

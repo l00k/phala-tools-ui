@@ -1,5 +1,4 @@
-import * as Phala from '#/Phala/Domain/Model';
-import { Account } from '#/Phala/Domain/Model';
+import { StakePool } from '#/Phala/Domain/Model';
 import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { Issue } from '#/Stats/Domain/Model/Issue';
 import { Annotation as API } from '@inti5/api-frontend';
@@ -17,8 +16,8 @@ export class StakePoolEntry
     @API.Id()
     public id : number;
     
-    @API.Property()
-    public stakePool : Phala.StakePool;
+    @API.Property(() => StakePool)
+    public stakePool : StakePool;
     
     @API.Property()
     public special : string;
@@ -26,7 +25,7 @@ export class StakePoolEntry
     @API.Property(() => HistoryEntry)
     public lastHistoryEntry : HistoryEntry;
     
-    @API.Property(() => Issue)
+    @API.Property(() => [ Issue ])
     public issues : Issue[];
     
     

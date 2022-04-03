@@ -1,13 +1,13 @@
 <template>
     <div>
         <BasicInfo
-            :stake-pool="stakePool"
+            :stake-pool-entry="stakePoolEntry"
         />
         <AprHistory
-            :stake-pool="stakePool"
+            :stake-pool-entry="stakePoolEntry"
         />
         <StakingHistory
-            :stake-pool="stakePool"
+            :stake-pool-entry="stakePoolEntry"
         />
     </div>
 </template>
@@ -39,11 +39,11 @@ export default class DetailsView
     protected _stakePoolService : StakePoolEntryService;
 
     @Prop({ default: null })
-    public stakePoolId : number;
+    public stakePoolEntryId : number;
 
     public isReady : boolean = false;
 
-    public stakePool : StakePoolEntry = null;
+    public stakePoolEntry : StakePoolEntry = null;
 
 
     public mounted ()
@@ -55,7 +55,7 @@ export default class DetailsView
     protected async _loadView ()
     {
         this.isReady = false;
-        this.stakePool = await this._stakePoolService.getItem(this.stakePoolId);
+        this.stakePoolEntry = await this._stakePoolService.getItem(this.stakePoolEntryId);
         this.isReady = true;
     }
 }

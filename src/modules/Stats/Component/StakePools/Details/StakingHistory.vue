@@ -15,7 +15,7 @@
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">Capacity</b-tag>
                         <b-tag
-                            v-if="stakePool.lastHistoryEntry.cap"
+                            v-if="stakePoolEntry.lastHistoryEntry.cap"
                             :style="{ background: colors.cap }"
                         >{{ requestedLastHistoryEntry?.cap | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                         <b-tag
@@ -74,7 +74,7 @@ export default class AprHistory
 
 
     @Prop()
-    public stakePool : StakePoolEntry;
+    public stakePoolEntry : StakePoolEntry;
 
     @Ref('chartDiv')
     public $chartDiv : HTMLDivElement;
@@ -113,10 +113,10 @@ export default class AprHistory
         this._reinit();
     }
 
-    @Watch('stakePool')
+    @Watch('stakePoolEntry')
     protected async _reinit ()
     {
-        if (!this.stakePool) {
+        if (!this.stakePoolEntry) {
             return;
         }
 
@@ -138,7 +138,7 @@ export default class AprHistory
 
         // requested stake pool
         this.requestedHistoryEntries = [];
-        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePool.id)) {
+        for await (const items of this._historyEntryService.getStakePoolHistoryFetcher(this.stakePoolEntry.id)) {
             this.requestedHistoryEntries.unshift(...items.reverse());
         }
 

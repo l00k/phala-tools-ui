@@ -70,7 +70,7 @@
             </div>
 
             <ui-table
-                :data="stakePools"
+                :data="stakePoolEntries"
                 :loading="isLoading"
                 :sorting.sync="collectionRequest.sorting"
                 :sort-multiple="true"
@@ -82,40 +82,40 @@
             >
                 <template #actions>&nbsp;</template>
 
-                <template #default="{ row: stakePool }">
+                <template #default="{ row: stakePoolEntry }">
                     <ui-table-column
                         label="ID"
-                        field="onChainId"
+                        field="stakePool.onChainId"
                         :numeric="true"
                         :sortable="true"
-                        :filter="collectionRequest.filters.onChainId"
+                        :filter="collectionRequest.filters.stakePool.onChainId"
                     >
-                        #{{ stakePool.onChainId }}
+                        #{{ stakePoolEntry.stakePool.onChainId }}
                     </ui-table-column>
 
                     <ui-table-column
                         label="Owner"
-                        field="owner.identityVerified"
+                        field="stakePool.owner.identityVerified"
                         :sortable="true"
                         :filter="collectionRequest.filters._owner"
                     >
                         <div class="has-font-size-sm">
                             <a
-                                :href="stakePool.owner | getSubscanAccountUrl"
+                                :href="stakePoolEntry.stakePool.owner | getSubscanAccountUrl"
                                 class="has-color-gray"
                                 target="_blank"
-                            >{{ stakePool.owner.address | formatAddress }}</a>
+                            >{{ stakePoolEntry.stakePool.owner.address | formatAddress }}</a>
                         </div>
-                        <div :class="{ 'has-color-primary': stakePool.owner.identityVerified }">
+                        <div :class="{ 'has-color-primary': stakePoolEntry.stakePool.owner.identityVerified }">
                             <b-icon
-                                v-if="stakePool.owner.identityVerified"
+                                v-if="stakePoolEntry.stakePool.owner.identityVerified"
                                 pack="fas"
                                 icon="check-square"
                                 size="is-small"
                                 class="is-valign-middle"
                                 v-tooltip="'Identity judgement'"
                             />
-                            {{ stakePool.owner.friendlyName }}
+                            {{ stakePoolEntry.stakePool.owner.identity }}
                         </div>
                     </ui-table-column>
 
@@ -138,17 +138,17 @@
                                 v-tooltip="'This column show final APR for staker (after all commissions, treasury tax etc)'"
                             />
                         </template>
-                        <div v-if="stakePool.lastHistoryEntry">
-                            <div>Avg: {{ stakePool.lastHistoryEntry.avgApr | formatPercent }}</div>
+                        <div v-if="stakePoolEntry.lastHistoryEntry">
+                            <div>Avg: {{ stakePoolEntry.lastHistoryEntry.avgApr | formatPercent }}</div>
                             <div
                                 class="has-font-size-sm"
                                 :class="{
-                                    'has-color-red': stakePool.lastHistoryEntry.currentApr == 0,
-                                    'has-color-orange': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) >= 2,
-                                    'has-color-gray': (stakePool.lastHistoryEntry.avgApr / stakePool.lastHistoryEntry.currentApr) < 2,
+                                    'has-color-red': stakePoolEntry.lastHistoryEntry.currentApr == 0,
+                                    'has-color-orange': (stakePoolEntry.lastHistoryEntry.avgApr / stakePoolEntry.lastHistoryEntry.currentApr) >= 2,
+                                    'has-color-gray': (stakePoolEntry.lastHistoryEntry.avgApr / stakePoolEntry.lastHistoryEntry.currentApr) < 2,
                                 }"
                             >
-                                Current: {{ stakePool.lastHistoryEntry.currentApr | formatPercent }}
+                                Current: {{ stakePoolEntry.lastHistoryEntry.currentApr | formatPercent }}
                             </div>
                         </div>
                         <div v-else>
@@ -163,15 +163,15 @@
                         :sortable="true"
                         :filter="collectionRequest.filters.lastHistoryEntry.stakeTotal"
                     >
-                        <div v-if="stakePool.lastHistoryEntry">
-                            <div>{{ stakePool.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</div>
+                        <div v-if="stakePoolEntry.lastHistoryEntry">
+                            <div>{{ stakePoolEntry.lastHistoryEntry.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</div>
                             <div class="has-font-size-sm has-color-gray">
-                                <div :class="{ 'has-color-red': stakePool.lastHistoryEntry.stakeFreeIssue }">
+                                <div :class="{ 'has-color-red': stakePoolEntry.lastHistoryEntry.stakeFreeIssue }">
                                     Free:
-                                    {{ stakePool.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
-                                    ({{ stakePool.lastHistoryEntry.stakeFreePercent | formatPercent }})
+                                    {{ stakePoolEntry.lastHistoryEntry.stakeFree | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePoolEntry.lastHistoryEntry.stakeFreePercent | formatPercent }})
                                     <b-icon
-                                        v-if="stakePool.lastHistoryEntry.stakeFreeIssue"
+                                        v-if="stakePoolEntry.lastHistoryEntry.stakeFreeIssue"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -179,11 +179,11 @@
                                         v-tooltip="'Large amount of free stake implies leeching or abandon pool'"
                                     />
                                 </div>
-                                <div :class="{ 'has-color-orange': stakePool.lastHistoryEntry.stakeReleasingIssue }">
-                                    Releasing: {{ stakePool.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
-                                    ({{ stakePool.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
+                                <div :class="{ 'has-color-orange': stakePoolEntry.lastHistoryEntry.stakeReleasingIssue }">
+                                    Releasing: {{ stakePoolEntry.lastHistoryEntry.stakeReleasing | formatCoin({ mantissa: 0 }) }} PHA
+                                    ({{ stakePoolEntry.lastHistoryEntry.stakeReleasingPercent | formatPercent }})
                                     <b-icon
-                                        v-if="stakePool.lastHistoryEntry.stakeReleasingIssue"
+                                        v-if="stakePoolEntry.lastHistoryEntry.stakeReleasingIssue"
                                         pack="fas"
                                         icon="exclamation-triangle"
                                         size="is-small"
@@ -216,9 +216,9 @@
                                 v-tooltip="'This value includes also pending withdrawals - it is total value you can stake into pool'"
                             />
                         </template>
-                        <div v-if="stakePool.lastHistoryEntry">
-                            <div v-if="stakePool.lastHistoryEntry.cap">
-                                {{ stakePool.lastHistoryEntry.stakeRemaining | formatCoin({ mantissa: 0 }) }} PHA
+                        <div v-if="stakePoolEntry.lastHistoryEntry">
+                            <div v-if="stakePoolEntry.lastHistoryEntry.cap">
+                                {{ stakePoolEntry.lastHistoryEntry.stakeRemaining | formatCoin({ mantissa: 0 }) }} PHA
                             </div>
                             <div
                                 v-else
@@ -245,7 +245,7 @@
                         :searchable="false"
                     >
                         <b-tag
-                            v-for="issue in stakePool.issues"
+                            v-for="issue in stakePoolEntry.issues"
                             :key="issue.id"
                             size="is-small"
                             :style="{ backgroundColor: issue.color }"
@@ -290,9 +290,11 @@ export default class ListView
 
     public collectionRequest : Api.Domain.CollectionRequest<StakePoolEntry> = new Api.Domain.CollectionRequest({
         filters: {
-            onChainId: {},
-            owner: {
-                identityVerified: {},
+            stakePool: {
+                onChainId: {},
+                owner: {
+                    identityVerified: {},
+                },
             },
             lastHistoryEntry: {
                 workersNum: {},
@@ -310,7 +312,7 @@ export default class ListView
             // custom filters
             set _identityVerified (v)
             {
-                (<any>this).owner.identityVerified = v ? { $eq: true } : {};
+                (<any>this).stakePool.owner.identityVerified = v ? { $eq: true } : {};
             },
             set _activeOnly (v)
             {
@@ -335,7 +337,7 @@ export default class ListView
     public waitingRequest : boolean = false;
 
     public isLoading : boolean = false;
-    public stakePools : StakePoolEntry[] = [];
+    public stakePoolEntries : StakePoolEntry[] = [];
 
 
     public mounted ()
@@ -380,7 +382,7 @@ export default class ListView
         this.request = this._stakePoolService.getCollection(this.collectionRequest);
         const collection = await this.request;
 
-        this.stakePools = collection.items;
+        this.stakePoolEntries = collection.items;
         this.collectionRequest.pagination.total = collection.total;
 
         // clear promise
