@@ -2,7 +2,7 @@
     <div
         class="g-mainmenu tabs is-toggle"
     >
-        <div class="mr-5 is-flex is-justify-content-end is-flex-direction-column page-title">
+        <div class="mr-5 is-flex is-justify-content-center is-flex-direction-column page-title">
             <div>
                 <span class="has-color-primary">{{ appName }}</span> Network
             </div>
