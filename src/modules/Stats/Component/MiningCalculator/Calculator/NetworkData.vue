@@ -14,10 +14,6 @@
                     <div v-if="readyStage == ReadyStage.NodeConnnecting">
                         Connecting to node...
                     </div>
-                    <div v-if="readyStage == ReadyStage.PullingStakePools">
-                        <p class="has-text-weight-bold">Pulling network data</p>
-                        <p>Stake pools: {{ stakePoolsLoaded }} / {{ stakePoolsToLoad }}</p>
-                    </div>
                 </div>
             </div>
         </b-loading>
@@ -39,7 +35,6 @@ enum ReadyStage
 {
     Init,
     NodeConnnecting,
-    PullingStakePools,
     Ready,
 }
 
@@ -62,14 +57,10 @@ export default class NetworkData
 
     public readyStage : ReadyStage = ReadyStage.Init;
 
-    public stakePoolsLoaded : number = 0;
-    public stakePoolsToLoad : number = 0;
-
 
     public async mounted ()
     {
         this.readyStage = ReadyStage.NodeConnnecting;
-
 
         // load internals
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');

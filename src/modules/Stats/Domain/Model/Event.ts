@@ -1,4 +1,4 @@
-import { Annotation as API } from '@inti5/api';
+import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 
 
@@ -55,6 +55,7 @@ class EventAdditionalData
 
 
 @API.Resource('Stats/Event')
+@API.Cacheable({ lifetime: 15 * 60 * 1000 })
 export class Event<T extends AbstractEventData = any>
 {
     

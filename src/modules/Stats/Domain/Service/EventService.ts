@@ -6,7 +6,7 @@ export class EventService
     extends Api.EntityService<Event>
 {
     
-    public static readonly RESOURCE = Event;
+    public static readonly ENTITY = Event;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

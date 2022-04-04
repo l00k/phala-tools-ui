@@ -3,6 +3,7 @@ import * as Trans from 'class-transformer';
 
 
 @API.Resource('Stats/NetworkState')
+@API.Cacheable({ lifetime: 15 * 60 * 1000 })
 export class NetworkState
 {
     

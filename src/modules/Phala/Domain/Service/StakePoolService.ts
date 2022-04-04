@@ -6,7 +6,7 @@ export class StakePoolService
     extends Api.EntityService<StakePool>
 {
     
-    public static readonly RESOURCE = StakePool;
+    public static readonly ENTITY = StakePool;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

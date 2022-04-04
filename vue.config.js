@@ -93,12 +93,14 @@ module.exports = {
         );
         
         // global variables
-        const buildVersion = generateUniqueBuildInfo();
-        const appData = JSON.stringify({ buildVersion });
+        const appData = JSON.stringify({
+            appVariant,
+            buildVersion: generateUniqueBuildInfo(),
+        });
         
         config.plugins.push(
             new webpack.DefinePlugin({
-                __APP_DATA__: JSON.stringify(appData)
+                __APP_DATA__: JSON.stringify(appData),
             })
         );
         

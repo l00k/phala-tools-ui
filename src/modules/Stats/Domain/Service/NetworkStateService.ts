@@ -6,7 +6,7 @@ export class NetworkStateService
     extends Api.EntityService<NetworkState>
 {
     
-    public static readonly RESOURCE = NetworkState;
+    public static readonly ENTITY = NetworkState;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

@@ -6,7 +6,7 @@ export class IssueService
     extends Api.EntityService<Issue>
 {
     
-    public static readonly RESOURCE = Issue;
+    public static readonly ENTITY = Issue;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

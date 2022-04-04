@@ -8,7 +8,7 @@ export class AccountService
     extends Api.EntityService<Account>
 {
     
-    public static readonly RESOURCE = Account;
+    public static readonly ENTITY = Account;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {

@@ -2,6 +2,13 @@
     <div
         class="g-mainmenu tabs is-toggle"
     >
+        <div class="mr-5 is-flex is-justify-content-end is-flex-direction-column page-title">
+            <div>
+                <span class="has-color-primary">{{ appName }}</span> Network
+            </div>
+            <div class="has-text-weight-bold">tools</div>
+        </div>
+
         <ul>
             <router-link
                 to="/stakepools"
@@ -50,21 +57,6 @@
                     </a>
                 </li>
             </router-link>
-
-<!--            <router-link-->
-<!--                to="/network-map"-->
-<!--                custom v-slot="{ navigate, isActive }"-->
-<!--            >-->
-<!--                <li-->
-<!--                    :class="{ 'is-active': isActive }"-->
-<!--                    @click="navigate"-->
-<!--                >-->
-<!--                    <a>-->
-<!--                        <span class="icon is-small"><i class="fas fa-project-diagram" aria-hidden="true"></i></span>-->
-<!--                        <span>Network map</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </router-link>-->
         </ul>
     </div>
 </template>
@@ -73,9 +65,27 @@
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 
+declare const window;
+
 @Component()
 export default class MainMenuView
     extends BaseComponent
 {
+
+    public get appName() : string
+    {
+        const appVariant = window.appData.appVariant;
+        return appVariant === 'phala'
+            ? 'Phala'
+            : 'Khala';
+    }
+
 }
 </script>
+
+<style scoped lang="scss">
+.page-title {
+    line-height: 1.1;
+    text-align: right;
+}
+</style>

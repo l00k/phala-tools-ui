@@ -6,7 +6,7 @@ export class HistoryEntryService
     extends Api.EntityService<HistoryEntry>
 {
     
-    public static readonly RESOURCE = HistoryEntry;
+    public static readonly ENTITY = HistoryEntry;
     
     public static getDefaultPagination () : Api.Domain.Pagination
     {
