@@ -124,9 +124,12 @@
 <script lang="ts">
 import { BaseComponent, UiModal } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
+import { AccountService } from '#/Phala/Domain/Service/AccountService';
+import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
 import { ObservationMode, Observation } from '#/Watchdog/Domain/Model/Observation';
 import { User } from '#/Watchdog/Domain/Model/User';
+import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
 import { namespace } from 'vuex-class';
@@ -154,6 +157,8 @@ export default class WatchdogConfiguration
 
     @API.InjectClient()
     protected _apiClient : Api.Client;
+
+    protected _observationService : ObservationService;
 
 
     public MessagingChannel = MessagingChannel;
@@ -185,9 +190,9 @@ export default class WatchdogConfiguration
             .sort((a,b) => a.date < b.date ? -1 : 1);
     }
 
-    public mounted ()
+    public mounted()
     {
-
+        this._observationService = this._apiClient.getService(ObservationService);
     }
 
     public doCreate()
@@ -211,12 +216,31 @@ export default class WatchdogConfiguration
             title: 'Confirm delete',
             message: `Confirm deleting stake pool observation #${observation.stakePool.onChainId}`,
         });
-        if (confirmed) {
-            alert('to request deletion');
+        if (!confirmed) {
+            return;
+        }
 
+        try {
+            const result = await this._observationService.delete(observation);
+
+            if (result) {
+                this.showNotification({
+                    type: 'is-success',
+                    message: 'Observation deleted',
+                });
+            }
+            else {
+                this.showNotification({
+                    type: 'is-danger',
+                    message: 'Could not delete observation',
+                });
+            }
+        }
+        catch (e : any) {
+            // todo ld 2022-04-04 17:47:31
             this.showNotification({
-                type: 'is-success',
-                message: 'Observation deleted',
+                type: 'is-danger',
+                message: e.message,
             });
         }
     }

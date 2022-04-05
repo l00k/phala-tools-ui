@@ -17,7 +17,6 @@
                 :formData="observation"
                 @change="onAnyChange"
                 :submit="onSubmit"
-                :reset="onReset"
                 v-slot="{ isValid, isProcessing, doReset, doSubmit }"
             >
                 <div class="columns">
@@ -72,7 +71,7 @@
                     <div class="column is-6">
                         <UiValidatedField
                             name="Delegator address"
-                            :rules="{ isPolkadotAddress: true }"
+                            :rules="{ isPolkadotAddress: 30 }"
                         >
                             <b-input
                                 v-model.lazy="observationAccountAddress"
@@ -448,14 +447,16 @@ import { Component } from '#/FrontendCore/Vue/Annotations';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
+import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
 import * as Api from '@/core/api-frontend';
 import { Annotation as API } from '@/core/api-frontend';
 import { AccountService } from '#/Phala/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
-import { Watch } from 'vue-property-decorator';
+import { Ref, Watch } from 'vue-property-decorator';
 import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
+import { ValidationException } from '@/core/validator/ValidationException';
 
 
 enum FormMode {
@@ -472,8 +473,13 @@ export default class ObservationForm
     @API.InjectClient()
     protected _apiClient : Api.Client;
 
+    protected _observationService : ObservationService;
     protected _stakePoolService : StakePoolService;
     protected _accountService : AccountService;
+
+
+    @Ref('form')
+    protected $form : any;
 
 
     public FormMode = FormMode;
@@ -501,6 +507,7 @@ export default class ObservationForm
 
     public mounted()
     {
+        this._observationService = this._apiClient.getService(ObservationService);
         this._stakePoolService = this._apiClient.getService(StakePoolService);
         this._accountService = this._apiClient.getService(AccountService);
     }
@@ -547,21 +554,33 @@ export default class ObservationForm
         this.$emit('change');
     }
 
-    public onSubmit()
+    public async onSubmit()
     {
         console.log('submit', this.observation);
-    }
 
-    public onReset()
-    {
-        console.log('reset', this.observation);
+        try {
+            let result = null;
+            if (this.formMode == FormMode.Create) {
+                result = await this._observationService.create(this.observation);
+            }
+            else if (this.formMode == FormMode.Edit) {
+                result = await this._observationService.update(this.observation);
+            }
+
+            console.log('ok');
+            console.dir(result);
+        }
+        catch (e : any) {
+            console.log('error');
+            console.dir(e);
+        }
     }
 
     @Watch('observationAccountAddress')
     public async onObservationAccountChange(address : string)
     {
         if (address) {
-            const valid = Polkadot.Utility.isAddress(address);
+            const valid = Polkadot.Utility.isAddress(address, 30);
             if (!valid) {
                 return;
             }
@@ -572,7 +591,18 @@ export default class ObservationForm
             }
 
             // try to load account
-            this.observation.account = await this._accountService.findAccount(address);
+            try {
+                this.observation.account = await this._accountService.findAccount(address);
+            }
+            catch (e : any) {
+                if (e instanceof ValidationException) {
+                    const errors : string[] = e.details.errors[0].map(error => error.error ?? error.rule);
+                    this.showToast({
+                        type: 'is-danger',
+                        message: errors.join('\n')
+                    });
+                }
+            }
         }
         else {
             this.observation.account = null;

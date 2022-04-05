@@ -29,5 +29,5 @@ extend('isPolkadotAddress', {
             : undefined;
         return Polkadot.Utility.isAddress(value, prefix);
     },
-    message: '{_field_} is not proper address'
+    message: 'Value is not valid address'
 });

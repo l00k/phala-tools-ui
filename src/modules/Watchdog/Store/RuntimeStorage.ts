@@ -1,5 +1,6 @@
 import { App } from '#/FrontendCore/App';
 import { User } from '#/Watchdog/Domain/Model/User';
+import { UserService } from '#/Watchdog/Domain/Service/UserService';
 import { Provider } from '@/core/api-frontend';
 import { ObjectManager } from '@inti5/object-manager';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
@@ -30,16 +31,14 @@ export class RuntimeStorage
             const apiClient = ObjectManager.getSingleton()
                 .getInstance(Provider)
                 .get();
+            const userService = apiClient.getService(UserService);
             
             this.context.state.initPromise = new Promise(async(resolve, reject) => {
                 try {
                     this.context.state.isLoggedIn = !!apiClient.getAuthData();
                     
                     if (this.context.state.isLoggedIn) {
-                        const { status, data } = await apiClient.get('/user/me');
-                        if (status) {
-                            this.context.state.user = data;
-                        }
+                        this.context.state.user = await userService.getMe();
                     }
                     
                     resolve(true);
