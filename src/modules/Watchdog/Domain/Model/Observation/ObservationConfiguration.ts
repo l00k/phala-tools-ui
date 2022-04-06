@@ -42,7 +42,7 @@ export class NotificationConfig
 }
 
 
-@API.Resource('Watchdog/StakePool/Observation/Configuration')
+@API.Resource('Watchdog/Observation/Configuration')
 export class ObservationConfiguration
 {
     
