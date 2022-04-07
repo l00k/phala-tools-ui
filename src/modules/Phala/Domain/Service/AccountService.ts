@@ -1,6 +1,6 @@
 import { Account } from '#/Phala/Domain/Model/Account';
-import * as Api from '@/core/api-frontend';
-import { ApiException } from '@/core/api-frontend/Exception';
+import * as Api from '@inti5/api-frontend';
+import { ApiException } from '@inti5/api-frontend/Exception';
 import cloneDeep from 'lodash/cloneDeep';
 
 

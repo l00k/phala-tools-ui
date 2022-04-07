@@ -448,15 +448,15 @@ import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
-import * as Api from '@/core/api-frontend';
-import { Annotation as API } from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
+import { Annotation as API } from '@inti5/api-frontend';
 import { AccountService } from '#/Phala/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Ref, Watch } from 'vue-property-decorator';
 import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
-import { ValidationException } from '@/core/validator/ValidationException';
+import { ValidationException } from '@inti5/validator/ValidationException';
 
 
 enum FormMode {

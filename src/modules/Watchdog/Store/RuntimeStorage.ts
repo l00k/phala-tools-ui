@@ -1,7 +1,7 @@
 import { App } from '#/FrontendCore/App';
 import { User } from '#/Watchdog/Domain/Model/User';
 import { UserService } from '#/Watchdog/Domain/Service/UserService';
-import { Provider } from '@/core/api-frontend';
+import { Provider } from '@inti5/api-frontend';
 import { ObjectManager } from '@inti5/object-manager';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';
 

@@ -263,8 +263,8 @@
 <script lang="ts">
 import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
 import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
-import * as Api from '@/core/api-frontend';
-import { Annotation as API } from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
+import { Annotation as API } from '@inti5/api-frontend';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { FilterConfig } from '#/FrontendCore/Component/UI/FilterField/FilterBase.vue';
 import { FilterType } from '#/FrontendCore/Domain';

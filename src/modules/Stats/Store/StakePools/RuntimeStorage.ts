@@ -1,7 +1,7 @@
 import { Issue } from '#/Stats/Domain/Model/Issue';
 import { IssueService } from '#/Stats/Domain/Service/IssueService';
 import { App } from '#/FrontendCore/App';
-import { Provider } from '@/core/api-frontend';
+import { Provider } from '@inti5/api-frontend';
 import { ObjectManager } from '@inti5/object-manager';
 import { asyncGeneratorToArray } from '@inti5/utils/asyncGeneratorToArray';
 import { Action, Module, VuexModule } from 'vuex-module-decorators';

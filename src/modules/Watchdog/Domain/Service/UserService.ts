@@ -1,5 +1,5 @@
 import { User } from '#/Watchdog/Domain/Model/User';
-import * as Api from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
 
 
 export class UserService

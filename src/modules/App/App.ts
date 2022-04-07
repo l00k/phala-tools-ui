@@ -1,7 +1,7 @@
-import { App as AppBase } from '#/FrontendCore/App';
 import AppComponent from '#/App/Component/AppComponent.vue';
-import * as Api from '@/core/api-frontend';
-import { Inject } from '@/core/object-manager';
+import { App as AppBase } from '#/FrontendCore/App';
+import * as Api from '@inti5/api-frontend';
+import { Inject } from '@inti5/object-manager';
 import Vue from 'vue';
 
 
@@ -13,7 +13,7 @@ export class App
     
     @Inject()
     protected _api : Api.Service;
-
+    
     @Inject()
     protected _apiProvider : Api.Provider;
     

@@ -26,7 +26,7 @@ import { NetworkStateService } from '#/Stats/Domain/Service/NetworkStateService'
 import * as Phala from '#/Phala';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
-import { InjectService } from '@/core/api-frontend/Annotation';
+import { InjectService } from '@inti5/api-frontend/Annotation';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 

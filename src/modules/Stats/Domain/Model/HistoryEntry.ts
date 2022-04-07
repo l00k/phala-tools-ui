@@ -43,26 +43,13 @@ export class HistoryEntry
     @API.Property()
     public withdrawals : number;
     
-    @API.Property()
-    public vTotal : number;
-    
-    @API.Property()
-    public pTotal : number;
-    
-    @API.Property()
-    public rewardsTotal : number;
-    
-    @API.Property()
-    public currentRewardsDaily : number;
     
     @API.Property()
     public currentApr : number;
     
     @API.Property()
-    public avgRewardsDaily : number;
+    public avgApr : number = null;
     
-    @API.Property()
-    public avgApr : number;
     
     
     public get stakeFreePercent () : number

@@ -1,5 +1,5 @@
 import { Observation } from '#/Watchdog/Domain/Model/Observation';
-import * as Api from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
 
 
 export class ObservationService

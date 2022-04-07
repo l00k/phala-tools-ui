@@ -1,5 +1,5 @@
 import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
-import * as Api from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
 
 
 export class StakePoolEntryService

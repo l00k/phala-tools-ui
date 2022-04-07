@@ -1,5 +1,5 @@
 import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
-import { Assert, AssertObject } from '@/core/validator/Object';
+import { Assert, AssertObject } from '@inti5/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 

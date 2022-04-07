@@ -25,7 +25,7 @@
 <script lang="ts">
 import { BaseComponent } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
-import { Config } from '@/core/configuration';
+import { Config } from '@inti5/configuration';
 import { Ref } from 'vue-property-decorator';
 import camelCase from 'lodash/camelCase';
 

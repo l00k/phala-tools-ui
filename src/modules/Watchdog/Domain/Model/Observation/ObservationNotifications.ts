@@ -1,4 +1,4 @@
-import { Assert } from '@/core/validator/Object';
+import { Assert } from '@inti5/validator/Object';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
 

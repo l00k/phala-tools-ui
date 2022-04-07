@@ -1,5 +1,5 @@
 import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
-import * as Api from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
 
 
 export class HistoryEntryService

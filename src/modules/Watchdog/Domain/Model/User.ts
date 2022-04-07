@@ -19,18 +19,10 @@ export class User
     @API.Property()
     public username : string;
     
-    
-    @API.Property()
-    public createdAt : Date = new Date();
-    
-    @API.Property()
-    public updatedAt : Date = new Date();
-    
-    
     @API.Property(() => UserConfiguration)
     public config : UserConfiguration = new UserConfiguration();
     
-    @API.Property(() => Observation)
+    @API.Property(() => [Observation])
     public observations : Observation[];
     
     

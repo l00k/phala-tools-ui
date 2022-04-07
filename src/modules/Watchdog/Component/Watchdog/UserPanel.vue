@@ -37,8 +37,8 @@
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { User } from '#/Watchdog/Domain/Model/User';
-import * as Api from '@/core/api-frontend';
-import { Annotation as API } from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
+import { Annotation as API } from '@inti5/api-frontend';
 import { namespace } from 'vuex-class';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
 

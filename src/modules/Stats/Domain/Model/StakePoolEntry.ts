@@ -1,4 +1,4 @@
-import { StakePool } from '#/Phala/Domain/Model';
+import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { Issue } from '#/Stats/Domain/Model/Issue';
 import { Annotation as API } from '@inti5/api-frontend';

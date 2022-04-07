@@ -6,6 +6,7 @@ export enum EventType
 {
     Transfer = 'transfer',
     
+    PoolCreated = 'poolCreated',
     CommissionChange = 'commissionChange',
     Contribution = 'contribution',
     Withdrawal = 'withdrawal',
@@ -19,6 +20,9 @@ export enum EventType
 abstract class AbstractEventData {}
 
 export class Transfer
+    extends AbstractEventData {}
+
+export class PoolCreated
     extends AbstractEventData {}
 
 export class Contribution

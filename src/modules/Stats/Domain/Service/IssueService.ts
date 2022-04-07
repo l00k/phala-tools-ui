@@ -1,5 +1,5 @@
 import { Issue } from '#/Stats/Domain/Model/Issue';
-import * as Api from '@/core/api-frontend';
+import * as Api from '@inti5/api-frontend';
 
 
 export class IssueService
