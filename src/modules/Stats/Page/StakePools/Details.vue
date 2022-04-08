@@ -62,7 +62,8 @@ export default class StakePoolsDetailsPage
 
     protected _getRequestedId(route : VueRouter.Route) : number
     {
-        return Number(route.params.id ?? route.params.onChainId) + 3;
+        const requestedId = Number(route.params.id ?? route.params.onChainId) + 3;
+        return requestedId;
     }
 
 }

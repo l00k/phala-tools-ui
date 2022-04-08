@@ -51,7 +51,7 @@ export default class DetailsView
         this._loadView();
     }
 
-    @Watch('stakePoolId')
+    @Watch('stakePoolEntryId')
     protected async _loadView ()
     {
         this.isReady = false;
