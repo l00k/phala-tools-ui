@@ -1,16 +1,5 @@
 <template>
     <div>
-<!--        <div class="panel is-primary">-->
-<!--            <header class="panel-heading">-->
-<!--                <div class="panel-heading-title is-justify-content-space-between">-->
-<!--                    <span>Global Configuration</span>-->
-<!--                </div>-->
-<!--            </header>-->
-<!--            <div class="panel-block">-->
-
-<!--            </div>-->
-<!--        </div>-->
-
         <div class="panel is-primary">
             <header class="panel-heading">
                 <div class="panel-heading-title is-justify-content-space-between">
@@ -46,14 +35,25 @@
 
                                     <div
                                         v-if="observation.mode == ObservationMode.Delegator"
-                                        class="mt-2 is-flex is-flex-direction-row is-align-items-center"
+                                        class="mt-2"
                                     >
-                                        <Identicon
-                                            :size="32"
-                                            theme="substrate"
-                                            :value="observation.account.address"
-                                        />
-                                        <span class="ml-4">{{ observation.account.address }}</span>
+                                        <div
+                                            v-if="observation.account"
+                                            class="is-flex is-flex-direction-row is-align-items-center"
+                                        >
+                                            <Identicon
+                                                :size="32"
+                                                theme="substrate"
+                                                :value="observation.account.address"
+                                            />
+                                            <span class="ml-4">{{ observation.account.address }}</span>
+                                        </div>
+                                        <div
+                                            v-else
+                                            class="has-color-red"
+                                        >
+                                            Account not specified! Not all watchers are available.
+                                        </div>
                                     </div>
 
                                 </div>
@@ -224,6 +224,10 @@ export default class WatchdogConfiguration
             const result = await this._observationService.delete(observation);
 
             if (result) {
+                // remove from list
+                this.user.observations = this.user.observations
+                    .filter(_observation => _observation.id !== observation.id);
+
                 this.showNotification({
                     type: 'is-success',
                     message: 'Observation deleted',
@@ -237,10 +241,9 @@ export default class WatchdogConfiguration
             }
         }
         catch (e : any) {
-            // todo ld 2022-04-04 17:47:31
             this.showNotification({
                 type: 'is-danger',
-                message: e.message,
+                message: e.message + ' #' + e.code,
             });
         }
     }
