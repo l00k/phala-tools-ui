@@ -115,6 +115,7 @@
             <ObservationForm
                 ref="observationForm"
                 @change="isObservationModified = true"
+                @submit:success="onSubmitSuccess"
             />
         </UiModal>
 
@@ -124,19 +125,17 @@
 <script lang="ts">
 import { BaseComponent, UiModal } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
-import { AccountService } from '#/Phala/Domain/Service/AccountService';
-import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { ObservationMode, Observation } from '#/Watchdog/Domain/Model/Observation';
+import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
+import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import { User } from '#/Watchdog/Domain/Model/User';
 import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
 import * as Api from '@inti5/api-frontend';
 import { Annotation as API } from '@inti5/api-frontend';
-import { namespace } from 'vuex-class';
-import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import startCase from 'lodash/startCase';
 import { Ref } from 'vue-property-decorator';
-import ObservationForm from './Observation/ObservationForm.vue';
+import { namespace } from 'vuex-class';
+import ObservationForm, { FormMode } from './Observation/ObservationForm.vue';
 
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
@@ -246,6 +245,29 @@ export default class WatchdogConfiguration
                 message: e.message + ' #' + e.code,
             });
         }
+    }
+
+    public async onSubmitSuccess(
+        observation : Observation,
+        formMode : FormMode,
+    )
+    {
+        this.isObservationModified = false;
+
+        console.dir(observation);
+
+        if (formMode === FormMode.Create) {
+            this.user.observations.push(observation);
+        }
+        else if (formMode === FormMode.Edit) {
+            const findExisting = this.user.observations.findIndex(_observation => _observation.id === observation.id);
+            console.log(findExisting);
+            this.$set(this.user.observations, findExisting, observation);
+        }
+
+        setTimeout(() => {
+            this.observationEditModal.hide();
+        }, 1000);
     }
 
 }

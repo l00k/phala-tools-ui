@@ -459,7 +459,7 @@ import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/Ob
 import { ValidationException } from '@inti5/validator/ValidationException';
 
 
-enum FormMode {
+export enum FormMode {
     Create = 'Create',
     Edit = 'Edit',
 }
@@ -556,23 +556,41 @@ export default class ObservationForm
 
     public async onSubmit()
     {
-        console.log('submit', this.observation);
+        const action = this.formMode.toLowerCase();
 
         try {
             let result = null;
+
             if (this.formMode == FormMode.Create) {
                 result = await this._observationService.create(this.observation);
+
+
             }
             else if (this.formMode == FormMode.Edit) {
                 result = await this._observationService.update(this.observation);
             }
 
-            console.log('ok');
-            console.dir(result);
+            this.isModified = false;
+
+            this.showNotification({
+                type: 'is-success',
+                message: this.formMode === FormMode.Create
+                    ? 'Successfully created'
+                    : 'Successfully updated',
+            });
+
+            // emit events
+            this.$emit('submit:success', result, this.formMode);
+            this.$emit(`${action}:success`, result, this.formMode);
         }
         catch (e : any) {
-            console.log('error');
-            console.dir(e);
+            this.showNotification({
+                type: 'is-danger',
+                message: e.message + ' #' + e.code,
+            });
+
+            this.$emit('submit:failure', e, this.formMode);
+            this.$emit(`${action}:failure`, e, this.formMode);
         }
     }
 
