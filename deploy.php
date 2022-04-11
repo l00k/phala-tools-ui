@@ -27,11 +27,13 @@ set('copy_dirs', [
 host('phala')
     ->hostname('ovh-server')
     ->user('ubuntu')
+    ->set('app_variant', 'phala')
     ->set('deploy_path', '/var/www/phala.100k.dev');
 
 host('khala')
     ->hostname('ovh-server')
     ->user('ubuntu')
+    ->set('app_variant', 'khala')
     ->set('deploy_path', '/var/www/khala.100k.dev');
 
 
@@ -58,7 +60,7 @@ after('deploy:failed', 'deploy:unlock');
 task('custom:asset_build', function () {
     if (!empty(get('assets_path', false))) {
         $assetsPath = trim(get('assets_path'), '/\\');
-        runLocally('cd ./' . $assetsPath . ' && yarn build');
+        runLocally('cd ./' . $assetsPath . ' && APP_VARIANT={{app_variant}} yarn build');
     }
 });
 
