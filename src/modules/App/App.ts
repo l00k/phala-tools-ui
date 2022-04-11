@@ -9,7 +9,7 @@ export class App
     extends AppBase
 {
     
-    protected _appComponent : Vue.Component = AppComponent;
+    protected _appComponent : Vue.Component = null;
     
     @Inject()
     protected _api : Api.Service;
@@ -21,6 +21,9 @@ export class App
     protected _beforeAppSetup ()
     {
         super._beforeAppSetup();
+        
+        // setup proper APP component
+        this._appComponent = AppComponent;
         
         // bootstrap api
         this._api.bootstrap();

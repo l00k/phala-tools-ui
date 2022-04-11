@@ -40,8 +40,10 @@ const env = process.env.NODE_ENV || 'production';
 const isDev = env !== 'production';
 const appVariant = process.env.APP_VARIANT === 'khala' ? 'khala' : 'phala';
 
+
 module.exports = {
     runtimeCompiler: true,
+    lintOnSave: true,
     css: {
         sourceMap: isDev,
         extract: false,
@@ -56,6 +58,7 @@ module.exports = {
                     @import "@/assets/scss/theme/_variables.scss";
                 `,
                 sourceMap: isDev,
+                
             }
         },
     },
@@ -77,6 +80,10 @@ module.exports = {
             ],
             headers: {
                 'Access-Control-Allow-Origin': '*',
+            },
+            overlay: {
+                warnings: true,
+                errors: true
             },
         };
         
@@ -126,13 +133,6 @@ module.exports = {
                 options.compiler = require('vue-template-babel-compiler');
                 return options;
             });
-        
-        // fix import.meta
-        config.module
-            .rule('js')
-            .test(/\.js$/)
-            .use('@open-wc/webpack-import-meta-loader')
-            .loader('@open-wc/webpack-import-meta-loader');
         
         // custom public directories
         const publicDir = `public/${appVariant}`;

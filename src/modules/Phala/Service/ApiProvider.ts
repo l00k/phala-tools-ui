@@ -1,4 +1,5 @@
 import * as Polkadot from '#/Polkadot';
+import type { ApiModeMap } from '#/Polkadot';
 import { Config } from '@inti5/configuration';
 import { Inject, Singleton } from '@inti5/object-manager';
 import { Logger } from '@inti5/utils/Logger';
@@ -17,7 +18,7 @@ export class ApiProvider
     
     
     @Config('module.phala.api.urls')
-    protected _apiUrls : Polkadot.ApiModeMap<string> = {};
+    protected _apiUrls : ApiModeMap<string> = {};
     
     @Inject({ ctorArgs: [ ApiProvider.SERVICE_NAME ] })
     protected _logger : Logger = null;
