@@ -23,13 +23,18 @@
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
+                        <b-tag type="is-dark">Pool commission</b-tag>
+                        <b-tag :style="{ background: colors.requestCommission }">{{ requestedLastHistoryEntry?.commission | formatPercent }}</b-tag>
+                    </b-taglist>
+
+                    <b-taglist attached class="mr-2">
                         <b-tag type="is-light">All active pools avg APR</b-tag>
-                        <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
+                        <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.currentApr | formatPercent }}</b-tag>
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">TOP 100 active pools avg APR</b-tag>
-                        <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
+                        <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.currentApr | formatPercent }}</b-tag>
                     </b-taglist>
                 </div>
             </div>
@@ -56,6 +61,7 @@ import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import Color from 'color';
+import { PriceScaleMode } from 'lightweight-charts';
 import * as LightweightCharts from 'lightweight-charts';
 import moment from 'moment';
 import { Prop, Ref, Watch } from 'vue-property-decorator';
@@ -88,6 +94,7 @@ export default class AprHistory
     public requestedHistoryEntries : HistoryEntry[] = [];
     public requestedAvgSeries : LightweightCharts.ISeriesApi<any>;
     public requestedCurrentSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedCommissionSeries : LightweightCharts.ISeriesApi<any>;
 
     public specialAllHistoryEntries : HistoryEntry[] = [];
     public specialAllSeries : LightweightCharts.ISeriesApi<any>;
@@ -101,6 +108,7 @@ export default class AprHistory
     public colors = {
         requestAvgApr: '#33d778',
         requestCurrentApr: '#33d778',
+        requestCommission: '#dd0000',
         specialAll: '#2ca4df',
         specialTop: '#447ec6',
     };
@@ -204,6 +212,10 @@ export default class AprHistory
                 vertLines: { color: 'rgba(42, 46, 57, 0.4)', },
                 horzLines: { color: 'rgba(42, 46, 57, 0.6)', },
             },
+            leftPriceScale: {
+                autoScale: false,
+                visible: true,
+            },
             rightPriceScale: {},
             timeScale: {
                 timeVisible: true,
@@ -217,14 +229,25 @@ export default class AprHistory
         this.specialAllSeries = this.chart.addLineSeries({
             color: this.colors.specialAll,
         });
+
         this.specialTopSeries = this.chart.addLineSeries({
             color: this.colors.specialTop,
         });
+
+        this.requestedCommissionSeries = this.chart.addLineSeries({
+            priceScaleId: 'left',
+            color: this.colors.requestCommission,
+            lineWidth: 1,
+            lineStyle: LightweightCharts.LineStyle.Dashed,
+            priceLineVisible: false,
+        });
+
         this.requestedAvgSeries = this.chart.addAreaSeries({
             lineColor: this.colors.requestAvgApr,
             topColor: Color(this.colors.requestAvgApr).alpha(0.4).toString(),
             bottomColor: Color(this.colors.requestAvgApr).alpha(0).toString(),
         });
+
         this.requestedCurrentSeries = this.chart.addAreaSeries({
             lineColor: this.colors.requestCurrentApr,
             topColor: Color(this.colors.requestCurrentApr).alpha(0.1).toString(),
@@ -255,12 +278,20 @@ export default class AprHistory
                 }));
             this.requestedCurrentSeries.setData(data);
         }
+        {
+            const data = this.requestedHistoryEntries
+                .map(historyEntry => ({
+                    time: historyEntry.entryDate.getTime() / 1000,
+                    value: historyEntry.commission
+                }));
+            this.requestedCommissionSeries.setData(data);
+        }
 
         {
             const data = this.specialAllHistoryEntries
                 .map(historyEntry => ({
                     time: historyEntry.entryDate.getTime() / 1000,
-                    value: historyEntry.avgApr
+                    value: historyEntry.currentApr
                 }));
             this.specialAllSeries.setData(data);
         }
@@ -269,7 +300,7 @@ export default class AprHistory
             const data = this.specialTopHistoryEntries
                 .map(historyEntry => ({
                     time: historyEntry.entryDate.getTime() / 1000,
-                    value: historyEntry.avgApr
+                    value: historyEntry.currentApr
                 }));
             this.specialTopSeries.setData(data);
         }
