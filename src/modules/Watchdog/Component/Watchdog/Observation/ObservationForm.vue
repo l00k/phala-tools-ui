@@ -6,7 +6,7 @@
                     Create new stake pool observation
                 </span>
                 <span v-else-if="formMode == FormMode.Edit">
-                    Edit stake pool observation #{{ observation.stakePool.onChainId }}
+                    Edit stake pool observation
                 </span>
             </div>
         </header>
@@ -657,8 +657,6 @@ export default class ObservationForm
 
             if (this.formMode == FormMode.Create) {
                 result = await this._observationService.create(this.observation);
-
-
             }
             else if (this.formMode == FormMode.Edit) {
                 result = await this._observationService.update(this.observation);
