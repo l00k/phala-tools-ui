@@ -1,3 +1,7 @@
+import { CoreConfig } from '#/FrontendCore/Domain/Type/ModuleConfig';
+import { ModulePhalaConfig } from '#/Phala/Domain/Type/ModuleConfig';
+import { ModulePolkadotConfig } from '#/Polkadot/Domain/Type/ModuleConfig';
+
 export default {
     api: {
         baseUrl: 'http://localhost:4005'
@@ -22,4 +26,8 @@ export default {
             }
         }
     }
-};
+} as (
+    CoreConfig
+    | ModulePolkadotConfig
+    | ModulePhalaConfig
+);

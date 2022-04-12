@@ -58,7 +58,6 @@ module.exports = {
                     @import "@/assets/scss/theme/_variables.scss";
                 `,
                 sourceMap: isDev,
-                
             }
         },
     },

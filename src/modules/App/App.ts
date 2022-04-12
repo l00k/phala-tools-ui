@@ -1,8 +1,12 @@
 import AppComponent from '#/App/Component/AppComponent.vue';
+import { AppWindow } from '#/App/Domain/Type/AppWindow';
 import { App as AppBase } from '#/FrontendCore/App';
 import * as Api from '@inti5/api-frontend';
 import { Inject } from '@inti5/object-manager';
 import Vue from 'vue';
+
+
+declare const window : AppWindow;
 
 
 export class App
@@ -21,6 +25,8 @@ export class App
     protected _beforeAppSetup ()
     {
         super._beforeAppSetup();
+        
+        this._loadInstanceConfig(window.appData.appVariant);
         
         // setup proper APP component
         this._appComponent = AppComponent;

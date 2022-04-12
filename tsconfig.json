@@ -47,6 +47,7 @@
         "src/**/*.vue",
     ],
     "files": [
+        "src/shims-app.d.ts",
         "src/shims-vue.d.ts"
     ],
     "exclude": [

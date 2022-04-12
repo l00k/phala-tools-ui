@@ -1,13 +1,8 @@
-declare const window : any;
-
-const appVariant = window.appData.appVariant;
-const appDomain = appVariant + '.100k.dev';
-
+import { CoreConfig } from '#/FrontendCore/Domain/Type/ModuleConfig';
+import { ModulePhalaConfig } from '#/Phala/Domain/Type/ModuleConfig';
+import { ModulePolkadotConfig } from '#/Polkadot/Domain/Type/ModuleConfig';
 
 export default {
-    api: {
-        baseUrl: `https://${appDomain}/api/`
-    },
     module: {
         polkadot: {
             api: {
@@ -28,16 +23,10 @@ export default {
             subscan: {
                 baseUrl: 'https://khala.api.subscan.io/api/'
             }
-        },
-        watchdog: {
-            login: {
-                discord: {
-                    authUrl: `https://discord.com/api/oauth2/authorize?client_id=952938945887485992&redirect_uri=https%3A%2F%2F${appDomain}%2Fwatchdog%2Flogin%2Fdiscord&response_type=code&scope=identify`,
-                },
-                telegram: {
-                    botName: 'PhalaWatchdogBot',
-                }
-            }
         }
     }
-};
+} as (
+    CoreConfig
+    | ModulePolkadotConfig
+    | ModulePhalaConfig
+);
