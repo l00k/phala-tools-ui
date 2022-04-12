@@ -254,14 +254,11 @@ export default class WatchdogConfiguration
     {
         this.isObservationModified = false;
 
-        console.dir(observation);
-
         if (formMode === FormMode.Create) {
             this.user.observations.push(observation);
         }
         else if (formMode === FormMode.Edit) {
             const findExisting = this.user.observations.findIndex(_observation => _observation.id === observation.id);
-            console.log(findExisting);
             this.$set(this.user.observations, findExisting, observation);
         }
 

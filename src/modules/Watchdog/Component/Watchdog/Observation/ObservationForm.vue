@@ -17,6 +17,7 @@
                 :formData="observation"
                 @change="onAnyChange"
                 :submit="onSubmit"
+                :reset="onReset"
                 v-slot="{ isValid, isProcessing, doReset, doSubmit }"
             >
                 <div class="columns">
@@ -38,6 +39,29 @@
                             </UiAutocompleteField>
                         </UiValidatedField>
                     </div>
+                    <div class="column is-6">
+                        <b-field
+                            label="Current value"
+                            label-position="on-border"
+                            class="pt-2"
+                        >
+                            <div v-if="observation.stakePool">
+                                <span class="has-text-weight-bold">#{{ observation.stakePool.onChainId }}</span>
+                                <span class="ml-4">
+                                    {{ observation.stakePool?.owner?.identity }}
+                                </span>
+                            </div>
+                            <div
+                                v-else
+                                class="has-color-red"
+                            >
+                                Not selected
+                            </div>
+                        </b-field>
+                    </div>
+                </div>
+
+                <div class="columns">
                     <div class="column is-6">
                         <UiValidatedField
                             name="Observe as"
@@ -66,7 +90,7 @@
 
                 <div
                     v-if="observation.mode == ObservationMode.Delegator"
-                    class="columns"
+                    class="columns is-multiline"
                 >
                     <div class="column is-6">
                         <UiValidatedField
@@ -83,6 +107,31 @@
                             In case you are observing pool as delegator it is prefered to provide delegator address.
                             If you not provide it - you will be not able to get notifications about pending rewards.
                         </div>
+                    </div>
+                    <div class="column is-6">
+                        <b-field
+                            label="Current value"
+                            label-position="on-border"
+                            class="pt-2"
+                        >
+                            <div
+                                v-if="observation.account"
+                                class="is-flex is-align-items-center is-justify-content-start"
+                            >
+                                <Identicon
+                                    :size="32"
+                                    theme="substrate"
+                                    :value="observation.account.address"
+                                />
+                                <span class="ml-2">{{ observation.account.address }}</span>
+                            </div>
+                            <div
+                                v-else
+                                class="has-color-red"
+                            >
+                                Not selected
+                            </div>
+                        </b-field>
                     </div>
                 </div>
 
@@ -497,8 +546,10 @@ export default class ObservationForm
         604800 : '7 days',
     };
 
-    public observation : Observation = new Observation();
+    public originalObservation : Observation = new Observation();
+
     public formMode : FormMode = null;
+    public observation : Observation = new Observation();
 
     public observationAccountAddress : string = '';
 
@@ -514,7 +565,7 @@ export default class ObservationForm
 
     public setupCreateForm()
     {
-        this.observation = new Observation();
+        this.originalObservation = new Observation();
         this.formMode = FormMode.Create;
 
         this._setup();
@@ -522,7 +573,7 @@ export default class ObservationForm
 
     public setupEditForm(observation : Observation)
     {
-        this.observation = cloneDeep(observation);
+        this.originalObservation = observation;
         this.formMode = FormMode.Edit;
 
         this._setup();
@@ -530,9 +581,52 @@ export default class ObservationForm
 
     protected _setup()
     {
+        this.observation = cloneDeep(this.originalObservation);
+
         this.observationAccountAddress = this.observation.account?.address;
         if (!this.observation.config) {
             this.observation.config = new ObservationConfiguration();
+        }
+    }
+
+
+    public onAnyChange()
+    {
+        this.isModified = true;
+        this.$emit('change');
+    }
+
+    @Watch('observationAccountAddress')
+    public async onObservationAccountChange(address : string)
+    {
+        if (address) {
+            const valid = Polkadot.Utility.isAddress(address, 30);
+            if (!valid) {
+                return;
+            }
+
+            if (this.observation.account?.address == address) {
+                // already loaded
+                return;
+            }
+
+            // try to load account
+            try {
+                this.observation.account = await this._accountService.findAccount(address);
+            }
+            catch (e : any) {
+                if (e instanceof ValidationException) {
+                    const errors : string[] = e.details.errors[0].map(error => error.error ?? error.rule);
+                    this.showToast({
+                        type: 'is-danger',
+                        message: errors.join('\n')
+                    });
+                }
+            }
+        }
+        else {
+            this.observation.account = null;
+            return;
         }
     }
 
@@ -548,10 +642,10 @@ export default class ObservationForm
         return collection.items;
     }
 
-    public onAnyChange()
+
+    public onReset()
     {
-        this.isModified = true;
-        this.$emit('change');
+        this.observation = cloneDeep(this.originalObservation);
     }
 
     public async onSubmit()
@@ -591,40 +685,6 @@ export default class ObservationForm
 
             this.$emit('submit:failure', e, this.formMode);
             this.$emit(`${action}:failure`, e, this.formMode);
-        }
-    }
-
-    @Watch('observationAccountAddress')
-    public async onObservationAccountChange(address : string)
-    {
-        if (address) {
-            const valid = Polkadot.Utility.isAddress(address, 30);
-            if (!valid) {
-                return;
-            }
-
-            if (this.observation.account?.address == address) {
-                // already loaded
-                return;
-            }
-
-            // try to load account
-            try {
-                this.observation.account = await this._accountService.findAccount(address);
-            }
-            catch (e : any) {
-                if (e instanceof ValidationException) {
-                    const errors : string[] = e.details.errors[0].map(error => error.error ?? error.rule);
-                    this.showToast({
-                        type: 'is-danger',
-                        message: errors.join('\n')
-                    });
-                }
-            }
-        }
-        else {
-            this.observation.account = null;
-            return;
         }
     }
 
