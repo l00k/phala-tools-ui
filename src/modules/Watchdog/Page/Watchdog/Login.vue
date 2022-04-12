@@ -48,7 +48,7 @@ export default class WatchdogLoginPage
         }
 
         setTimeout(() => {
-            document.location.reload();
+            document.location.href = '/watchdog';
         }, 1000);
     }
 

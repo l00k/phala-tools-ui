@@ -26,7 +26,12 @@ export class App
     {
         super._beforeAppSetup();
         
+        // load configuration
         this._loadInstanceConfig(window.appData.appVariant);
+        
+        if (window.appData.dev) {
+            this._loadInstanceConfig('local');
+        }
         
         // setup proper APP component
         this._appComponent = AppComponent;

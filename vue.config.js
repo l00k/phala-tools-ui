@@ -100,6 +100,7 @@ module.exports = {
         
         // global variables
         const appData = JSON.stringify({
+            dev: isDev,
             appVariant,
             buildVersion: generateUniqueBuildInfo(),
         });

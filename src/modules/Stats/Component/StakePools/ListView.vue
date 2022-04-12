@@ -203,7 +203,7 @@
                         field="lastHistoryEntry.stakeRemaining"
                         :numeric="true"
                         :sortable="true"
-                        :filter="collectionRequest.filters.lastHistoryEntry.stakeRemaining"
+                        :filter="collectionRequest.filters.lastHistoryEntry.stakeRemaining.$or[0]"
                     >
                         <template #header>
                             Remaining stake
