@@ -47,7 +47,9 @@ export default class WatchdogLoginPage
             await this._tryToLoginUsingTelegram();
         }
 
-        this.$router.push({ name: 'watchdog' });
+        setTimeout(() => {
+            document.location.reload();
+        }, 1000);
     }
 
     protected async _tryToLoginUsingDiscord()
