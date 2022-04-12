@@ -134,12 +134,9 @@ export class Context
     public get rewardsDaily () : number
     {
         const budgetPerBlock = this.tokenomicParams.budgetPerBlock * this.rewardsFractionInEra;
-        
-        const workerRewardUnlimited = this.workerShare / this.totalShares * budgetPerBlock;
-        const workerMaxReward = this.workerInitialV * 0.0002 / (3600 / 12);
-        const workerRewardLimited = Math.min(workerRewardUnlimited, workerMaxReward);
+        const workerRewards = this.workerShare / this.totalShares * budgetPerBlock;
 
-        return workerRewardLimited
+        return workerRewards
             * (1 - this.tokenomicParams.treasuryRatio)
             * (24 * 3600 / this.blockTime);
     }
