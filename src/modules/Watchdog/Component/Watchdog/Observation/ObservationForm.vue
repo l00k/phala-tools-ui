@@ -24,7 +24,7 @@
                     <div class="column is-6">
                         <UiValidatedField
                             field="stakePool"
-                            name="Stake pool"
+                            name="Stake pool (pick from autocomplete list)"
                             :rules="{ required: true }"
                         >
                             <UiAutocompleteField
