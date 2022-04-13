@@ -3,7 +3,7 @@ import { ModulePhalaConfig } from '#/Phala/Domain/Type/ModuleConfig';
 import { ModulePolkadotConfig } from '#/Polkadot/Domain/Type/ModuleConfig';
 
 export default {
-    module: {
+    modules: {
         polkadot: {
             api: {
                 urls: {
@@ -22,6 +22,11 @@ export default {
             },
             subscan: {
                 baseUrl: 'https://khala.api.subscan.io/api/'
+            }
+        },
+        watchdog: {
+            discord: {
+                serverInviteLink: 'https://discord.gg/rP7Q96ex',
             }
         }
     }

@@ -18,12 +18,12 @@
                 </b-button>
 
                 <a
-                    href="https://discord.gg/rP7Q96ex"
+                    :href="discordConfig.serverInviteLink"
                     target="_blank"
                     class="ml-4 button is-discord server-link"
                 >
                     <div>Join server</div>
-                    <div class="has-text-weight-bold has-font-size-sm has-color-red">To allow bot messaging!</div>
+                    <div class="has-text-weight-bold has-font-size-sm">To allow bot messaging!</div>
                 </a>
             </div>
 
@@ -45,10 +45,10 @@ export default class LoginWidget
     extends BaseComponent
 {
 
-    @Config('module.watchdog.login.discord')
+    @Config('modules.watchdog.discord')
     public discordConfig;
 
-    @Config('module.watchdog.login.telegram')
+    @Config('modules.watchdog.telegram')
     public telegramConfig;
 
     @Ref('telegramWidget')
@@ -92,7 +92,7 @@ export default class LoginWidget
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .login-widget {
     .panel-block {
         filter: grayscale(0.6);
