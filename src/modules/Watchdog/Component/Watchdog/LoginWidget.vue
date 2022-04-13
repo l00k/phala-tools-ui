@@ -1,21 +1,31 @@
 <template>
     <b-modal
         :active="true"
-        :width="400"
+        :width="500"
     >
         <UiBlock
             title="Login"
             class="login-widget"
         >
-            <b-button
-                size="is-large"
-                expanded
-                class="is-discord mb-4"
-                @click="onDiscordLoginRequest"
-            >
-                <i class="fab fa-discord"></i>
-                <span class="ml-4">Login using Discord</span>
-            </b-button>
+            <div class="mb-4 is-flex is-align-items-stretch is-justify-content-space-between">
+                <b-button
+                    size="is-large"
+                    class="is-discord"
+                    @click="onDiscordLoginRequest"
+                >
+                    <i class="fab fa-discord"></i>
+                    <span class="ml-4">Login with Discord</span>
+                </b-button>
+
+                <a
+                    href="https://discord.gg/rP7Q96ex"
+                    target="_blank"
+                    class="ml-4 button is-discord server-link"
+                >
+                    <div>Join server</div>
+                    <div class="has-text-weight-bold has-font-size-sm has-color-red">To allow bot messaging!</div>
+                </a>
+            </div>
 
             <div ref="telegramWidget"></div>
         </UiBlock>
@@ -89,7 +99,20 @@ export default class LoginWidget
     }
 }
 
-.is-discord {
+.button.is-discord {
     background: #5865F2;
+
+    height: auto;
+    flex-direction: column;
+
+    &.server-link {
+        flex-grow: 1;
+    }
+
+    &:focus:not(:active),
+    &.is-focused:not(:active) {
+        color: #fff;
+        box-shadow: 0 0 0 0.125em rgb(255 255 255 / 25%)
+    }
 }
 </style>
