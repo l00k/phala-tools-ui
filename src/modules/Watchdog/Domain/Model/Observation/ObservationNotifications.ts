@@ -1,19 +1,6 @@
-import { Assert } from '@inti5/validator/Object';
+import { ObservationType } from '#/Watchdog/Domain/Type/ObservationType';
 import { Annotation as API } from '@inti5/api-frontend';
 import * as Trans from 'class-transformer';
-
-
-export enum NotificationType
-{
-    ClaimableRewards = 'claimableRewards',
-    RewardsDrop = 'rewardsDrop',
-    PoolCommissionChange = 'poolCommissionChange',
-    
-    UnresponsiveWorker = 'unresponsiveWorker',
-    NodeStuck = 'nodeStuck',
-    FreePoolFunds = 'freePoolFunds',
-    PendingWithdrawals = 'pendingWithdrawals',
-}
 
 
 @API.Resource('Watchdog/Observation/Notifications')
@@ -21,26 +8,26 @@ export class ObservationNotifications
 {
     
     @API.Property()
-    public readonly [NotificationType.ClaimableRewards] : number;
+    public readonly [ObservationType.ClaimableRewards] : number;
     
     @API.Property()
-    public readonly [NotificationType.RewardsDrop] : number;
+    public readonly [ObservationType.RewardsDrop] : number;
     
     @API.Property()
-    public readonly [NotificationType.PoolCommissionChange] : number;
+    public readonly [ObservationType.PoolCommissionChange] : number;
     
     
     @API.Property()
-    public readonly [NotificationType.UnresponsiveWorker] : number;
+    public readonly [ObservationType.UnresponsiveWorker] : number;
     
     @API.Property()
-    public readonly [NotificationType.NodeStuck] : number;
+    public readonly [ObservationType.StuckedNode] : number;
     
     @API.Property()
-    public readonly [NotificationType.FreePoolFunds] : number;
+    public readonly [ObservationType.FreePoolFunds] : number;
     
     @API.Property()
-    public readonly [NotificationType.PendingWithdrawals] : number;
+    public readonly [ObservationType.PendingWithdrawals] : number;
     
     
     public constructor (data? : Partial<ObservationNotifications>)

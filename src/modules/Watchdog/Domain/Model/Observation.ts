@@ -2,16 +2,10 @@ import { Account } from '#/Phala/Domain/Model/Account';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
 import { ObservationNotifications } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
-import { Assert } from '@inti5/validator/Object';
+import { ObservationMode } from '#/Watchdog/Domain/Type/ObservationMode';
 import { Annotation as API } from '@inti5/api-frontend';
+import { Assert } from '@inti5/validator/Object';
 import * as Trans from 'class-transformer';
-
-
-export enum ObservationMode
-{
-    Owner = 'owner',
-    Delegator = 'delegator',
-}
 
 
 @API.Resource('Watchdog/Observation')

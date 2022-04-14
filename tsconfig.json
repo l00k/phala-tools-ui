@@ -30,9 +30,9 @@
             "buefy/types"
         ],
         "paths": {
-            "@/*": ["./src/*"],
             "#/*": ["./src/modules/*"],
-            "@inti5/*": ["./src/core/inti5/*"]
+            "@inti5/*": ["./src/core/inti5/*"],
+            "@/*": ["./src/*"]
         },
         "lib": [
             "esnext",

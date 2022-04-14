@@ -124,10 +124,10 @@
 import { BaseComponent, UiModal } from '#/FrontendCore/Component';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
-import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
-import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
+import { Observation } from '#/Watchdog/Domain/Model/Observation';
 import { User } from '#/Watchdog/Domain/Model/User';
-import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
+import { ObservationType } from '#/Watchdog/Domain/Type/ObservationType';
+import { ObservationMode } from '#/Watchdog/Domain/Type/ObservationMode';
 import * as Api from '@inti5/api-frontend';
 import { Annotation as API } from '@inti5/api-frontend';
 import startCase from 'lodash/startCase';
@@ -135,6 +135,7 @@ import { Ref } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ObservationForm, { FormMode } from './Observation/ObservationForm.vue';
 import AccountBadge from '#/Watchdog/Component/AccountBadge.vue';
+import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
 
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
@@ -176,9 +177,9 @@ export default class WatchdogConfiguration
     public isObservationModified : boolean = false;
 
 
-    public getLastNotifications(observation : Observation) : Notification[]
+    public getLastNotifications (observation : Observation) : Notification[]
     {
-        const notificationTypes = Object.values(NotificationType);
+        const notificationTypes = Object.values(ObservationType);
         return Object.entries(observation.lastNotifications)
             .filter(([ type, time ]) => time > 0)
             .filter(([ type, time ]) => notificationTypes.includes(<any>type))
@@ -186,29 +187,29 @@ export default class WatchdogConfiguration
                 type: startCase(type),
                 date: new Date(time),
             }))
-            .sort((a,b) => a.date < b.date ? -1 : 1);
+            .sort((a, b) => a.date < b.date ? -1 : 1);
     }
 
-    public mounted()
+    public mounted ()
     {
         this._observationService = this._apiClient.getService(ObservationService);
     }
 
-    public doCreate()
+    public doCreate ()
     {
         this.isObservationModified = false;
         this.observationEditModal.show();
         this.$nextTick(() => this.observationForm.setupCreateForm());
     }
 
-    public doEdit(observation : Observation)
+    public doEdit (observation : Observation)
     {
         this.isObservationModified = false;
         this.observationEditModal.show();
         this.$nextTick(() => this.observationForm.setupEditForm(observation));
     }
 
-    public async doDelete(observation : Observation)
+    public async doDelete (observation : Observation)
     {
         const confirmed = await this.confirm({
             type: 'is-danger',
@@ -247,7 +248,7 @@ export default class WatchdogConfiguration
         }
     }
 
-    public async onSubmitSuccess(
+    public async onSubmitSuccess (
         observation : Observation,
         formMode : FormMode,
     )

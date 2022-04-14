@@ -150,7 +150,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.ClaimableRewards].active"
+                                    v-model="observation.config[ObservationType.ClaimableRewards].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -169,7 +169,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.ClaimableRewards].frequency"
+                                    v-model.number="observation.config[ObservationType.ClaimableRewards].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -185,7 +185,7 @@
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
                                 <b-input
-                                    v-model.number="observation.config[NotificationType.ClaimableRewards].threshold"
+                                    v-model.number="observation.config[ObservationType.ClaimableRewards].threshold"
                                 />
                                 <p class="control">
                                     <span class="button is-disabled">PHA</span>
@@ -203,7 +203,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.RewardsDrop].active"
+                                    v-model="observation.config[ObservationType.RewardsDrop].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -216,7 +216,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.RewardsDrop].frequency"
+                                    v-model.number="observation.config[ObservationType.RewardsDrop].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -233,7 +233,7 @@
                                 :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
                             >
                                 <b-input
-                                    v-model.number="observation.config[NotificationType.RewardsDrop].threshold"
+                                    v-model.number="observation.config[ObservationType.RewardsDrop].threshold"
                                 />
                                 <p class="control">
                                     <span class="button is-disabled">%</span>
@@ -252,7 +252,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.PoolCommissionChange].active"
+                                    v-model="observation.config[ObservationType.PoolCommissionChange].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -265,7 +265,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.PoolCommissionChange].frequency"
+                                    v-model.number="observation.config[ObservationType.PoolCommissionChange].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -282,7 +282,7 @@
                                 :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
                             >
                                 <b-input
-                                    v-model.number="observation.config[NotificationType.PoolCommissionChange].threshold"
+                                    v-model.number="observation.config[ObservationType.PoolCommissionChange].threshold"
                                 />
                                 <p class="control">
                                     <span class="button is-disabled">%</span>
@@ -301,7 +301,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.UnresponsiveWorker].active"
+                                    v-model="observation.config[ObservationType.UnresponsiveWorker].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -314,7 +314,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.UnresponsiveWorker].frequency"
+                                    v-model.number="observation.config[ObservationType.UnresponsiveWorker].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -323,7 +323,19 @@
                                     >{{ label }}</option>
                                 </b-select>
                             </UiValidatedField>
-
+                        </td>
+                        <td>
+                            <UiValidatedField
+                                name="Threshold"
+                                :rules="{ required: true, integer: true, min_value: 0 }"
+                            >
+                                <b-input
+                                    v-model.number="observation.config[ObservationType.UnresponsiveWorker].threshold"
+                                />
+                                <p class="control">
+                                    <span class="button is-disabled">workers</span>
+                                </p>
+                            </UiValidatedField>
                         </td>
                     </tr>
 
@@ -337,7 +349,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.NodeStuck].active"
+                                    v-model="observation.config[ObservationType.NodeStuck].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -351,7 +363,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.NodeStuck].frequency"
+                                    v-model.number="observation.config[ObservationType.NodeStuck].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -374,7 +386,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.FreePoolFunds].active"
+                                    v-model="observation.config[ObservationType.FreePoolFunds].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -387,7 +399,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.FreePoolFunds].frequency"
+                                    v-model.number="observation.config[ObservationType.FreePoolFunds].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -404,7 +416,7 @@
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
                                 <b-input
-                                    v-model.number="observation.config[NotificationType.FreePoolFunds].threshold"
+                                    v-model.number="observation.config[ObservationType.FreePoolFunds].threshold"
                                 />
                                 <p class="control">
                                     <span class="button is-disabled">PHA</span>
@@ -423,7 +435,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[NotificationType.PendingWithdrawals].active"
+                                    v-model="observation.config[ObservationType.PendingWithdrawals].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -436,7 +448,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[NotificationType.PendingWithdrawals].frequency"
+                                    v-model.number="observation.config[ObservationType.PendingWithdrawals].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
@@ -453,7 +465,7 @@
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
                                 <b-input
-                                    v-model.number="observation.config[NotificationType.PendingWithdrawals].threshold"
+                                    v-model.number="observation.config[ObservationType.PendingWithdrawals].threshold"
                                 />
                                 <p class="control">
                                     <span class="button is-disabled">PHA</span>
@@ -488,7 +500,7 @@ import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import AccountBadge from '#/Watchdog/Component/AccountBadge.vue';
-import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
+import { Observation } from '#/Watchdog/Domain/Model/Observation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
 import * as Api from '@inti5/api-frontend';
@@ -497,7 +509,8 @@ import { AccountService } from '#/Phala/Domain/Service/AccountService';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Ref, Watch } from 'vue-property-decorator';
-import { NotificationType } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
+import { ObservationType } from '#/Watchdog/Domain/Type/ObservationType';
+import { ObservationMode } from '@/modules/Watchdog/Domain/Type/ObservationMode';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
 import { ValidationException } from '@inti5/validator/ValidationException';
 
@@ -530,7 +543,7 @@ export default class ObservationForm
 
 
     public FormMode = FormMode;
-    public NotificationType = NotificationType;
+    public ObservationType = ObservationType;
     public ObservationMode = ObservationMode;
 
     public frequencyOptions = {
