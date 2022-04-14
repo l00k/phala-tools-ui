@@ -10,7 +10,6 @@
                 <div class="is-flex is-justify-content-end mb-2">
                     <b-button
                         type="is-success"
-                        size="is-small"
                         class="mb-2"
                         @click="doCreate()"
                     >Create new</b-button>
@@ -19,13 +18,21 @@
                 <div
                     v-if="user.observations?.length > 0"
                 >
-
                     <div
                         v-for="observation in user.observations"
                         :key="observation.id"
                         class="box mb-2"
                     >
-                        <h2 class="title is-6 mb-2">StakePool #{{ observation.stakePool.onChainId }}</h2>
+                        <h2 class="title is-6 mb-2 has-text-weight-normal">
+                            <span>StakePool</span>
+                            <span
+                                class="ml-2 has-text-weight-bold has-color-primary"
+                            >#{{ observation.stakePool.onChainId }}</span>
+                            <span
+                                v-if="observation.stakePool.owner?.identity"
+                                class="ml-2"
+                            >{{ observation.stakePool.owner.identity }}</span>
+                        </h2>
                         <div class="columns">
                             <div class="column">
                                 <div class="mb-3">
@@ -37,17 +44,10 @@
                                         v-if="observation.mode == ObservationMode.Delegator"
                                         class="mt-2"
                                     >
-                                        <div
+                                        <AccountBadge
                                             v-if="observation.account"
-                                            class="is-flex is-flex-direction-row is-align-items-center"
-                                        >
-                                            <Identicon
-                                                :size="32"
-                                                theme="substrate"
-                                                :value="observation.account.address"
-                                            />
-                                            <span class="ml-4">{{ observation.account.address }}</span>
-                                        </div>
+                                            :account="observation.account"
+                                        />
                                         <div
                                             v-else
                                             class="has-color-red"
@@ -65,7 +65,7 @@
                                         <li
                                             v-for="notification in getLastNotifications(observation)"
                                         >
-                                            <span class="has-color-gray">{{ notification.time | formatDatetime }}</span>
+                                            <span class="has-color-gray">{{ notification.date | formatDatetime }}</span>
                                             <span class="ml-4">{{ notification.type }}</span>
                                         </li>
                                     </ul>
@@ -77,13 +77,11 @@
                             <div class="column is-narrow is-flex is-flex-direction-column">
                                 <b-button
                                     type="is-info"
-                                    size="is-small"
                                     class="mb-2"
                                     @click="doEdit(observation)"
                                 >Edit</b-button>
                                 <b-button
                                     type="is-danger"
-                                    size="is-small"
                                     @click="doDelete(observation)"
                                 >Delete</b-button>
                             </div>
@@ -136,6 +134,7 @@ import startCase from 'lodash/startCase';
 import { Ref } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import ObservationForm, { FormMode } from './Observation/ObservationForm.vue';
+import AccountBadge from '#/Watchdog/Component/AccountBadge.vue';
 
 const RuntimeStorage = namespace('Watchdog/RuntimeStorage');
 
@@ -147,6 +146,7 @@ type Notification = {
 
 @Component({
     components: {
+        AccountBadge,
         ObservationForm,
     }
 })
@@ -184,7 +184,7 @@ export default class WatchdogConfiguration
             .filter(([ type, time ]) => notificationTypes.includes(<any>type))
             .map(([ type, time ]) => ({
                 type: startCase(type),
-                date: new Date(time * 1000),
+                date: new Date(time),
             }))
             .sort((a,b) => a.date < b.date ? -1 : 1);
     }

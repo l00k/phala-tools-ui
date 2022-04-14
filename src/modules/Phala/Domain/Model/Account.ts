@@ -22,6 +22,12 @@ export class Account
     public identityVerified : boolean = false;
     
     
+    public get friendlyName() : string
+    {
+        return this.identity ?? this.address;
+    }
+    
+    
     public constructor (data? : Partial<Account>)
     {
         if (data) {

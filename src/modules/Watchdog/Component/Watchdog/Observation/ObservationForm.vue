@@ -46,7 +46,7 @@
                             class="pt-2"
                         >
                             <div v-if="observation.stakePool">
-                                <span class="has-text-weight-bold">#{{ observation.stakePool.onChainId }}</span>
+                                <span class="has-text-weight-bold has-color-primary">#{{ observation.stakePool.onChainId }}</span>
                                 <span class="ml-4">
                                     {{ observation.stakePool?.owner?.identity }}
                                 </span>
@@ -114,17 +114,10 @@
                             label-position="on-border"
                             class="pt-2"
                         >
-                            <div
+                            <AccountBadge
                                 v-if="observation.account"
-                                class="is-flex is-align-items-center is-justify-content-start"
-                            >
-                                <Identicon
-                                    :size="32"
-                                    theme="substrate"
-                                    :value="observation.account.address"
-                                />
-                                <span class="ml-2">{{ observation.account.address }}</span>
-                            </div>
+                                :account="observation.account"
+                            />
                             <div
                                 v-else
                                 class="has-color-red"
@@ -494,6 +487,7 @@
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
+import AccountBadge from '#/Watchdog/Component/AccountBadge.vue';
 import { Observation, ObservationMode } from '#/Watchdog/Domain/Model/Observation';
 import { StakePoolService } from '#/Phala/Domain/Service/StakePoolService';
 import { ObservationService } from '#/Watchdog/Domain/Service/ObservationService';
@@ -514,7 +508,11 @@ export enum FormMode {
 }
 
 
-@Component()
+@Component({
+    components: {
+        AccountBadge
+    }
+})
 export default class ObservationForm
     extends BaseComponent
 {
