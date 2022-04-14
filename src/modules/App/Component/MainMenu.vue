@@ -103,7 +103,7 @@ import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 declare const window;
 
 @Component()
-export default class MainMenuView
+export default class MainMenu
     extends BaseComponent
 {
 

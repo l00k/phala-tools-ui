@@ -1,26 +1,44 @@
 <template>
     <div id="app">
-        <MainMenuView />
+        <MainMenu />
 
-        <keep-alive>
+        <keep-alive
+            v-if="!isPhala"
+        >
             <router-view />
         </keep-alive>
+
+        <MainnetNotReady
+            v-if="isPhala"
+        />
     </div>
 </template>
 
 <script lang="ts">
-import MainMenuView from '#/App/Component/MainMenuView.vue';
+import MainMenu from '#/App/Component/MainMenu.vue';
+import MainnetNotReady from '#/App/Component/MainnetNotReady.vue';
+import { Network } from '#/App/Domain/Type/Network';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from 'vue-property-decorator';
 
+declare const window;
+
 @Component({
     components: {
-        MainMenuView
+        MainMenu,
+        MainnetNotReady
     }
 })
 export default class AppComponent
     extends BaseComponent
 {
+
+    public get isPhala () : boolean
+    {
+        const appVariant = window.appData.appVariant;
+        return appVariant === Network.Phala;
+    }
+
 }
 </script>
 
