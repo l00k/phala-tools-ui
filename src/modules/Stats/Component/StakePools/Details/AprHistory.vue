@@ -29,12 +29,12 @@
 
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">All active pools avg APR</b-tag>
-                        <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.currentApr | formatPercent }}</b-tag>
+                        <b-tag :style="{ background: colors.specialAll }">{{ specialAllLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
 
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">TOP 100 active pools avg APR</b-tag>
-                        <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.currentApr | formatPercent }}</b-tag>
+                        <b-tag :style="{ background: colors.specialTop }">{{ specialTopLastHistoryEntry?.avgApr | formatPercent }}</b-tag>
                     </b-taglist>
                 </div>
             </div>
@@ -291,7 +291,7 @@ export default class AprHistory
             const data = this.specialAllHistoryEntries
                 .map(historyEntry => ({
                     time: historyEntry.entryDate.getTime() / 1000,
-                    value: historyEntry.currentApr
+                    value: historyEntry.avgApr
                 }));
             this.specialAllSeries.setData(data);
         }
@@ -300,7 +300,7 @@ export default class AprHistory
             const data = this.specialTopHistoryEntries
                 .map(historyEntry => ({
                     time: historyEntry.entryDate.getTime() / 1000,
-                    value: historyEntry.currentApr
+                    value: historyEntry.avgApr
                 }));
             this.specialTopSeries.setData(data);
         }
