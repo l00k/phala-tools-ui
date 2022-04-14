@@ -53,7 +53,7 @@
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { User } from '#/Watchdog/Domain/Model/User';
-import { Config } from '@/core/configuration';
+import { Config } from '@inti5/configuration';
 import * as Api from '@inti5/api-frontend';
 import { Annotation as API } from '@inti5/api-frontend';
 import { namespace } from 'vuex-class';

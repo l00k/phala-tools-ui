@@ -349,7 +349,7 @@
                                 name="Active"
                             >
                                 <b-switch
-                                    v-model="observation.config[ObservationType.NodeStuck].active"
+                                    v-model="observation.config[ObservationType.StuckedNode].active"
                                 />
                             </UiValidatedField>
                         </td>
@@ -363,7 +363,7 @@
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
                                 <b-select
-                                    v-model.number="observation.config[ObservationType.NodeStuck].frequency"
+                                    v-model.number="observation.config[ObservationType.StuckedNode].frequency"
                                 >
                                     <option
                                         v-for="([value, label]) in Object.entries(frequencyOptions)"
