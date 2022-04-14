@@ -65,8 +65,10 @@
             class="network-selector"
         >
             <b-dropdown
+                :value="appVariant"
                 position="is-bottom-left"
                 class="ml-4"
+                @input="changeApp"
             >
                 <template #trigger="{ active }">
                     <b-button
@@ -78,14 +80,16 @@
                 </template>
 
                 <b-dropdown-item
-                    @click="changeApp('phala')"
+                    v-if="appVariant !== Network.Phala"
+                    :value="Network.Phala"
                     class="is-flex is-justify-content-space-between"
                 >
                     <span class="has-color-phala">Phala</span>
                     <span class="has-color-gray">(on Polkadot)</span>
                 </b-dropdown-item>
                 <b-dropdown-item
-                    @click="changeApp('khala')"
+                    v-if="appVariant !== Network.Khala"
+                    :value="Network.Khala"
                     class="is-flex is-justify-content-space-between"
                 >
                     <span class="has-color-khala">Khala</span>
@@ -97,6 +101,7 @@
 </template>
 
 <script lang="ts">
+import { Network } from '#/App/Domain/Type/Network';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 
@@ -107,6 +112,14 @@ export default class MainMenu
     extends BaseComponent
 {
 
+    public Network = Network;
+
+
+    public get appVariant() : Network
+    {
+        return window.appData.appVariant;
+    }
+
     public get appName() : string
     {
         const appVariant = window.appData.appVariant;
@@ -115,7 +128,7 @@ export default class MainMenu
             : 'Khala';
     }
 
-    public changeApp(app : string)
+    public changeApp(app : Network)
     {
         const url = 'https://' + app + '.100k.dev/';
         location.href = url;
