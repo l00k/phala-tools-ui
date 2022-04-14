@@ -58,6 +58,41 @@
                 </li>
             </router-link>
         </ul>
+
+        <b-field
+            label="Switch network"
+            label-position="on-border"
+            class="network-selector"
+        >
+            <b-dropdown
+                position="is-bottom-left"
+                class="ml-4"
+            >
+                <template #trigger="{ active }">
+                    <b-button
+                        type="is-primary"
+                        :icon-right="active ? 'caret-up' : 'caret-down'"
+                    >
+                        {{ appName }}
+                    </b-button>
+                </template>
+
+                <b-dropdown-item
+                    @click="changeApp('phala')"
+                    class="is-flex is-justify-content-space-between"
+                >
+                    <span class="has-color-phala">Phala</span>
+                    <span class="has-color-gray">(on Polkadot)</span>
+                </b-dropdown-item>
+                <b-dropdown-item
+                    @click="changeApp('khala')"
+                    class="is-flex is-justify-content-space-between"
+                >
+                    <span class="has-color-khala">Khala</span>
+                    <span class="has-color-gray">(on Kusama)</span>
+                </b-dropdown-item>
+            </b-dropdown>
+        </b-field>
     </div>
 </template>
 
@@ -80,6 +115,12 @@ export default class MainMenuView
             : 'Khala';
     }
 
+    public changeApp(app : string)
+    {
+        const url = 'https://' + app + '.100k.dev/';
+        location.href = url;
+    }
+
 }
 </script>
 
@@ -87,5 +128,20 @@ export default class MainMenuView
 .page-title {
     line-height: 1.1;
     text-align: right;
+}
+
+.g-mainmenu {
+    overflow: visible;
+}
+
+.network-selector {
+    align-self: stretch;
+
+    .dropdown {
+        height: 100%;
+    }
+    .button {
+        height: 100%;
+    }
 }
 </style>

@@ -38,7 +38,10 @@ function generateUniqueBuildInfo ()
 
 const env = process.env.NODE_ENV || 'production';
 const isDev = env !== 'production';
-const appVariant = process.env.APP_VARIANT === 'khala' ? 'khala' : 'phala';
+
+const appVariant = process.env.APP_VARIANT === 'khala'
+    ? 'khala'
+    : 'phala';
 
 
 module.exports = {
