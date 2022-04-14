@@ -327,7 +327,7 @@
                         <td>
                             <UiValidatedField
                                 name="Threshold"
-                                :rules="{ required: true, integer: true, min_value: 0 }"
+                                :rules="{ required: true, integer: true, min_value: 1 }"
                             >
                                 <b-input
                                     v-model.number="observation.config[ObservationType.UnresponsiveWorker].threshold"
@@ -510,9 +510,9 @@ import cloneDeep from 'lodash/cloneDeep';
 import * as Polkadot from '#/Polkadot';
 import { Ref, Watch } from 'vue-property-decorator';
 import { ObservationType } from '#/Watchdog/Domain/Type/ObservationType';
-import { ObservationMode } from '@/modules/Watchdog/Domain/Type/ObservationMode';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
 import { ValidationException } from '@inti5/validator/ValidationException';
+import { ObservationMode } from '#/Watchdog/Domain/Type/ObservationMode';
 
 
 export enum FormMode {

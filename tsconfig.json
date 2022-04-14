@@ -31,8 +31,7 @@
         ],
         "paths": {
             "#/*": ["./src/modules/*"],
-            "@inti5/*": ["./src/core/inti5/*"],
-            "@/*": ["./src/*"]
+            "@inti5/*": ["./src/core/inti5/*"]
         },
         "lib": [
             "esnext",

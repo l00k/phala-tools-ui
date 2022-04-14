@@ -96,9 +96,17 @@ export class ObservationConfiguration
     
     @API.Property(() => NotificationConfig)
     @Assert({ presence: true })
+    @AssertObject({
+        threshold: {
+            numericality: {
+                greaterThanOrEqualTo: 1,
+            }
+        }
+    })
     public [ObservationType.UnresponsiveWorker] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 3600,
+        threshold: 1,
     });
     
     @API.Property(() => NotificationConfig)
