@@ -64,6 +64,7 @@
                 <div class="columns">
                     <div class="column is-6">
                         <UiValidatedField
+                            field="mode"
                             name="Observe as"
                             :rules="{ required: true }"
                             class="mb-4 mr-2"
@@ -94,6 +95,7 @@
                 >
                     <div class="column is-6">
                         <UiValidatedField
+                            field="account"
                             name="Delegator address"
                             :rules="{ isPolkadotAddress: 30 }"
                         >
@@ -147,6 +149,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.ClaimableRewards}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -165,6 +168,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.ClaimableRewards}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -181,6 +185,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.ClaimableRewards}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
@@ -200,6 +205,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.RewardsDrop}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -212,6 +218,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.RewardsDrop}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -229,6 +236,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.RewardsDrop}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
                             >
@@ -249,6 +257,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PoolCommissionChange}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -261,6 +270,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PoolCommissionChange}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -278,6 +288,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PoolCommissionChange}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
                             >
@@ -298,6 +309,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.UnresponsiveWorker}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -310,6 +322,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.UnresponsiveWorker}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -326,6 +339,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.UnresponsiveWorker}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 1 }"
                             >
@@ -346,6 +360,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.StuckedNode}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -359,6 +374,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.StuckedNode}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -383,6 +399,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.FreePoolFunds}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -395,6 +412,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.FreePoolFunds}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -412,6 +430,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.FreePoolFunds}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
@@ -432,6 +451,7 @@
                     >
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PendingWithdrawals}.active`"
                                 name="Active"
                             >
                                 <b-switch
@@ -444,6 +464,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PendingWithdrawals}.frequency`"
                                 name="Frequency"
                                 :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
                             >
@@ -461,6 +482,7 @@
                         </td>
                         <td>
                             <UiValidatedField
+                                :field="`config.${ObservationType.PendingWithdrawals}.threshold`"
                                 name="Threshold"
                                 :rules="{ required: true, integer: true, min_value: 0 }"
                             >
