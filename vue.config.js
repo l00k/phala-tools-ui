@@ -47,6 +47,7 @@ const appVariant = process.env.APP_VARIANT === 'khala'
 module.exports = {
     runtimeCompiler: true,
     lintOnSave: true,
+    productionSourceMap: false,
     css: {
         sourceMap: isDev,
         extract: false,
@@ -70,9 +71,9 @@ module.exports = {
     ],
     configureWebpack (config)
     {
-        if (isDev) {
-            config.devtool = 'source-map';
-        }
+        config.devtool = isDev
+            ? 'source-map'
+            : undefined;
         
         config.optimization.minimize = false;
         config.devServer = {
