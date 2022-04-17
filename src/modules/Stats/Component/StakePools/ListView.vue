@@ -390,10 +390,9 @@ export default class ListView
     @Watch('collectionRequest', { deep: true })
     protected async _onCollectionRequestChange ()
     {
-        await this._loadStakePools();
-
         const currentHash = (this.$route.hash ?? '#').substring(1);
         const rawRequest = this.collectionRequest.toPlainString(true);
+
         if (currentHash != rawRequest) {
             this.$router.push({
                 name: 'stakepools_list',
