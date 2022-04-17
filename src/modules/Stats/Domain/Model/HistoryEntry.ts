@@ -3,7 +3,6 @@ import * as Trans from 'class-transformer';
 
 
 @API.Resource('Stats/HistoryEntry')
-@API.Cacheable({ lifetime: 15 * 60 * 1000 })
 export class HistoryEntry
 {
     

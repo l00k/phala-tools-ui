@@ -4,7 +4,6 @@ import * as Trans from 'class-transformer';
 
 
 @API.Resource('StakePool')
-@API.Cacheable({ lifetime: 15 * 60 * 1000 })
 export class StakePool
 {
     

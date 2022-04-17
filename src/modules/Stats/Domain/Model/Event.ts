@@ -59,7 +59,6 @@ class EventAdditionalData
 
 
 @API.Resource('Stats/Event')
-@API.Cacheable({ lifetime: 15 * 60 * 1000 })
 export class Event<T extends AbstractEventData = any>
 {
     
