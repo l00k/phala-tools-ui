@@ -1,4 +1,5 @@
 import { App } from '#/FrontendCore/App';
+import { Observation } from '#/Watchdog/Domain/Model/Observation';
 import { User } from '#/Watchdog/Domain/Model/User';
 import { UserService } from '#/Watchdog/Domain/Service/UserService';
 import { Provider } from '@inti5/api-frontend';
@@ -22,6 +23,14 @@ export class RuntimeStorage
     public isLoggedIn : boolean = false;
     
     public user : User;
+    
+    
+    public get observations() : Observation[]
+    {
+        return this.user
+            ? this.user.observations
+            : [];
+    }
     
     
     @Action

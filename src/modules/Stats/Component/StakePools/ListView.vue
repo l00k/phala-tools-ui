@@ -67,6 +67,21 @@
                         <span>Distinct owners</span>
                     </b-checkbox-button>
                 </b-field>
+
+                <b-field class="mr-2">
+                    <b-checkbox-button
+                        v-model="collectionRequest.filters._observedOnly"
+                        :disabled="!watchdogAvailable || !observedPoolsLoaded"
+                        :native-value="true"
+                        type="is-primary"
+                        class="filter-watchdog"
+                    >
+                        <b-icon
+                            :icon="observedPoolsLoaded ? 'tower-observation' : 'circle-notch fa-spin'"
+                        ></b-icon>
+                        <span>Observed in watchdog</span>
+                    </b-checkbox-button>
+                </b-field>
             </div>
 
             <ui-table
@@ -79,6 +94,7 @@
                 :hoverable="true"
                 ref="list"
                 @click="onRowClick"
+                @clearFilters="onClearFilters"
             >
                 <template #actions>&nbsp;</template>
 
@@ -271,11 +287,9 @@ import { FilterType } from '#/FrontendCore/Domain';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import { Watch } from 'vue-property-decorator';
-import { namespace } from 'vuex-class';
 
 
-const RuntimeStorage = namespace('StakePools/RuntimeStorage');
-
+let _observedPools : number[] = [];
 
 @Component()
 export default class ListView
@@ -300,23 +314,26 @@ export default class ListView
                 workersNum: {},
                 avgApr: {},
                 stakeTotal: {},
-                stakeRemaining: {
-                    $gte: 10
-                },
+                stakeRemaining: {},
             },
             // special filters
             _owner: {},
             _issues: {
                 id: { $nin: [] }
             },
+
             // custom filters
             set _identityVerified (v)
             {
-                (<any>this).stakePool.owner.identityVerified = v ? { $eq: true } : {};
+                (this as Api.Domain.Filters<StakePoolEntry>).stakePool.owner.identityVerified = v ? { $eq: true } : {};
             },
             set _activeOnly (v)
             {
-                (<any>this).lastHistoryEntry.avgApr.$gt = v ? 0 : undefined;
+                (this as Api.Domain.Filters<StakePoolEntry>).lastHistoryEntry.avgApr.$gt = v ? 0 : undefined;
+            },
+            set _observedOnly (v)
+            {
+                (this as Api.Domain.Filters<StakePoolEntry>).stakePool.onChainId.$in = v ? [ ..._observedPools ] : undefined;
             }
         },
         sorting: {
@@ -339,26 +356,41 @@ export default class ListView
     public isLoading : boolean = false;
     public stakePoolEntries : StakePoolEntry[] = [];
 
+    public watchdogAvailable : boolean = false;
+    public observedPoolsLoaded : boolean = false;
 
-    public mounted ()
+
+    public async mounted ()
     {
+        this._loadObservedPools();
         this._onRouteChange();
-        this._loadStakePools();
     }
 
     @Watch('$route')
     protected _onRouteChange ()
     {
+        if (this.$route.name !== 'stakepools_list') {
+            // confirm route
+            return;
+        }
+
+        this.collectionRequest.clearFilters();
+
         if (this.$route.hash && this.$route.hash.length > 1) {
             const rawRequest = this.$route.hash.substring(1);
             this.collectionRequest.fromPlainString(rawRequest, true);
         }
+        else {
+            this.collectionRequest.filters.lastHistoryEntry.stakeRemaining = { $gte: 10 };
+        }
+
+        this._loadStakePools();
     }
 
     @Watch('collectionRequest', { deep: true })
     protected async _onCollectionRequestChange ()
     {
-        this._loadStakePools();
+        await this._loadStakePools();
 
         const currentHash = (this.$route.hash ?? '#').substring(1);
         const rawRequest = this.collectionRequest.toPlainString(true);
@@ -387,14 +419,28 @@ export default class ListView
 
         // clear promise
         this.request = null;
+        this.isLoading = false;
 
         if (this.waitingRequest) {
             this.waitingRequest = false;
             this._loadStakePools();
         }
-        else {
-            this.isLoading = false;
+    }
+
+    protected async _loadObservedPools()
+    {
+        _observedPools = [];
+
+        await this.$store.dispatch('Watchdog/RuntimeStorage/init');
+
+        this.watchdogAvailable = this.$store.state['Watchdog/RuntimeStorage'].isLoggedIn;
+
+        const observations = this.$store.getters['Watchdog/RuntimeStorage/observations'];
+        if (observations?.length > 0) {
+            _observedPools = observations.map(obs => obs.stakePool.onChainId);
         }
+
+        this.observedPoolsLoaded = true;
     }
 
     public onRowClick (stakePoolEntry : StakePoolEntry)
@@ -403,6 +449,12 @@ export default class ListView
             name: 'stakepools_details',
             params: { id: stakePoolEntry.stakePool.onChainId.toString() },
         });
+    }
+
+    public onClearFilters()
+    {
+        this.collectionRequest.clearFilters();
+        this._onCollectionRequestChange();
     }
 
 }
