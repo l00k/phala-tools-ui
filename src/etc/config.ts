@@ -26,7 +26,7 @@ export default {
         },
         watchdog: {
             discord: {
-                serverInviteLink: 'https://discord.gg/rP7Q96ex',
+                serverInviteLink: 'https://discord.gg/GjhffpHGN6',
             }
         }
     }
