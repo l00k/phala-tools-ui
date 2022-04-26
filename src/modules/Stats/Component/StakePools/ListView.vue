@@ -7,6 +7,15 @@
             </div>
         </header>
         <div class="panel-block">
+            <b-notification
+                v-if="isOutdated"
+                type="is-warning"
+            >
+                Stats seems outdated!<br/>
+                Last update: {{ networkState.entryDate | formatDatetime }}<br/>
+            </b-notification>
+
+
             <div class="list-filters mb-6 is-flex is-justify-content-start">
                 <b-field class="mr-2">
                     <b-checkbox-button
@@ -75,6 +84,7 @@
                         :native-value="true"
                         type="is-primary"
                         class="filter-watchdog"
+                        v-tooltip="!watchdogAvailable ? 'You need to login to watchdog first' : ''"
                     >
                         <b-icon
                             :icon="observedPoolsLoaded ? 'tower-observation' : 'circle-notch fa-spin'"
@@ -277,7 +287,9 @@
 </template>
 
 <script lang="ts">
+import { NetworkState } from '#/Stats/Domain/Model/NetworkState';
 import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
+import { NetworkStateService } from '#/Stats/Domain/Service/NetworkStateService';
 import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
 import * as Api from '@inti5/api-frontend';
 import { Annotation as API } from '@inti5/api-frontend';
@@ -287,6 +299,7 @@ import { FilterType } from '#/FrontendCore/Domain';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { Inject } from '@inti5/object-manager';
 import { Watch } from 'vue-property-decorator';
+import moment from 'moment';
 
 
 let _observedPools : number[] = [];
@@ -295,6 +308,9 @@ let _observedPools : number[] = [];
 export default class ListView
     extends BaseComponent
 {
+
+    @API.InjectService()
+    protected _networkStateService : NetworkStateService;
 
     @API.InjectService()
     protected _stakePoolService : StakePoolEntryService;
@@ -359,10 +375,15 @@ export default class ListView
     public watchdogAvailable : boolean = false;
     public observedPoolsLoaded : boolean = false;
 
+    public networkState : NetworkState;
+    public isOutdated : boolean = false;
+
 
     public async mounted ()
     {
+        this._loadNetworkState();
         this._loadObservedPools();
+
         this._onRouteChange();
     }
 
@@ -424,6 +445,14 @@ export default class ListView
             this.waitingRequest = false;
             this._loadStakePools();
         }
+    }
+
+    protected async _loadNetworkState()
+    {
+        this.networkState = await this._networkStateService.getLatestNetworkState();
+
+        const dateThresholdMoment = moment().subtract(7, 'hours');
+        this.isOutdated = moment(this.networkState.entryDate).isBefore(dateThresholdMoment);
     }
 
     protected async _loadObservedPools()
