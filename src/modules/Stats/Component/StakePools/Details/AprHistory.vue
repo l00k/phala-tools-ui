@@ -306,7 +306,8 @@ export default class AprHistory
         }
 
         // get events
-        const markers : LightweightCharts.SeriesMarker<LightweightCharts.Time>[] = [];
+        const markers1 : LightweightCharts.SeriesMarker<LightweightCharts.Time>[] = [];
+        const markers2 : LightweightCharts.SeriesMarker<LightweightCharts.Time>[] = [];
 
         for (const event of this.events) {
             let timestamp = moment(event.blockDate)
@@ -322,7 +323,7 @@ export default class AprHistory
                         mantissa: 0,
                         forceSign: true
                     }) + ')';
-                markers.push({
+                markers1.push({
                     time: <any>timestamp.unix(),
                     size: 2,
                     position: 'aboveBar',
@@ -332,7 +333,7 @@ export default class AprHistory
                 });
             }
             else if (event.type == EventType.Halving) {
-                markers.push({
+                markers2.push({
                     time: <any>timestamp.unix(),
                     size: 2,
                     position: 'belowBar',
@@ -342,7 +343,7 @@ export default class AprHistory
                 });
             }
             else if (event.type == EventType.BadBehavior) {
-                markers.push({
+                markers1.push({
                     time: <any>timestamp.unix(),
                     size: 2,
                     position: 'belowBar',
@@ -353,7 +354,8 @@ export default class AprHistory
             }
         }
 
-        this.requestedCurrentSeries.setMarkers(markers);
+        this.requestedCommissionSeries.setMarkers(markers1);
+        this.requestedCurrentSeries.setMarkers(markers2);
     }
 
 }

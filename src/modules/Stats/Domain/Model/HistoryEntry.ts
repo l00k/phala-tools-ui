@@ -51,6 +51,11 @@ export class HistoryEntry
     
     
     
+    public get stakeUsed () : number
+    {
+        return (this.stakeTotal ?? 0) - (this.stakeFree ?? 0);
+    }
+    
     public get stakeFreePercent () : number
     {
         return this.stakeTotal > 0

@@ -41,29 +41,29 @@
                     </b-checkbox-button>
                 </b-field>
 
-                <b-field class="mr-2">
-                    <b-checkbox-button
-                        v-model="collectionRequest.filters._issues.id.$nin"
-                        :native-value="1"
-                        type="is-primary"
-                        class="filter-exclude-bad-behaviors"
-                    >
-                        <b-icon icon="skull-crossbones"></b-icon>
-                        <span>Exclude bad behaviors</span>
-                    </b-checkbox-button>
-                </b-field>
+<!--                <b-field class="mr-2">-->
+<!--                    <b-checkbox-button-->
+<!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
+<!--                        :native-value="1"-->
+<!--                        type="is-primary"-->
+<!--                        class="filter-exclude-bad-behaviors"-->
+<!--                    >-->
+<!--                        <b-icon icon="skull-crossbones"></b-icon>-->
+<!--                        <span>Exclude bad behaviors</span>-->
+<!--                    </b-checkbox-button>-->
+<!--                </b-field>-->
 
-                <!--                <b-field class="mr-2">-->
-                <!--                    <b-checkbox-button-->
-                <!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
-                <!--                        :native-value="2"-->
-                <!--                        type="is-primary"-->
-                <!--                        class="filter-exclude-slashes"-->
-                <!--                    >-->
-                <!--                        <b-icon icon="skull-crossbones"></b-icon>-->
-                <!--                        <span>Exclude slashed pools</span>-->
-                <!--                    </b-checkbox-button>-->
-                <!--                </b-field>-->
+<!--                <b-field class="mr-2">-->
+<!--                    <b-checkbox-button-->
+<!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
+<!--                        :native-value="2"-->
+<!--                        type="is-primary"-->
+<!--                        class="filter-exclude-slashes"-->
+<!--                    >-->
+<!--                        <b-icon icon="skull-crossbones"></b-icon>-->
+<!--                        <span>Exclude slashed pools</span>-->
+<!--                    </b-checkbox-button>-->
+<!--                </b-field>-->
 
                 <b-field class="mr-2">
                     <b-checkbox-button

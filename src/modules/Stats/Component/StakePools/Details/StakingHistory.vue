@@ -16,7 +16,7 @@
                         <b-tag type="is-light">Capacity</b-tag>
                         <b-tag
                             v-if="stakePoolEntry.lastHistoryEntry.cap"
-                            :style="{ background: colors.cap }"
+                            :style="{ background: colors.cap, color: '#000000' }"
                         >{{ requestedLastHistoryEntry?.cap | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                         <b-tag
                             v-else
@@ -26,6 +26,10 @@
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">Total stake</b-tag>
                         <b-tag :style="{ background: colors.stakeTotal }">{{ requestedLastHistoryEntry?.stakeTotal | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
+                    </b-taglist>
+                    <b-taglist attached class="mr-2">
+                        <b-tag type="is-light">Utilised stake</b-tag>
+                        <b-tag :style="{ background: colors.stakeUsed }">{{ requestedLastHistoryEntry?.stakeUsed | formatCoin({ mantissa: 0 }) }} PHA</b-tag>
                     </b-taglist>
                     <b-taglist attached class="mr-2">
                         <b-tag type="is-light">Free stake</b-tag>
@@ -86,14 +90,16 @@ export default class AprHistory
 
     public requestedHistoryEntries : HistoryEntry[] = [];
     public requestedTotalSeries : LightweightCharts.ISeriesApi<any>;
+    public requestedUsedSeries : LightweightCharts.ISeriesApi<any>;
     public requestedFreeSeries : LightweightCharts.ISeriesApi<any>;
     public requestedReleasingSeries : LightweightCharts.ISeriesApi<any>;
     public requestedCapSeries : LightweightCharts.ISeriesApi<any>;
     public requestedWithdrawalsSeries : LightweightCharts.ISeriesApi<any>;
 
     protected colors = {
-        cap: '#33d778',
+        cap: '#F5E022',
         stakeTotal: '#2ca4df',
+        stakeUsed: '#33d778',
         stakeFree: '#FF6C37',
         stakeReleasing: '#7456fe',
         withdrawals: '#aa0000',
@@ -175,22 +181,27 @@ export default class AprHistory
         });
         this.requestedTotalSeries = this.chart.addAreaSeries({
             lineColor: this.colors.stakeTotal,
-            topColor: Color(this.colors.stakeTotal).alpha(0.6).toString(),
+            topColor: Color(this.colors.stakeTotal).alpha(0.2).toString(),
             bottomColor: Color(this.colors.stakeTotal).alpha(0).toString(),
+        });
+        this.requestedUsedSeries = this.chart.addAreaSeries({
+            lineColor: this.colors.stakeUsed,
+            topColor: Color(this.colors.stakeUsed).alpha(0.5).toString(),
+            bottomColor: Color(this.colors.stakeUsed).alpha(0).toString(),
         });
         this.requestedFreeSeries = this.chart.addAreaSeries({
             lineColor: this.colors.stakeFree,
-            topColor: Color(this.colors.stakeFree).alpha(0.6).toString(),
+            topColor: Color(this.colors.stakeFree).alpha(0.2).toString(),
             bottomColor: Color(this.colors.stakeFree).alpha(0).toString(),
         });
         this.requestedReleasingSeries = this.chart.addAreaSeries({
             lineColor: this.colors.stakeReleasing,
-            topColor: Color(this.colors.stakeReleasing).alpha(0.6).toString(),
+            topColor: Color(this.colors.stakeReleasing).alpha(0.2).toString(),
             bottomColor: Color(this.colors.stakeReleasing).alpha(0).toString(),
         });
         this.requestedWithdrawalsSeries = this.chart.addAreaSeries({
             lineColor: this.colors.withdrawals,
-            topColor: Color(this.colors.withdrawals).alpha(0.6).toString(),
+            topColor: Color(this.colors.withdrawals).alpha(0.2).toString(),
             bottomColor: Color(this.colors.withdrawals).alpha(0).toString(),
         });
 
@@ -215,6 +226,14 @@ export default class AprHistory
                     value: entry.stakeTotal
                 }));
             this.requestedTotalSeries.setData(data);
+        }
+        {
+            const data = this.requestedHistoryEntries
+                .map(entry => ({
+                    time: entry.entryDate.getTime() / 1000,
+                    value: entry.stakeUsed
+                }));
+            this.requestedUsedSeries.setData(data);
         }
         {
             const data = this.requestedHistoryEntries
