@@ -61,7 +61,7 @@ import { HistoryEntryService } from '#/Stats/Domain/Service/HistoryEntryService'
 import * as Utility from '#/App/Utility';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 import { Inject } from '@inti5/object-manager';
 import Color from 'color';
 import * as LightweightCharts from 'lightweight-charts';

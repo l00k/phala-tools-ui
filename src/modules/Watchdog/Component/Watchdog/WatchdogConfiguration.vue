@@ -129,7 +129,7 @@ import { User } from '#/Watchdog/Domain/Model/User';
 import { ObservationType } from '#/Watchdog/Domain/Type/ObservationType';
 import { ObservationMode } from '#/Watchdog/Domain/Type/ObservationMode';
 import * as Api from '@inti5/api-frontend';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 import startCase from 'lodash/startCase';
 import { Ref } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';

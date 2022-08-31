@@ -55,7 +55,7 @@ import { Component } from '#/FrontendCore/Vue/Annotations';
 import { User } from '#/Watchdog/Domain/Model/User';
 import { Config } from '@inti5/configuration';
 import * as Api from '@inti5/api-frontend';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 import { namespace } from 'vuex-class';
 import { MessagingChannel } from '#/Watchdog/Domain/Model/MessagingChannel';
 

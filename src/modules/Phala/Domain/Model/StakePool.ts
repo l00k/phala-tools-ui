@@ -1,5 +1,6 @@
 import { Account } from '#/Phala/Domain/Model/Account';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
+import { Type } from '@inti5/graph-typing';
 import * as Trans from 'class-transformer';
 
 
@@ -15,7 +16,8 @@ export class StakePool
     @API.Property()
     public onChainId : number;
     
-    @API.Property(() => Account)
+    @API.Property()
+    @Type(() => Account)
     public owner : Account;
     
     

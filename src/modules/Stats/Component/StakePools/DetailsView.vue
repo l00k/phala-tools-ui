@@ -20,7 +20,7 @@ import BasicInfo from '#/Stats/Component/StakePools/Details/BasicInfo.vue';
 import StakingHistory from '#/Stats/Component/StakePools/Details/StakingHistory.vue';
 import { StakePoolEntry } from '#/Stats/Domain/Model/StakePoolEntry';
 import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 import { Prop, Watch } from 'vue-property-decorator';
 
 

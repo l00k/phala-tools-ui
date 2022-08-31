@@ -13,7 +13,7 @@ import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component, Route } from '#/FrontendCore/Vue/Annotations';
 import * as VueRouter from 'vue-router';
 import * as Api from '@inti5/api-frontend';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 
 
 @Route('/watchdog/login/discord', 'watchdog_logged_discord')

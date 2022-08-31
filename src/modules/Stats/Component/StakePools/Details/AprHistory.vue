@@ -55,7 +55,7 @@ import { EventService } from '#/Stats/Domain/Service/EventService';
 import { HistoryEntryService } from '#/Stats/Domain/Service/HistoryEntryService';
 import * as Utility from '#/App/Utility';
 import { StakePoolEntryService } from '#/Stats/Domain/Service/StakePoolEntryService';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
 import * as Api from '@inti5/api-frontend';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';

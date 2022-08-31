@@ -1,4 +1,6 @@
-import { Annotation as API } from '@inti5/api-frontend';
+import { Account } from '#/Phala/Domain/Model';
+import { API } from '@inti5/api-frontend';
+import { Type } from '@inti5/graph-typing';
 import * as Trans from 'class-transformer';
 
 
@@ -71,13 +73,15 @@ export class Event<T extends AbstractEventData = any>
     @API.Property()
     public blockDate : Date;
     
-    @API.Property(() => String)
+    @API.Property()
+    @Type(() => String)
     public type : EventType = null;
     
     @API.Property()
     public amount : number = 0;
     
-    @API.Property(() => EventAdditionalData)
+    @API.Property()
+    @Type(() => EventAdditionalData)
     public additionalData : T = <any>{};
     
     

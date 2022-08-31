@@ -1,7 +1,8 @@
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
 import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { Issue } from '#/Stats/Domain/Model/Issue';
-import { Annotation as API } from '@inti5/api-frontend';
+import { API } from '@inti5/api-frontend';
+import { Type } from '@inti5/graph-typing';
 import * as Trans from 'class-transformer';
 
 
@@ -16,16 +17,19 @@ export class StakePoolEntry
     @API.Id()
     public id : number;
     
-    @API.Property(() => StakePool)
+    @API.Property()
+    @Type(() => StakePool)
     public stakePool : StakePool;
     
     @API.Property()
     public special : string;
     
-    @API.Property(() => HistoryEntry)
+    @API.Property()
+    @Type(() => HistoryEntry)
     public lastHistoryEntry : HistoryEntry;
     
-    @API.Property(() => [ Issue ])
+    @API.Property()
+    @Type(() => [ Issue ])
     public issues : Issue[];
     
     
