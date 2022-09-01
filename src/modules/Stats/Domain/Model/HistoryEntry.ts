@@ -1,4 +1,6 @@
+import { Snapshot } from '#/Stats/Domain/Model/Snapshot';
 import { API } from '@inti5/api-frontend';
+import { Type } from '@inti5/graph-typing';
 import * as Trans from 'class-transformer';
 
 
@@ -10,10 +12,9 @@ export class HistoryEntry
     public id : number;
     
     @API.Property()
-    public entryNonce : number;
+    @Type(() => Snapshot)
+    public snapshot : Snapshot;
     
-    @API.Property()
-    public entryDate : Date;
     
     @API.Property()
     public commission : number;

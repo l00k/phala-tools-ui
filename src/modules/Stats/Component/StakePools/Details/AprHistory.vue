@@ -265,7 +265,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(historyEntry => ({
-                    time: historyEntry.entryDate.getTime() / 1000,
+                    time: historyEntry.snapshot.date.getTime() / 1000,
                     value: historyEntry.avgApr
                 }));
             this.requestedAvgSeries.setData(data);
@@ -273,7 +273,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(historyEntry => ({
-                    time: historyEntry.entryDate.getTime() / 1000,
+                    time: historyEntry.snapshot.date.getTime() / 1000,
                     value: historyEntry.currentApr
                 }));
             this.requestedCurrentSeries.setData(data);
@@ -281,7 +281,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(historyEntry => ({
-                    time: historyEntry.entryDate.getTime() / 1000,
+                    time: historyEntry.snapshot.date.getTime() / 1000,
                     value: historyEntry.commission
                 }));
             this.requestedCommissionSeries.setData(data);
@@ -290,7 +290,7 @@ export default class AprHistory
         {
             const data = this.specialAllHistoryEntries
                 .map(historyEntry => ({
-                    time: historyEntry.entryDate.getTime() / 1000,
+                    time: historyEntry.snapshot.date.getTime() / 1000,
                     value: historyEntry.avgApr
                 }));
             this.specialAllSeries.setData(data);
@@ -299,7 +299,7 @@ export default class AprHistory
         {
             const data = this.specialTopHistoryEntries
                 .map(historyEntry => ({
-                    time: historyEntry.entryDate.getTime() / 1000,
+                    time: historyEntry.snapshot.date.getTime() / 1000,
                     value: historyEntry.avgApr
                 }));
             this.specialTopSeries.setData(data);
@@ -310,7 +310,7 @@ export default class AprHistory
         const markers2 : LightweightCharts.SeriesMarker<LightweightCharts.Time>[] = [];
 
         for (const event of this.events) {
-            let timestamp = moment(event.blockDate)
+            let timestamp = moment.utc(event.blockDate)
                 .minute(0)
                 .second(0);
             timestamp = timestamp.hour(Math.floor(timestamp.hour()));

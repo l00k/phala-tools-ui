@@ -33,7 +33,7 @@ function generateUniqueBuildInfo ()
 {
     const date = new Date();
     const random = 100 + Math.round(Math.random() * 899);
-    return 'v' + moment().format('YYYY.MM.DD.HHmmss') + '-' + random;
+    return 'v' + moment.utc().format('YYYY.MM.DD.HHmmss') + '-' + random;
 }
 
 const env = process.env.NODE_ENV || 'production';

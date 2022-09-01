@@ -214,7 +214,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.cap
                 }));
             this.requestedCapSeries.setData(data);
@@ -222,7 +222,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.stakeTotal
                 }));
             this.requestedTotalSeries.setData(data);
@@ -230,7 +230,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.stakeUsed
                 }));
             this.requestedUsedSeries.setData(data);
@@ -238,7 +238,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.stakeFree
                 }));
             this.requestedFreeSeries.setData(data);
@@ -246,7 +246,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.stakeReleasing
                 }));
             this.requestedReleasingSeries.setData(data);
@@ -254,7 +254,7 @@ export default class AprHistory
         {
             const data = this.requestedHistoryEntries
                 .map(entry => ({
-                    time: entry.entryDate.getTime() / 1000,
+                    time: entry.snapshot.date.getTime() / 1000,
                     value: entry.withdrawals
                 }));
             this.requestedWithdrawalsSeries.setData(data);

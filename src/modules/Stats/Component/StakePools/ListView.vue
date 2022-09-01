@@ -12,7 +12,7 @@
                 type="is-warning"
             >
                 Stats seems outdated!<br/>
-                Last update: {{ networkState.entryDate | formatDatetime }}<br/>
+                Last update: {{ networkState.snapshot.date | formatDatetime }}<br/>
             </b-notification>
 
 
@@ -272,6 +272,7 @@
                     >
                         <b-tag
                             v-for="issue in stakePoolEntry.issues"
+                            v-if="issue?.id"
                             :key="issue.id"
                             size="is-small"
                             :style="{ backgroundColor: issue.color }"
@@ -451,8 +452,8 @@ export default class ListView
     {
         this.networkState = await this._networkStateService.getLatestNetworkState();
 
-        const dateThresholdMoment = moment().subtract(7, 'hours');
-        this.isOutdated = moment(this.networkState.entryDate).isBefore(dateThresholdMoment);
+        const dateThresholdMoment = moment.utc().subtract(7, 'hours');
+        this.isOutdated = moment.utc(this.networkState.snapshot.date).isBefore(dateThresholdMoment);
     }
 
     protected async _loadObservedPools()
