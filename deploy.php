@@ -24,12 +24,23 @@ set('copy_dirs', [
 ]);
 
 
+host('phala-old')
+    ->hostname('ovh-server-old')
+    ->user('ubuntu')
+    ->set('app_variant', 'phala')
+    ->set('deploy_path', '/var/www/phala.100k.dev');
+host('khala-old')
+    ->hostname('ovh-server-old')
+    ->user('ubuntu')
+    ->set('app_variant', 'khala')
+    ->set('deploy_path', '/var/www/khala.100k.dev');
+
+
 host('phala')
     ->hostname('ovh-server')
     ->user('ubuntu')
     ->set('app_variant', 'phala')
     ->set('deploy_path', '/var/www/phala.100k.dev');
-
 host('khala')
     ->hostname('ovh-server')
     ->user('ubuntu')

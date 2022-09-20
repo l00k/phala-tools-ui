@@ -452,7 +452,7 @@ export default class ListView
     {
         this.networkState = await this._networkStateService.getLatestNetworkState();
 
-        const dateThresholdMoment = moment.utc().subtract(7, 'hours');
+        const dateThresholdMoment = moment.utc().subtract(48, 'hours');
         this.isOutdated = moment.utc(this.networkState.snapshot.date).isBefore(dateThresholdMoment);
     }
 
