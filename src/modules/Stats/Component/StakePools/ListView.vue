@@ -41,17 +41,17 @@
                     </b-checkbox-button>
                 </b-field>
 
-                <b-field class="mr-2">
-                    <b-checkbox-button
-                        v-model="collectionRequest.filters._issues.id.$nin"
-                        :native-value="1"
-                        type="is-primary"
-                        class="filter-exclude-bad-behaviors"
-                    >
-                        <b-icon icon="skull-crossbones"></b-icon>
-                        <span>Exclude bad behaviors</span>
-                    </b-checkbox-button>
-                </b-field>
+<!--                <b-field class="mr-2">-->
+<!--                    <b-checkbox-button-->
+<!--                        v-model="collectionRequest.filters._issues.id.$nin"-->
+<!--                        :native-value="1"-->
+<!--                        type="is-primary"-->
+<!--                        class="filter-exclude-bad-behaviors"-->
+<!--                    >-->
+<!--                        <b-icon icon="skull-crossbones"></b-icon>-->
+<!--                        <span>Exclude bad behaviors</span>-->
+<!--                    </b-checkbox-button>-->
+<!--                </b-field>-->
 
 <!--                <b-field class="mr-2">-->
 <!--                    <b-checkbox-button-->
@@ -112,8 +112,8 @@
                     <ui-table-column
                         label="ID"
                         field="stakePool.onChainId"
-                        :numeric="true"
                         :sortable="true"
+                        :filter-type="FilterType.Text"
                         :filter="collectionRequest.filters.stakePool.onChainId"
                     >
                         #{{ stakePoolEntry.stakePool.onChainId }}
@@ -123,7 +123,7 @@
                         label="Owner"
                         field="stakePool.owner.identityVerified"
                         :sortable="true"
-                        :filter="collectionRequest.filters._owner"
+                        :filter="collectionRequest.filters.stakePool.owner.identity"
                     >
                         <div class="has-font-size-sm">
                             <a
@@ -324,6 +324,7 @@ export default class ListView
             stakePool: {
                 onChainId: {},
                 owner: {
+                    identity: {},
                     identityVerified: {},
                 },
             },
@@ -332,11 +333,6 @@ export default class ListView
                 avgApr: {},
                 stakeTotal: {},
                 stakeRemaining: {},
-            },
-            // special filters
-            _owner: {},
-            _issues: {
-                id: { $nin: [] }
             },
 
             // custom filters
@@ -358,7 +354,7 @@ export default class ListView
         },
         pagination: StakePoolEntryService.getDefaultPagination(),
         modifiers: {
-            distinctOwners: false
+            distinctOwners: false,
         }
     });
 
