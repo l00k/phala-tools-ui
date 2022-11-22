@@ -135,7 +135,7 @@ export default class Calculator
 
         this.context.tokenomicParams = cloneDeep(this.tokenomicParameters);
         this.context.blockTime = this.blockTime;
-        this.context.miningEra = this.miningEra;
+        this.context.miningEra = 0; // this.miningEra;
 
         this.isReady = true;
     }

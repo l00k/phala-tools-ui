@@ -67,6 +67,7 @@ export default class NetworkData
 
         const networkState = await this._networkStateService.getLatestNetworkState();
         this.context.totalShares = networkState.totalShares;
+        this.context.phaPrice = networkState.phaPrice;
 
         this.readyStage = ReadyStage.Ready;
 

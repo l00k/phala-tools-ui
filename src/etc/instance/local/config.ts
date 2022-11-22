@@ -10,8 +10,8 @@ export default {
         phala: {
             api: {
                 urls: {
-                    WS: 'ws://localhost:19944/ws',
-                    HTTP: 'http://localhost:19933/',
+                    WS: 'ws://localhost:21944/ws',
+                    HTTP: 'http://localhost:21933/',
                 }
             },
         },

@@ -12,31 +12,34 @@ export class Context
     
     public totalShares : number = 0;
     
-    public cpuScore : number = 100;
+    public cpuScore : number = 500;
     
     public cpuCores : number = null;
     
     public confidenceLevel : number = 1;
     
-    public devicePowerConsumption : number = 0;
+    public devicePowerConsumption : number = 20;
     
-    public deviceCost : number = 0;
+    public deviceCost : number = 300;
     
     public deviceAmortisation : number = 2;
     
     public otherCosts : number = 0;
     
-    public phaPrice : number = 0.08;
+    public phaPrice : number = 0.1;
     
     public electricityCost : number = 0.25;
     
-    public commissionPercent : number = 50;
+    public commissionPercent : number = 30;
     
     public stakePersonal : number = 0;
     
-    public stakeDelegators : number = 19800;
+    public stakeDelegators : number = 10000;
     
     public stakeFree : number = 0;
+    
+    public forceWorkerShare : number = 0;
+    public workerShare : number = 0;
     
     
     public get confidenceScore () : number
@@ -122,15 +125,6 @@ export class Context
         return this.workerF * (this.stakeTotalDevice + this.workerCost);
     }
     
-    public get workerShare () : number
-    {
-        return NetworkService.calculateWorkerShare(
-            this.workerInitialV,
-            this.confidenceLevel,
-            this.cpuScore
-        );
-    }
-    
     public get rewardsDaily () : number
     {
         const budgetPerBlock = this.tokenomicParams.budgetPerBlock * this.rewardsFractionInEra;
@@ -148,6 +142,8 @@ export class Context
     
     public get poolApr () : number
     {
+        console.log(this.workerShare)
+    
         if (!this.stakeTotalPool) {
             return 0;
         }

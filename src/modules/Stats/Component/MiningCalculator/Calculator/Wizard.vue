@@ -15,9 +15,17 @@
                 ref="validator"
             >
                 <div class="box" data-tour-id="step1">
-                    <h2 class="title is-6">Tokenomics params</h2>
+                    <h2
+                        class="title is-6"
+                        @click="togglePanel('tokenomicsParams')"
+                    >Tokenomics params</h2>
 
-                    <div class="is-flex">
+                    <div
+                        class="is-flex"
+                        :style="{
+                            display: panelVisiblity.tokenomicsParams ? 'block' : 'none'
+                        }"
+                    >
                         <UiValidatedField
                             name="Budget per block"
                             :rules="{ required: true, numeric: true, min_value: 0 }"
@@ -296,13 +304,12 @@
                         </b-field>
 
                         <b-field
-                            label="Worker share"
+                            label="Further worker share"
                             label-position="on-border"
                             class="mr-2"
                         >
                             <b-input
-                                :value="context.workerShare"
-                                :disabled="true"
+                                v-model.number="context.forceWorkerShare"
                             />
                         </b-field>
 
@@ -366,7 +373,7 @@
                             class="mr-2"
                         >
                             <b-input
-                                :value="(context.ownerFraction * 100).toFixed(4)"
+                                :value="(context.ownerFraction * 100).toFixed(5)"
                                 :disabled="true"
                             />
                         </b-field>
@@ -428,7 +435,7 @@
                         </UiValidatedField>
 
                         <UiValidatedField
-                            name="Mining era (number of halvings)"
+                            name="Further halvings"
                             :rules="{ required: true, numeric: true, min_value: 0 }"
                             class="mr-2"
                         >
@@ -580,6 +587,10 @@ export default class Wizard
     public resultsDaily : ResultInPeriod = new ResultInPeriod();
     public resultsMonthly : ResultInPeriod = new ResultInPeriod();
 
+    public panelVisiblity : Record<string, boolean> = {
+        tokenomicsParams: false
+    };
+
 
     public mounted()
     {
@@ -598,8 +609,20 @@ export default class Wizard
     }
 
     @Watch('context', { deep: true })
-    public calculateResults ()
+    public calculateResults (after : Context, before : Context)
     {
+        if (this.context.forceWorkerShare) {
+            this.context.workerShare = this.context.forceWorkerShare;
+        }
+        else {
+            // recalculate shares
+            this.context.workerShare = NetworkService.calculateWorkerShare(
+                this.context.workerInitialV,
+                this.context.confidenceLevel,
+                this.context.cpuScore
+            );
+        }
+
         this.resultsDaily.rewards = this.context.ownerRewardsDaily;
         this.resultsDaily.electricityCost = this.context.devicePowerConsumption * 24 / 1000 * this.context.electricityCost;
         this.resultsDaily.deviceAmortisation = this.context.deviceCost / (this.context.deviceAmortisation * 365);
@@ -613,6 +636,11 @@ export default class Wizard
         for (const [prop, value] of Object.entries(this.resultsDaily)) {
             this.resultsMonthly[prop] = value * 30;
         }
+    }
+
+    public togglePanel(panelName)
+    {
+        this.$set(this.panelVisiblity, panelName, !this.panelVisiblity[panelName]);
     }
 
 }
