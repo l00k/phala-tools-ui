@@ -1,6 +1,5 @@
 import { Account } from '#/Phala/Domain/Model/Account';
 import { StakePool } from '#/Phala/Domain/Model/StakePool';
-import { HistoryEntry } from '#/Stats/Domain/Model/HistoryEntry';
 import { ObservationConfiguration } from '#/Watchdog/Domain/Model/Observation/ObservationConfiguration';
 import { ObservationNotifications } from '#/Watchdog/Domain/Model/Observation/ObservationNotifications';
 import { ObservationMode } from '#/Watchdog/Domain/Type/ObservationMode';
