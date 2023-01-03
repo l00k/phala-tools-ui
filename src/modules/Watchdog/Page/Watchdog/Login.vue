@@ -47,7 +47,9 @@ export default class WatchdogLoginPage
             await this._tryToLoginUsingTelegram();
         }
 
-        document.location.href = '/watchdog';
+        setTimeout(() => {
+            document.location.href = '/watchdog';
+        }, 2500);
     }
 
     protected async _tryToLoginUsingDiscord()

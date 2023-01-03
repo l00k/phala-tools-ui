@@ -199,57 +199,6 @@
                         </td>
                     </tr>
 
-                    <!-- REWARDS DROP -->
-                    <tr
-                        class="config-row"
-                    >
-                        <td>
-                            <UiValidatedField
-                                :field="`config.${ObservationType.RewardsDrop}.active`"
-                                name="Active"
-                            >
-                                <b-switch
-                                    v-model="observation.config[ObservationType.RewardsDrop].active"
-                                />
-                            </UiValidatedField>
-                        </td>
-                        <td>
-                            Rewards decreased
-                        </td>
-                        <td>
-                            <UiValidatedField
-                                :field="`config.${ObservationType.RewardsDrop}.frequency`"
-                                name="Frequency"
-                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
-                            >
-                                <b-select
-                                    v-model.number="observation.config[ObservationType.RewardsDrop].frequency"
-                                >
-                                    <option
-                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
-                                        :key="value"
-                                        :value="value"
-                                    >{{ label }}</option>
-                                </b-select>
-                            </UiValidatedField>
-
-                        </td>
-                        <td>
-                            <UiValidatedField
-                                :field="`config.${ObservationType.RewardsDrop}.threshold`"
-                                name="Threshold"
-                                :rules="{ required: true, integer: true, min_value: 0, max_value: 100 }"
-                            >
-                                <b-input
-                                    v-model.number="observation.config[ObservationType.RewardsDrop].threshold"
-                                />
-                                <p class="control">
-                                    <span class="button is-disabled">%</span>
-                                </p>
-                            </UiValidatedField>
-                        </td>
-                    </tr>
-
                     <!-- POOL COMMISSION CHANGE -->
                     <tr
                         v-if="observation.mode == ObservationMode.Delegator"
@@ -350,45 +299,6 @@
                                     <span class="button is-disabled">workers</span>
                                 </p>
                             </UiValidatedField>
-                        </td>
-                    </tr>
-
-                    <!-- NODE STUCK -->
-                    <tr
-                        v-if="observation.mode == ObservationMode.Owner"
-                        class="config-row"
-                    >
-                        <td>
-                            <UiValidatedField
-                                :field="`config.${ObservationType.StuckedNode}.active`"
-                                name="Active"
-                            >
-                                <b-switch
-                                    v-model="observation.config[ObservationType.StuckedNode].active"
-                                />
-                            </UiValidatedField>
-                        </td>
-                        <td>
-                            Node stuck<br/>
-                            <span class="has-font-size-sm">(not processing blocks)</span>
-                        </td>
-                        <td>
-                            <UiValidatedField
-                                :field="`config.${ObservationType.StuckedNode}.frequency`"
-                                name="Frequency"
-                                :rules="{ required: true, oneOf: Object.keys(frequencyOptions) }"
-                            >
-                                <b-select
-                                    v-model.number="observation.config[ObservationType.StuckedNode].frequency"
-                                >
-                                    <option
-                                        v-for="([value, label]) in Object.entries(frequencyOptions)"
-                                        :key="value"
-                                        :value="value"
-                                    >{{ label }}</option>
-                                </b-select>
-                            </UiValidatedField>
-
                         </td>
                     </tr>
 

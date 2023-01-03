@@ -12,7 +12,7 @@ export default class IndexPage
     public async mounted ()
     {
         this.$router.push({
-            name: 'stakepools_list'
+            name: 'watchdog'
         });
     }
 

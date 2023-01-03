@@ -74,23 +74,6 @@ export class ObservationConfiguration
         }
     })
     @Type(() => NotificationConfig)
-    public [ObservationType.RewardsDrop] : NotificationConfig = new NotificationConfig({
-        active: true,
-        frequency: 86400,
-        threshold: 25,
-    });
-    
-    @API.Property()
-    @Assert({ presence: true })
-    @AssertObject({
-        threshold: {
-            numericality: {
-                greaterThan: 0,
-                lessThanOrEqualTo: 100,
-            }
-        }
-    })
-    @Type(() => NotificationConfig)
     public [ObservationType.PoolCommissionChange] : NotificationConfig = new NotificationConfig({
         active: true,
         frequency: 86400,
@@ -112,14 +95,6 @@ export class ObservationConfiguration
         active: true,
         frequency: 3600,
         threshold: 1,
-    });
-    
-    @API.Property()
-    @Assert({ presence: true })
-    @Type(() => NotificationConfig)
-    public [ObservationType.StuckedNode] : NotificationConfig = new NotificationConfig({
-        active: true,
-        frequency: 3600,
     });
     
     @API.Property()

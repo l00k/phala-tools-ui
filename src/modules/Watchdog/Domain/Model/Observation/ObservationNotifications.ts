@@ -11,17 +11,11 @@ export class ObservationNotifications
     public readonly [ObservationType.ClaimableRewards] : number;
     
     @API.Property()
-    public readonly [ObservationType.RewardsDrop] : number;
-    
-    @API.Property()
     public readonly [ObservationType.PoolCommissionChange] : number;
     
     
     @API.Property()
     public readonly [ObservationType.UnresponsiveWorker] : number;
-    
-    @API.Property()
-    public readonly [ObservationType.StuckedNode] : number;
     
     @API.Property()
     public readonly [ObservationType.FreePoolFunds] : number;
