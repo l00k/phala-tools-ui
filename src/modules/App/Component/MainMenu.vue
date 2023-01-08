@@ -10,6 +10,22 @@
         </div>
 
         <ul>
+<!--            <router-link-->
+<!--                to="/stakepools"-->
+<!--                custom-->
+<!--                v-slot="{ navigate, isActive }"-->
+<!--            >-->
+<!--                <li-->
+<!--                    :class="{ 'is-active': isActive }"-->
+<!--                    @click="navigate"-->
+<!--                >-->
+<!--                    <a>-->
+<!--                        <span class="icon is-small"><i class="fas fa-users" aria-hidden="true"></i></span>-->
+<!--                        <span>StakePools</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </router-link>-->
+
             <router-link
                 to="/mining-calc"
                 exact custom
