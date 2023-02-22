@@ -14,6 +14,7 @@ import { Component, Route } from '#/FrontendCore/Vue/Annotations';
 import * as VueRouter from 'vue-router';
 import * as Api from '@inti5/api-frontend';
 import { API } from '@inti5/api-frontend';
+import cloneDeep from 'lodash/cloneDeep';
 
 
 @Route('/watchdog/login/discord', 'watchdog_logged_discord')
@@ -86,9 +87,13 @@ export default class WatchdogLoginPage
             return;
         }
 
+        const inputData : any = cloneDeep(this.$route.query);
+        inputData.id = Number(inputData.id);
+        inputData.authDate = Number(inputData.authDate);
+
         const { status, data } = await this._apiClient.post(
             '/login/telegram',
-            this.$route.query
+            inputData
         );
         if (status !== 200 || !data) {
             this.$buefy.toast.open({
