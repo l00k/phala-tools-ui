@@ -2,6 +2,7 @@ import { NetworkState } from '#/Stats/Domain/Model/NetworkState';
 import * as Api from '@inti5/api-frontend';
 import { Configuration } from '@inti5/configuration';
 import { ObjectManager } from '@inti5/object-manager';
+import { Exception } from '@inti5/utils/Exception';
 import axios from 'axios';
 
 
@@ -20,7 +21,7 @@ export class NetworkStateService
     public async getLatestNetworkState () : Promise<NetworkState>
     {
         const configuration = ObjectManager.getSingleton().getInstance(Configuration);
-        const subQueryApiUrl = configuration.get('modules.phala.subQueryApiUrl');
+        const subQueryApiUrl : any = configuration.get('modules.phala.subQueryApiUrl');
     
         const networkState = new NetworkState({
             blockTime: 12,
@@ -41,10 +42,15 @@ export class NetworkStateService
                 }
             );
             
-            if (status == 200) {
-                networkState.blockTime = data.data.globalStateById.averageBlockTime / 1e3;
-                networkState.totalShares = data.data.globalStateById.idleWorkerShares;
+            if (status != 200) {
+                throw new Exception(
+                    'Could not fetch network data',
+                    1684461587185
+                );
             }
+            
+            networkState.blockTime = data.data.globalStateById.averageBlockTime / 1e3;
+            networkState.totalShares = data.data.globalStateById.idleWorkerShares;
         }
         
         {
@@ -55,9 +61,14 @@ export class NetworkStateService
                 }
             );
             
-            if (status == 200) {
-                networkState.phaPrice = data.pha.usd;
+            if (status != 200) {
+                throw new Exception(
+                    'Could not fetch coin price',
+                    1684461595301
+                );
             }
+            
+            networkState.phaPrice = data.pha.usd;
         }
         
         return networkState;
