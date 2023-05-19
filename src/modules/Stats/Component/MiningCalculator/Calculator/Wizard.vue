@@ -32,7 +32,7 @@
                             class="mb-4 mr-2"
                         >
                             <b-input
-                                v-model.number="context.tokenomicParams.budgetPerBlock"
+                                v-model.number="context.budgetPerBlock"
                             />
                         </UiValidatedField>
 

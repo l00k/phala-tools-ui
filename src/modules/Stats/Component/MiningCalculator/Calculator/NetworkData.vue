@@ -21,12 +21,14 @@
 </template>
 
 <script lang="ts">
+import { KhalaTypes } from '#/Phala';
 import { Context } from '#/Stats/Component/MiningCalculator/Domain/Context';
 import { NetworkStateService } from '#/Stats/Domain/Service/NetworkStateService';
 import * as Phala from '#/Phala';
 import BaseComponent from '#/FrontendCore/Component/BaseComponent.vue';
 import { Component } from '#/FrontendCore/Vue/Annotations';
 import { InjectService } from '@inti5/api-frontend/Annotation';
+import cloneDeep from 'lodash/cloneDeep';
 import { Prop } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 
@@ -37,6 +39,8 @@ enum ReadyStage
     NodeConnnecting,
     Ready,
 }
+
+const RuntimeStorage = namespace('MiningCalculator/RuntimeStorage');
 
 
 @Component({
@@ -55,6 +59,9 @@ export default class NetworkData
     @Prop()
     public context : Context;
 
+    @RuntimeStorage.State('tokenomicParameters')
+    public tokenomicParameters : typeof KhalaTypes.TokenomicParameters;
+
     public readyStage : ReadyStage = ReadyStage.Init;
 
 
@@ -67,7 +74,10 @@ export default class NetworkData
 
         const networkState = await this._networkStateService.getLatestNetworkState();
 
+        this.context.tokenomicParams = cloneDeep(this.tokenomicParameters);
+        this.context.miningEra = 0;
         this.context.blockTime = networkState.blockTime;
+        this.context.budgetPerBlock = networkState.budgetPerBlock;
         this.context.totalShares = networkState.totalShares;
         this.context.phaPrice = networkState.phaPrice;
 

@@ -16,6 +16,9 @@ export class NetworkState
     public snapshot : Snapshot;
     
     @API.Property()
+    public budgetPerBlock : number = 0;
+    
+    @API.Property()
     public totalShares : number = 0;
     
     @API.Property()

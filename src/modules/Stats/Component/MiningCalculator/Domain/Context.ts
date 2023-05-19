@@ -6,6 +6,8 @@ export class Context
     
     public tokenomicParams : typeof KhalaTypes.TokenomicParameters;
     
+    public budgetPerBlock : number = 0;
+    
     public miningEra : number = 0;
     
     public blockTime : number = 12;
@@ -127,7 +129,7 @@ export class Context
     
     public get rewardsDaily () : number
     {
-        const budgetPerBlock = this.tokenomicParams.budgetPerBlock * this.rewardsFractionInEra;
+        const budgetPerBlock = this.budgetPerBlock * this.rewardsFractionInEra;
         const workerRewards = this.workerShare / this.totalShares * budgetPerBlock;
 
         return workerRewards

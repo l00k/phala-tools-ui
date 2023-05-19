@@ -31,7 +31,6 @@ import { namespace } from 'vuex-class';
 
 
 const ClientStore = namespace('App/Client');
-const RuntimeStorage = namespace('MiningCalculator/RuntimeStorage');
 
 
 @Component({
@@ -47,15 +46,6 @@ export default class Calculator
     public isReady : boolean = false;
 
     public context : Context = new Context();
-
-    @RuntimeStorage.State('tokenomicParameters')
-    public tokenomicParameters : typeof KhalaTypes.TokenomicParameters;
-
-    @RuntimeStorage.State('blockTime')
-    public blockTime : number;
-
-    @RuntimeStorage.State('miningEra')
-    public miningEra : number;
 
 
     @ClientStore.State('finishedTours')
@@ -132,9 +122,6 @@ export default class Calculator
     public async mounted ()
     {
         await this.$store.dispatch('MiningCalculator/RuntimeStorage/init');
-
-        this.context.tokenomicParams = cloneDeep(this.tokenomicParameters);
-        this.context.miningEra = 0; // this.miningEra;
 
         this.isReady = true;
     }

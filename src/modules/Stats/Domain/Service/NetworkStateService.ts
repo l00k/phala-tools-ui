@@ -20,11 +20,12 @@ export class NetworkStateService
     
     public async getLatestNetworkState () : Promise<NetworkState>
     {
-        const configuration = ObjectManager.getSingleton().getInstance(Configuration);
+        const configuration = Configuration.getSingleton();
         const subQueryApiUrl : any = configuration.get('modules.phala.subQueryApiUrl');
     
         const networkState = new NetworkState({
             blockTime: 12,
+            budgetPerBlock: 1,
             totalShares: 1e12,
             phaPrice: 0.1,
         });
@@ -33,7 +34,7 @@ export class NetworkStateService
             const { status, data } = await axios.post(
                 subQueryApiUrl,
                 {
-                    query: 'query GlobalState { globalStateById(id: "0") { averageBlockTime idleWorkerShares } }',
+                    query: 'query GlobalState { globalStateById(id: "0") { averageBlockTime budgetPerBlock idleWorkerShares } }',
                     variables: {},
                     operationName: 'GlobalState'
                 },
@@ -50,6 +51,7 @@ export class NetworkStateService
             }
             
             networkState.blockTime = data.data.globalStateById.averageBlockTime / 1e3;
+            networkState.budgetPerBlock = data.data.globalStateById.budgetPerBlock;
             networkState.totalShares = data.data.globalStateById.idleWorkerShares;
         }
         

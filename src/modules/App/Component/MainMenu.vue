@@ -130,8 +130,7 @@ export default class MainMenu
 
     public changeApp(app : Network)
     {
-        const url = 'https://' + app + '.100k.dev/';
-        location.href = url;
+        location.href = location.href.replace(ndow.appData.appVariant, app);
     }
 
 }
