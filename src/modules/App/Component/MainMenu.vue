@@ -130,7 +130,7 @@ export default class MainMenu
 
     public changeApp(app : Network)
     {
-        location.href = location.href.replace(ndow.appData.appVariant, app);
+        location.href = location.href.replace(window.appData.appVariant, app);
     }
 
 }
