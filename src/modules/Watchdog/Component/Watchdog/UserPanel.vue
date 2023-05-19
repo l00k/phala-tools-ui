@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li>
-                    <a @click="doLogout">
+                    <a href="#logout" @click.prevent="doLogout">
                         <span>Logout</span>
                     </a>
                 </li>
@@ -82,8 +82,12 @@ export default class UserPanel
 
     public doLogout()
     {
-        this._apiClient.clearTokens();
-        location.reload();
+        try {
+            this._apiClient.clearTokens();
+        }
+        catch (e) {}
+
+        location.href = location.href;
     }
 
 }
