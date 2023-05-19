@@ -2,15 +2,9 @@
     <div id="app">
         <MainMenu />
 
-        <keep-alive
-            v-if="!isPhala"
-        >
+        <keep-alive>
             <router-view />
         </keep-alive>
-
-        <MainnetNotReady
-            v-if="isPhala"
-        />
     </div>
 </template>
 
@@ -32,13 +26,6 @@ declare const window;
 export default class AppComponent
     extends BaseComponent
 {
-
-    public get isPhala () : boolean
-    {
-        const appVariant = window.appData.appVariant;
-        return appVariant === Network.Phala;
-    }
-
 }
 </script>
 
