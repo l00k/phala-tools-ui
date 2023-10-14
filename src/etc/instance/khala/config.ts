@@ -8,7 +8,7 @@ export default {
     },
     modules: {
         phala: {
-            subQueryApiUrl: 'https://squid.subsquid.io/phala-computation/graphql',
+            subQueryApiUrl: 'https://subsquid.phala.network/phala-computation/graphql',
         },
         watchdog: {
             discord: {
