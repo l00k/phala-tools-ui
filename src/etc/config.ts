@@ -17,7 +17,7 @@ export default {
         phala: {
             api: {
                 urls: {
-                    WS: 'wss://khala-api.phala.network/ws'
+                    WS: 'wss://phala.api.onfinality.io/public-ws'
                 },
             },
             subscan: {

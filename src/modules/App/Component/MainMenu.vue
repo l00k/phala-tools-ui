@@ -58,45 +58,6 @@
                 </li>
             </router-link>
         </ul>
-
-        <b-field
-            label="Switch network"
-            label-position="on-border"
-            class="network-selector"
-        >
-            <b-dropdown
-                :value="appVariant"
-                position="is-bottom-left"
-                class="ml-4"
-                @input="changeApp"
-            >
-                <template #trigger="{ active }">
-                    <b-button
-                        type="is-primary"
-                        :icon-right="active ? 'caret-up' : 'caret-down'"
-                    >
-                        {{ appName }}
-                    </b-button>
-                </template>
-
-                <b-dropdown-item
-                    v-if="appVariant !== Network.Phala"
-                    :value="Network.Phala"
-                    class="is-flex is-justify-content-space-between"
-                >
-                    <span class="has-color-phala">Phala</span>
-                    <span class="has-color-gray">(on Polkadot)</span>
-                </b-dropdown-item>
-                <b-dropdown-item
-                    v-if="appVariant !== Network.Khala"
-                    :value="Network.Khala"
-                    class="is-flex is-justify-content-space-between"
-                >
-                    <span class="has-color-khala">Khala</span>
-                    <span class="has-color-gray">(on Kusama)</span>
-                </b-dropdown-item>
-            </b-dropdown>
-        </b-field>
     </div>
 </template>
 
